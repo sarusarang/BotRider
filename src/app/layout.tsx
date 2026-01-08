@@ -5,6 +5,7 @@ import Footer from "@/components/common/Footer";
 
 
 export const metadata: Metadata = {
+  
   metadataBase: new URL("https://bot-rider.vercel.app"),
 
   title: {
@@ -12,13 +13,11 @@ export const metadata: Metadata = {
     template: "%s | Boat Rider",
   },
 
-  description:
-    "Boat Rider is a premium cycling store for high-performance bikes, accessories, and riding gear.",
+  description:"Boat Rider is a premium cycling store for high-performance bikes, accessories, and riding gear.",
 
   openGraph: {
     title: "Boat Rider — Premium Cycling Store",
-    description:
-      "Shop premium road, mountain & electric bikes along with accessories at Boat Rider.",
+    description:"Shop premium road, mountain & electric bikes along with accessories at Boat Rider.",
     url: "https://bot-rider.vercel.app",
     siteName: "Boat Rider",
     images: [
@@ -36,8 +35,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Boat Rider — Premium Cycling Store",
-    description:
-      "Shop premium road, mountain & electric bikes along with accessories at Boat Rider.",
+    description:"Shop premium road, mountain & electric bikes along with accessories at Boat Rider.",
     images: ["https://bot-rider.vercel.app/logo.png"],
   },
 
@@ -45,6 +43,7 @@ export const metadata: Metadata = {
     icon: "/logo.png",
     apple: "/apple-touch-icon.png",
   },
+  
 };
 
 
