@@ -4,25 +4,31 @@ import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 
 
-// Metadata
 export const metadata: Metadata = {
+  metadataBase: new URL("https://bot-rider.vercel.app"),
 
   title: {
     default: "Boat Rider",
-    template: "%s | Boat Rider"
+    template: "%s | Boat Rider",
   },
 
-  description: "Boat Rider is a premium cycling store for high-performance bikes, accessories, and riding gear.",
-
-  metadataBase: new URL("https://boatrider.com"),
+  description:
+    "Boat Rider is a premium cycling store for high-performance bikes, accessories, and riding gear.",
 
   openGraph: {
     title: "Boat Rider — Premium Cycling Store",
     description:
       "Shop premium road, mountain & electric bikes along with accessories at Boat Rider.",
-    url: "https://boatrider.com",
+    url: "https://bot-rider.vercel.app",
     siteName: "Boat Rider",
-    images: "/logo.png",
+    images: [
+      {
+        url: "https://bot-rider.vercel.app/logo.png",
+        width: 1200,
+        height: 630,
+        alt: "Boat Rider",
+      },
+    ],
     locale: "en_US",
     type: "website",
   },
@@ -32,20 +38,15 @@ export const metadata: Metadata = {
     title: "Boat Rider — Premium Cycling Store",
     description:
       "Shop premium road, mountain & electric bikes along with accessories at Boat Rider.",
-    images: "/logo.png",
+    images: ["https://bot-rider.vercel.app/logo.png"],
   },
 
   icons: {
     icon: "/logo.png",
     apple: "/apple-touch-icon.png",
   },
-
-  robots: {
-    index: true,
-    follow: true,
-  },
-
 };
+
 
 
 

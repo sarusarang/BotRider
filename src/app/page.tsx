@@ -7,13 +7,30 @@ export const metadata: Metadata = {
   title: "Boat Rider",
   description:
     "Buy road bikes, mountain bikes, e-bikes & accessories at Boat Rider. Premium cycling gear built for speed and adventure.",
+
   openGraph: {
     title: "Boat Rider — High Performance Cycling Store",
     description:
       "Buy road bikes, mountain bikes, e-bikes & accessories at Boat Rider.",
-    images: "/logo.png",
+    images: [
+      {
+        url: "https://bot-rider.vercel.app/logo.png",
+        width: 1200,
+        height: 630,
+        alt: "Boat Rider",
+      },
+    ],
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "Boat Rider — High Performance Cycling Store",
+    description:
+      "Buy road bikes, mountain bikes, e-bikes & accessories at Boat Rider.",
+    images: ["https://bot-rider.vercel.app/logo.png"],
   },
 };
+
 
 
 export default function Home() {
