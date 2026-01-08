@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     title: "Boat Rider — High Performance Cycling Store",
     description:
       "Buy road bikes, mountain bikes, e-bikes & accessories at Boat Rider.",
-    images: ["/logo.png"],
+    images: "/logo.png",
   },
 };
 

@@ -1,22 +1,7 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
-
-
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 
 // Metadata
@@ -37,14 +22,7 @@ export const metadata: Metadata = {
       "Shop premium road, mountain & electric bikes along with accessories at Boat Rider.",
     url: "https://boatrider.com",
     siteName: "Boat Rider",
-    images: [
-      {
-        url: "/logo.png",
-        width: 1200,
-        height: 630,
-        alt: "Boat Rider Cycles",
-      },
-    ],
+    images: "/logo.png",
     locale: "en_US",
     type: "website",
   },
@@ -54,7 +32,7 @@ export const metadata: Metadata = {
     title: "Boat Rider — Premium Cycling Store",
     description:
       "Shop premium road, mountain & electric bikes along with accessories at Boat Rider.",
-    images: ["/logo.png"],
+    images: "/logo.png",
   },
 
   icons: {
@@ -79,7 +57,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="light">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className="antialiased"
       >
 
         <div className="flex flex-col min-h-screen">

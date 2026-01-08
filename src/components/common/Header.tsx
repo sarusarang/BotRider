@@ -192,7 +192,7 @@ export default function Header() {
                   width={160}
                   height={40}
                   priority
-                  className={`w-auto object-contain ${isScrolled ? `h-14` : `h-24`}`}
+                  className={`w-auto object-contain ${isScrolled ? `h-14` : `h-14`}`}
                 />
               </Link>
             </div>
@@ -372,6 +372,7 @@ export default function Header() {
                             <img
                               src={selectedSubCategory.image}
                               alt={selectedSubCategory.title}
+                              loading='lazy'
                               className="absolute inset-0 w-full h-full object-cover"
                             />
 
@@ -425,6 +426,7 @@ export default function Header() {
                                       <img
                                         src={item.image}
                                         alt={item.name}
+                                        loading='lazy'
                                         className="h-full w-full object-cover"
                                       />
                                     ) : (
