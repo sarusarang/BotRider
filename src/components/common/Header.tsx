@@ -15,6 +15,7 @@ const MENU_ITEMS = [
   { name: 'Home', href: '/' },
   { name: 'Bikes', href: '/bikes', hasDropdown: true },
   { name: 'Accessories', href: '/accessories', hasDropdown: true },
+  { name: 'Events', href: '/events', },
   { name: 'Abouts', href: '/about' },
   { name: 'Contacts', href: '/contact' },
 ];

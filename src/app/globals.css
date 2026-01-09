@@ -1,5 +1,8 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "swiper/css";
+@import "swiper/css/navigation";
+
 
 @custom-variant dark (&:is(.dark *));
 
@@ -150,4 +153,40 @@
 
 .thin-scroll::-webkit-scrollbar-thumb:hover {
   background-color: rgba(0, 0, 0, 0.4);
+}
+
+
+
+
+
+::selection {
+  background: black;
+  /* background color for the selected text */
+  color: white;
+  /* text color for the selected text */
+}
+
+
+/* For WebKit browsers */
+::-webkit-scrollbar {
+  width: 4px;
+  /* width of the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: white;
+  /* background of the track */
+}
+
+::-webkit-scrollbar-thumb {
+  background: black;
+  /* color of the scrollbar thumb */
+  border-radius: 6px;
+  /* rounded edges for the thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(46, 46, 46);
+  cursor: pointer;
+  /* color when hovering over the thumb */
 }

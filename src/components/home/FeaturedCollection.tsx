@@ -1,0 +1,308 @@
+"use client";
+
+import { motion, Variants } from "framer-motion";
+import { ArrowUpRight, ShoppingBag, Star } from "lucide-react";
+import Link from "next/link";
+
+
+
+
+// Products
+const products = [
+    {
+        id: 1,
+        name: "S-Works Tarmac SL8",
+        category: "Road Performance",
+        price: "$14,000",
+        rating: 5.0,
+        image: "https://images.unsplash.com/photo-1618762044398-ec1e7e048bbd?q=80&w=1000&auto=format&fit=crop",
+        tag: "Best Seller"
+    },
+    {
+        id: 2,
+        name: "Turbo Levo SL",
+        category: "E-MTB Light",
+        price: "$11,500",
+        rating: 4.9,
+        image: "https://images.unsplash.com/photo-1618762044398-ec1e7e048bbd?q=80&w=1000&auto=format&fit=crop",
+        tag: "New Arrival"
+    },
+    {
+        id: 3,
+        name: "Aethos Pro",
+        category: "Ultralight Road",
+        price: "$8,500",
+        rating: 4.8,
+        image: "https://images.unsplash.com/photo-1485965120184-e220f721d03e?q=80&w=1000&auto=format&fit=crop",
+        tag: null
+    },
+    {
+        id: 4,
+        name: "Diverge STR",
+        category: "Gravel Suspension",
+        price: "$7,500",
+        rating: 4.9,
+        image: "https://images.unsplash.com/photo-1618762044398-ec1e7e048bbd?q=80&w=1000&auto=format&fit=crop",
+        tag: "Trending"
+    },
+    {
+        id: 5,
+        name: "Epic World Cup",
+        category: "XC Race",
+        price: "$10,000",
+        rating: 5.0,
+        image: "https://images.unsplash.com/photo-1505705694340-019e1e335916?q=80&w=1000&auto=format&fit=crop",
+        tag: null
+    },
+    {
+        id: 6,
+        name: "Creo 2",
+        category: "E-Road Gravel",
+        price: "$9,000",
+        rating: 4.7,
+        image: "https://images.unsplash.com/photo-1599058945522-28d584b6f0ff?q=80&w=1000&auto=format&fit=crop",
+        tag: "Limited"
+    }
+];
+
+
+
+
+export default function FeaturedCollection() {
+
+
+    const itemVariants: Variants = {
+        hidden: { opacity: 0, y: 40, scale: 0.96 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            transition: {
+                duration: 0.8,
+                ease: [0.22, 1, 0.36, 1] 
+            }
+        }
+    };
+
+
+
+    // Helper for badge styles
+    const getBadgeStyle = (tag: string) => {
+        switch (tag) {
+            case "Best Seller":
+                return "bg-linear-to-r from-amber-200 to-yellow-400 text-black shadow-amber-500/20";
+            case "New Arrival":
+                return "bg-linear-to-r from-emerald-400 to-teal-500 text-white shadow-emerald-500/20";
+            case "Trending":
+                return "bg-linear-to-r from-violet-500 to-purple-600 text-white shadow-purple-500/20";
+            case "Limited":
+                return "bg-linear-to-r from-rose-500 to-red-600 text-white shadow-red-500/20";
+            default:
+                return "bg-white text-black shadow-white/20";
+        }
+    };
+
+
+
+    return (
+
+
+        <section className="py-8 px-2 md:px-8 bg-neutral-50 dark:bg-black overflow-hidden">
+
+
+            <div className="w-full mx-auto">
+
+
+                <div className="flex flex-col md:flex-row justify-between items-end mb-8 gap-6">
+
+
+                    <div className="space-y-4">
+
+                        <motion.span
+                            initial={{ opacity: 0, x: -20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            className="inline-block px-3 py-1 text-xs font-bold tracking-widest text-red-600 bg-red-50 dark:bg-red-900/30 dark:text-red-300 uppercase rounded-full"
+                        >
+                            Curated Selection
+                        </motion.span>
+
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.1 }}
+                            className="flex items-center gap-4"
+                        >
+                            {/* Icon */}
+                            <div className="relative">
+                                <div className="w-11 h-11 rounded-2xl bg-linear-to-br from-black to-zinc-800 dark:from-white dark:to-zinc-300 flex items-center justify-center shadow-xl">
+                                    <svg
+                                        className="w-6 h-6 text-white dark:text-black"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="M5 3v4M19 3v4M3 7h18M6 11h12M9 15h6M11 19h2"
+                                        />
+                                    </svg>
+                                </div>
+
+                                {/* Glow */}
+                                <div className="absolute inset-0 blur-xl bg-black/40 dark:bg-white/40 -z-10 rounded-full" />
+                            </div>
+
+                            {/* Text */}
+                            <div>
+                                <h2 className="text-4xl md:text-5xl font-black tracking-tight text-neutral-900 dark:text-white">
+                                    Featured Masterpieces
+                                </h2>
+
+                                <p className="text-sm text-gray-500 dark:text-gray-400">
+                                    Discover our most premium bike collection
+                                </p>
+                            </div>
+
+                        </motion.div>
+
+
+                    </div>
+
+                    <motion.div
+                        initial={{ opacity: 0, x: 20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.2 }}
+                    >
+                        <Link href="/shop" className="group flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-neutral-600 dark:text-neutral-400 hover:text-red-600 dark:hover:text-red-400 transition-colors">
+                            View All Collection
+                            <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                        </Link>
+
+                    </motion.div>
+
+                </div>
+
+
+                {/* Products Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+
+                    {products.map((product) => (
+
+                        <motion.div
+                            key={product.id}
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true, margin: "-80px" }}
+                            variants={itemVariants}
+                            className="group relative"
+                        >
+
+
+                            <div className="relative aspect-3/4 w-full overflow-hidden rounded-3xl bg-neutral-900 shadow-2xl ring-1 ring-white/10 isolate">
+
+                                {/* Badge */}
+                                {product.tag && (
+                                    <div className="absolute top-5 left-5 z-30">
+                                        <div className={`relative overflow-hidden px-3 py-1.5 text-[10px] font-black tracking-[0.2em] rounded-full uppercase shadow-lg ${getBadgeStyle(product.tag)}`}>
+                                            <span className="relative z-10">{product.tag}</span>
+
+                                            {/* Shimmer Effect */}
+                                            <motion.div
+                                                className="absolute inset-0 -skew-x-12 bg-linear-to-r from-transparent via-white/40 to-transparent"
+                                                initial={{ x: "-100%" }}
+                                                animate={{ x: "200%" }}
+                                                transition={{
+                                                    repeat: Infinity,
+                                                    duration: 2,
+                                                    ease: "easeInOut",
+                                                    repeatDelay: 1
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+                                )}
+
+
+                                {/* Quick Action */}
+                                <div className="absolute top-5 right-5 z-30 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0">
+                                    <button className="p-3 bg-white text-black rounded-full hover:scale-110 transition-transform shadow-lg cursor-pointer">
+                                        <ShoppingBag className="w-5 h-5" />
+                                    </button>
+                                </div>
+
+
+                                {/* Image */}
+                                <img
+                                    src={product.image}
+                                    alt={product.name}
+                                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 ease-out group-hover:scale-110"
+                                    loading="lazy"
+                                />
+
+
+                                {/* Premium Gradient Overlay - Bottom Inset */}
+                                <div className="absolute inset-0 bg-linear-to-t from-black via-black/40 to-transparent opacity-90 transition-opacity duration-500" />
+
+
+                                {/* Additional Bottom Glow for richness */}
+                                <div className="absolute -bottom-20 left-0 right-0 h-1/2 bg-linear-to-t from-black to-transparent opacity-100" />
+
+
+                                {/* Content */}
+                                <div className="absolute bottom-0 left-0 w-full p-8 text-white z-20">
+
+                                    <div className="transform transition-transform duration-500 group-hover:-translate-y-2">
+                                        <div className="flex items-center gap-2 mb-3 opacity-80">
+                                            <div className="h-px w-6 bg-white/50" />
+                                            <p className="text-xs font-bold tracking-widest uppercase text-white/90">{product.category}</p>
+                                        </div>
+
+                                        <div className="flex justify-between items-end mb-4">
+                                            <h3 className="text-3xl font-black leading-tight tracking-tight drop-shadow-lg">{product.name}</h3>
+                                            <div className="flex flex-col items-center justify-center gap-0.5 bg-white/10 backdrop-blur-md px-2.5 py-1.5 rounded-lg border border-white/10">
+                                                <div className="flex">
+                                                    {[...Array(5)].map((_, i) => (
+                                                        <Star key={i} className={`w-2.5 h-2.5 ${i < Math.floor(product.rating) ? "fill-yellow-400 text-yellow-400" : "fill-gray-500 text-gray-500"}`} />
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="h-px w-full bg-white/20 mb-5" />
+
+                                        <div className="flex items-center justify-between">
+                                            <span className="text-2xl font-bold bg-clip-text text-transparent bg-linear-to-r from-white to-gray-400">
+                                                {product.price}
+                                            </span>
+
+                                            <button className="group/btn relative overflow-hidden rounded-full bg-white px-6 py-2 transition-all hover:w-32 hover:bg-neutral-200">
+                                                <span className="relative z-10 text-xs font-black uppercase tracking-wider text-black flex items-center gap-2">
+                                                    Details <ArrowUpRight className="w-3 h-3" />
+                                                </span>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </motion.div>
+
+                    ))}
+
+                </div>
+
+            </div>
+
+        </section>
+
+    );
+
+}

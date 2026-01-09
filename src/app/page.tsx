@@ -1,4 +1,8 @@
-import HeroSlider from "@/components/home/HeroSlider";
+import CategorySlider from "@/components/home/CategorySlider";
+import VideoShowcase from "@/components/home/VideoShowcase";
+import FeaturedCollection from "@/components/home/FeaturedCollection";
+import ImmersiveFeatures from "@/components/home/ImmersiveFeatures";
+import { BlurFade } from "@/components/ui/blur-fade";
 import type { Metadata } from "next";
 
 
@@ -41,13 +45,28 @@ export default function Home() {
     <section aria-label="Homepage" className="w-full flex-col items-center justify-center">
 
 
-      {/* Hero Slider */}
-      <div className="w-full h-full">
-        <HeroSlider />
-      </div>
+
+      {/* Video Showcase */}
+      <VideoShowcase />
 
 
-    </section>
+      {/* Category Slider */}
+      <CategorySlider />
+
+
+      {/* Featured Collection */}
+      <BlurFade delay={0.25 * 2} duration={0.5} inView>
+        <FeaturedCollection />
+      </BlurFade>
+
+
+      {/* Immersive Features */}
+      <BlurFade delay={0.25 * 3} duration={0.5} inView>
+        <ImmersiveFeatures />
+      </BlurFade>
+
+
+    </section >
 
 
 
