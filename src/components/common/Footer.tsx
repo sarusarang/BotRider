@@ -40,7 +40,7 @@ export default function Footer() {
 
   return (
 
-    <footer aria-label="Footer" className="bg-black text-white pt-14 pb-8 overflow-hidden relative">
+    <footer aria-label="Footer" className="bg-black text-white pt-14 pb-8 overflow-hidden relative border-t border-white/5">
 
 
       {/* Background Gradient Blob */}
@@ -161,8 +161,8 @@ export default function Footer() {
 
 
         {/* Big Typography */}
-        <div className="flex justify-center mb-5 sm:mb-12 select-none pointer-events-none">
-          <h1 className="text-[20vw] sm:text-[14vw] leading-none font-bold text-transparent bg-clip-text bg-linear-to-b from-white/10 to-white/5 tracking-tighter text-center">
+        <div className="flex justify-center mb-5 sm:mb-10 select-none pointer-events-none">
+          <h1 className="text-[20vw] sm:text-[18vw] leading-none font-bold text-transparent bg-clip-text bg-linear-to-b from-white/10 to-white/5 tracking-tighter text-center">
             BoatRider
           </h1>
         </div>

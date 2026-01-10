@@ -130,7 +130,6 @@
 
 
 
-
 /* ===== Custom thin scrollbar (scoped) ===== */
 .thin-scroll {
   scrollbar-width: thin;
@@ -154,6 +153,7 @@
 .thin-scroll::-webkit-scrollbar-thumb:hover {
   background-color: rgba(0, 0, 0, 0.4);
 }
+
 
 
 

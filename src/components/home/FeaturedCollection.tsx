@@ -3,12 +3,22 @@
 import { motion, Variants } from "framer-motion";
 import { ArrowUpRight, ShoppingBag, Star } from "lucide-react";
 import Link from "next/link";
-
+import { getBadgeStyle, BadgeTag } from "@/hooks/badge";
 
 
 
 // Products
-const products = [
+interface Product {
+    id: number;
+    name: string;
+    category: string;
+    price: string;
+    rating: number;
+    image: string;
+    tag?: BadgeTag;
+}
+
+const products: Product[] = [
     {
         id: 1,
         name: "S-Works Tarmac SL8",
@@ -34,7 +44,6 @@ const products = [
         price: "$8,500",
         rating: 4.8,
         image: "https://images.unsplash.com/photo-1485965120184-e220f721d03e?q=80&w=1000&auto=format&fit=crop",
-        tag: null
     },
     {
         id: 4,
@@ -52,7 +61,6 @@ const products = [
         price: "$10,000",
         rating: 5.0,
         image: "https://images.unsplash.com/photo-1505705694340-019e1e335916?q=80&w=1000&auto=format&fit=crop",
-        tag: null
     },
     {
         id: 6,
@@ -79,28 +87,13 @@ export default function FeaturedCollection() {
             scale: 1,
             transition: {
                 duration: 0.8,
-                ease: [0.22, 1, 0.36, 1] 
+                ease: [0.22, 1, 0.36, 1]
             }
         }
     };
 
 
 
-    // Helper for badge styles
-    const getBadgeStyle = (tag: string) => {
-        switch (tag) {
-            case "Best Seller":
-                return "bg-linear-to-r from-amber-200 to-yellow-400 text-black shadow-amber-500/20";
-            case "New Arrival":
-                return "bg-linear-to-r from-emerald-400 to-teal-500 text-white shadow-emerald-500/20";
-            case "Trending":
-                return "bg-linear-to-r from-violet-500 to-purple-600 text-white shadow-purple-500/20";
-            case "Limited":
-                return "bg-linear-to-r from-rose-500 to-red-600 text-white shadow-red-500/20";
-            default:
-                return "bg-white text-black shadow-white/20";
-        }
-    };
 
 
 
@@ -208,8 +201,10 @@ export default function FeaturedCollection() {
 
                                 {/* Badge */}
                                 {product.tag && (
-                                    <div className="absolute top-5 left-5 z-30">
-                                        <div className={`relative overflow-hidden px-3 py-1.5 text-[10px] font-black tracking-[0.2em] rounded-full uppercase shadow-lg ${getBadgeStyle(product.tag)}`}>
+                                    <div className="absolute top-3 left-3 z-20">
+
+                                        <div className={`relative overflow-hidden px-3 py-1.5 text-[10px] font-black tracking-wider rounded-full uppercase shadow-md ${getBadgeStyle(product.tag)}`}>
+
                                             <span className="relative z-10">{product.tag}</span>
 
                                             {/* Shimmer Effect */}
@@ -224,6 +219,7 @@ export default function FeaturedCollection() {
                                                     repeatDelay: 1
                                                 }}
                                             />
+
                                         </div>
                                     </div>
                                 )}
