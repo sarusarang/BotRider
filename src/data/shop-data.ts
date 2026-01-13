@@ -17,7 +17,7 @@ export interface Product {
     wheelSize: string;
     material: string;
     suspension: string;
-    color: ProductColor;
+    color: ProductColor [];
     description?: string;
     rating?: number;
     reviewCount?: number;
@@ -26,10 +26,10 @@ export interface Product {
     isFeatured?: boolean;
     tag?: "Best Seller" | "New Arrival" | "Trending" | "Limited";
 
-    // New Fields for Product Page
+
     stock?: number;
     emi?: string;
-    video?: string; // YouTube Video ID or URL
+    video?: string; 
     specs?: {
         label: string;
         items: { name: string; value: string }[];
@@ -149,7 +149,7 @@ export const products: Product[] = [
         wheelSize: "29 inch",
         material: "Aluminum",
         suspension: "Front",
-        color: { name: "Red", code: "#ef4444" },
+        color: [{ name: "Red", code: "#ef4444" }, { name: "Black", code: "#000000" }],
         image: ["https://cradiac.com/cdn/shop/files/ft.jpg?v=1742208888", "https://cradiac.com/cdn/shop/files/Secondary2.0_1066x.jpg?v=1730970258"],
         isNew: true,
         tag: "Best Seller",
@@ -229,7 +229,7 @@ export const products: Product[] = [
         wheelSize: "700C - hybrid bikes",
         material: "Carbon",
         suspension: "Rigid",
-        color: { name: "Green", code: "#22c55e" },
+        color: [{ name: "Black", code: "#000000" }, { name: "Green", code: "#22c55e" }],
         image: ["https://cdn.shopify.com/s/files/1/0628/5547/9548/files/ZeetaPlus27ICMBlk_533x.jpg?v=1714986541", "https://5.imimg.com/data5/SELLER/Default/2025/6/518411085/LK/TL/AF/64907775/27-5-zeeta-plus-ic-electric-bicycle.png"],
         isFeatured: true,
         tag: "New Arrival",
@@ -311,7 +311,7 @@ export const products: Product[] = [
         wheelSize: "29 inch",
         material: "Aluminum",
         suspension: "Front & Rear",
-        color: { name: "Purple", code: "#a855f7" },
+        color: [{ name: "Purple", code: "#a855f7" }],
         image: ["https://cradiac.com/cdn/shop/files/ft.jpg?v=1742208888", "https://cradiac.com/cdn/shop/files/Secondary2.0_1066x.jpg?v=1730970258"],
         tag: "Trending",
         originalPrice: 200000,
@@ -381,7 +381,7 @@ export const products: Product[] = [
         wheelSize: "700C - hybrid bikes",
         material: "Aluminum",
         suspension: "Rigid",
-        color: { name: "Black", code: "#000000" },
+        color: [{ name: "Black", code: "#000000" }],
         image: ["https://cdn.shopify.com/s/files/1/0628/5547/9548/files/ZeetaPlus27ICMBlk_533x.jpg?v=1714986541", "https://5.imimg.com/data5/SELLER/Default/2025/6/518411085/LK/TL/AF/64907775/27-5-zeeta-plus-ic-electric-bicycle.png"],
         tag: "Limited",
         originalPrice: 100000,
@@ -460,7 +460,7 @@ export const products: Product[] = [
         wheelSize: "27.5 inch",
         material: "Aluminum",
         suspension: "Front",
-        color: { name: "Blue", code: "#3b82f6" },
+        color: [{ name: "Blue", code: "#3b82f6" }],
         image: ["https://cradiac.com/cdn/shop/files/ft.jpg?v=1742208888", "https://cradiac.com/cdn/shop/files/Secondary2.0_1066x.jpg?v=1730970258"],
         tag: "Best Seller",
         originalPrice: 80000,
@@ -529,7 +529,7 @@ export const products: Product[] = [
         wheelSize: "700C - hybrid bikes",
         material: "Carbon",
         suspension: "Rigid",
-        color: { name: "White", code: "#ffffff" },
+        color: [{ name: "Green", code: "#22c55e" }, { name: "Black", code: "#000000" }],
         image: ["https://cdn.shopify.com/s/files/1/0628/5547/9548/files/ZeetaPlus27ICMBlk_533x.jpg?v=1714986541", "https://5.imimg.com/data5/SELLER/Default/2025/6/518411085/LK/TL/AF/64907775/27-5-zeeta-plus-ic-electric-bicycle.png"],
         isFeatured: true,
         tag: "New Arrival",
@@ -600,7 +600,7 @@ export const products: Product[] = [
         wheelSize: "700C - hybrid bikes",
         material: "Aluminum",
         suspension: "Rigid",
-        color: { name: "Grey", code: "#6b7280" },
+        color: [{ name: "Grey", code: "#6b7280" }, { name: "White", code: "#ffffff" }],
         image: ["https://cradiac.com/cdn/shop/files/ft.jpg?v=1742208888", "https://cradiac.com/cdn/shop/files/Secondary2.0_1066x.jpg?v=1730970258"],
         tag: "Trending",
         originalPrice: 60000,
@@ -669,7 +669,7 @@ export const products: Product[] = [
         wheelSize: "26 inch",
         material: "Steel",
         suspension: "Front",
-        color: { name: "Black", code: "#000000" },
+        color: [{ name: "Black", code: "#000000" }],
         image: ["https://cdn.shopify.com/s/files/1/0628/5547/9548/files/ZeetaPlus27ICMBlk_533x.jpg?v=1714986541", "https://5.imimg.com/data5/SELLER/Default/2025/6/518411085/LK/TL/AF/64907775/27-5-zeeta-plus-ic-electric-bicycle.png"],
         tag: "Limited",
         originalPrice: 60000,
@@ -738,7 +738,7 @@ export const products: Product[] = [
         wheelSize: "27.5 inch",
         material: "Aluminum",
         suspension: "Front",
-        color: { name: "Black", code: "#000000" },
+        color: [{ name: "Black", code: "#000000" }],
         image: ["https://cdn.shopify.com/s/files/1/0628/5547/9548/files/ZeetaPlus27ICMBlk_533x.jpg?v=1714986541", "https://5.imimg.com/data5/SELLER/Default/2025/6/518411085/LK/TL/AF/64907775/27-5-zeeta-plus-ic-electric-bicycle.png"],
         tag: "Limited",
         originalPrice: 28000,
@@ -797,7 +797,7 @@ export const products: Product[] = [
         wheelSize: "700C - hybrid bikes",
         material: "Aluminum",
         suspension: "Rigid",
-        color: { name: "Black", code: "#000000" },
+        color: [{ name: "Black", code: "#000000"}, { name: "Red", code: "#ef4444" }],
         image: ["https://cdn.shopify.com/s/files/1/0628/5547/9548/files/ZeetaPlus27ICMBlk_533x.jpg?v=1714986541", "https://5.imimg.com/data5/SELLER/Default/2025/6/518411085/LK/TL/AF/64907775/27-5-zeeta-plus-ic-electric-bicycle.png"],
         tag: "Limited",
         originalPrice: 85000,
@@ -866,7 +866,7 @@ export const products: Product[] = [
         wheelSize: "29 inch",
         material: "Aluminum",
         suspension: "Front",
-        color: { name: "Black", code: "#000000" },
+        color: [{ name: "Orange", code: "#f97316" }, { name: "Black", code: "#000000" }],
         image: ["https://cdn.shopify.com/s/files/1/0628/5547/9548/files/ZeetaPlus27ICMBlk_533x.jpg?v=1714986541", "https://5.imimg.com/data5/SELLER/Default/2025/6/518411085/LK/TL/AF/64907775/27-5-zeeta-plus-ic-electric-bicycle.png"],
         tag: "Limited",
         originalPrice: 65000,
@@ -935,7 +935,7 @@ export const products: Product[] = [
         wheelSize: "700C - hybrid bikes",
         material: "Aluminum",
         suspension: "Rigid",
-        color: { name: "Black", code: "#000000" },
+        color: [{ name: "Black", code: "#000000" }, { name: "Blue", code: "#3b82f6" }],
         image: ["https://cdn.shopify.com/s/files/1/0628/5547/9548/files/ZeetaPlus27ICMBlk_533x.jpg?v=1714986541", "https://5.imimg.com/data5/SELLER/Default/2025/6/518411085/LK/TL/AF/64907775/27-5-zeeta-plus-ic-electric-bicycle.png"],
         tag: "Limited",
         originalPrice: 82000,
@@ -994,7 +994,7 @@ export const products: Product[] = [
         wheelSize: "29 inch",
         material: "Aluminum",
         suspension: "Front",
-        color: { name: "Black", code: "#000000" },
+        color: [{ name: "Green", code: "#22c55e" }, { name: "Black", code: "#000000" }],
         image: ["https://cdn.shopify.com/s/files/1/0628/5547/9548/files/ZeetaPlus27ICMBlk_533x.jpg?v=1714986541", "https://5.imimg.com/data5/SELLER/Default/2025/6/518411085/LK/TL/AF/64907775/27-5-zeeta-plus-ic-electric-bicycle.png"],
         tag: "Limited",
         originalPrice: 55000,
@@ -1053,7 +1053,7 @@ export const products: Product[] = [
         wheelSize: "700C - hybrid bikes",
         material: "Aluminum",
         suspension: "Rigid",
-        color: { name: "Black", code: "#000000" },
+        color: [{ name: "White", code: "#ffffff" }, { name: "Blue", code: "#3b82f6" }],
         image: ["https://cdn.shopify.com/s/files/1/0628/5547/9548/files/ZeetaPlus27ICMBlk_533x.jpg?v=1714986541", "https://5.imimg.com/data5/SELLER/Default/2025/6/518411085/LK/TL/AF/64907775/27-5-zeeta-plus-ic-electric-bicycle.png"],
         tag: "Limited",
         originalPrice: 40000,
@@ -1112,7 +1112,7 @@ export const products: Product[] = [
         wheelSize: "700C - hybrid bikes",
         material: "Aluminum",
         suspension: "Front",
-        color: { name: "Black", code: "#000000" },
+        color: [{ name: "Grey", code: "#6b7280" }, { name: "Black", code: "#000000" }],
         image: ["https://cdn.shopify.com/s/files/1/0628/5547/9548/files/ZeetaPlus27ICMBlk_533x.jpg?v=1714986541", "https://5.imimg.com/data5/SELLER/Default/2025/6/518411085/LK/TL/AF/64907775/27-5-zeeta-plus-ic-electric-bicycle.png"],
         tag: "Limited",
         originalPrice: 32000,

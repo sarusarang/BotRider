@@ -1,10 +1,12 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Star, Minus, Plus, Truck, RotateCcw } from "lucide-react";
+import { Star, Minus, Plus, Truck, RotateCcw, Check, ArrowRight, ShoppingCart } from "lucide-react";
 import { Product } from "@/data/shop-data";
 import { getBadgeStyle } from "@/hooks/badge";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { cn } from "@/lib/utils";
+import { useState } from "react";
 
 
 
@@ -23,10 +25,18 @@ interface ProductInfoProps {
 export function ProductInfo({ product, quantity, setQuantity }: ProductInfoProps) {
 
 
+    // State for selected color
+    const [selectedColor, setSelectedColor] = useState(product.color[0]);
+
+
+    // State for selected size
+    const [selectedSize, setSelectedSize] = useState(product.size[0]);
+
+
     return (
 
 
-        <div className="space-y-8">
+        <div className="space-y-4">
 
 
             {/* Title & Price */}
@@ -149,7 +159,7 @@ export function ProductInfo({ product, quantity, setQuantity }: ProductInfoProps
                     {product.emi && (
 
                         <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
-                            EMI starts at <span className="text-zinc-900 dark:text-white font-bold">{product.emi}</span>
+                            EMI starts at <span className="text-green-700 dark:text-white font-bold">{product.emi}</span>
                         </p>
 
                     )}
@@ -159,7 +169,7 @@ export function ProductInfo({ product, quantity, setQuantity }: ProductInfoProps
             </div>
 
 
-            <div className="h-px bg-zinc-400 dark:bg-zinc-800" />
+            <div className="h-px bg-zinc-200 dark:bg-zinc-800" />
 
 
 
@@ -167,104 +177,212 @@ export function ProductInfo({ product, quantity, setQuantity }: ProductInfoProps
             <div className="space-y-6">
 
 
-                {/* Color */}
-                <div className="space-y-3">
+                {/* Color Selector */}
+                <div className="space-y-4">
 
-                    <span className="text-sm font-bold text-zinc-900 dark:text-white">Color: <span className="font-normal text-zinc-500 ml-1">{product.color.name}</span></span>
+                    <span className="text-sm font-semibold text-zinc-900 dark:text-white">
+                        Color:
+                        <span className="ml-2 font-normal text-zinc-500">
+                            {selectedColor.name}
+                        </span>
+                    </span>
 
-                    <div className="flex flex-wrap gap-2 mt-2">
+                    <div className="flex flex-wrap gap-3 mt-2">
 
-                        <button className="w-12 h-12 rounded-full border-2 border-zinc-200 dark:border-zinc-700 ring-2 ring-black dark:ring-white p-1 relative">
-                            <span className="absolute inset-0.5 rounded-full" style={{ backgroundColor: product.color.code }} />
-                        </button>
+                        {product.color.map((color) => {
+
+                            const isActive = selectedColor.name === color.name;
+
+                            return (
+                                <button
+                                    key={color.name}
+                                    onClick={() => setSelectedColor(color)}
+                                    className={cn(
+                                        "relative w-12 h-12 rounded-full transition-all duration-300 hover:cursor-pointer",
+                                        "border-2 dark:border-zinc-700",
+                                        isActive
+                                            ? "border-black dark:border-white ring-2 ring-black dark:ring-white"
+                                            : "border-zinc-200 hover:scale-110 hover:ring-1 hover:ring-zinc-300 dark:hover:ring-zinc-600"
+                                    )}
+                                >
+
+                                    {/* Color bubble */}
+                                    <span
+                                        className="absolute inset-1 rounded-full"
+                                        style={{ backgroundColor: color.code }}
+                                    />
+
+                                    {/* Check Icon */}
+                                    <AnimatePresence>
+                                        {isActive && (
+                                            <motion.span
+                                                initial={{ scale: 0.5, opacity: 0 }}
+                                                animate={{ scale: 1, opacity: 1 }}
+                                                exit={{ scale: 0.5, opacity: 0 }}
+                                                className="absolute inset-0 flex items-center justify-center"
+                                            >
+                                                <Check
+                                                    className={cn(
+                                                        "w-5 h-5",
+                                                        color.name === "White" || color.name === "Yellow"
+                                                            ? "text-black"
+                                                            : "text-white"
+                                                    )}
+                                                    strokeWidth={3}
+                                                />
+                                            </motion.span>
+                                        )}
+                                    </AnimatePresence>
+
+                                </button>
+                            );
+                        })}
 
                     </div>
 
                 </div>
 
 
-                {/* Size */}
+                {/* Frame Size */}
                 {product.size && Array.isArray(product.size) && (
 
-                    <div className="space-y-3">
+                    <div className="space-y-4">
 
                         <div className="flex justify-between items-center">
-                            <span className="text-sm font-bold text-zinc-900 dark:text-white">Frame Size</span>
-                            <button className="text-xs font-medium underline text-zinc-500 hover:text-black dark:hover:text-white">Size Guide</button>
+                            <span className="text-sm font-semibold text-zinc-900 dark:text-white">
+                                Size : {selectedSize}
+                            </span>
+
+                            <button className="text-xs font-medium underline text-zinc-500 hover:text-black dark:hover:text-white transition hover:cursor-pointer">
+                                Size Guide
+                            </button>
                         </div>
 
-                        <div className="grid grid-cols-4 gap-2">
+                        <div className="grid grid-cols-4 gap-3">
 
-                            {product.size.map((size) => (
+                            {product.size.map((size) => {
+                                const isActive = selectedSize === size;
 
-                                <button
-                                    key={size}
-                                    className="h-10 border border-zinc-200 dark:border-zinc-800 rounded-lg hover:border-black dark:hover:border-white font-medium text-sm transition-all text-zinc-600 dark:text-zinc-300 hover:text-black dark:hover:text-white"
-                                >
-                                    {size}
-                                </button>
-                            ))}
+                                return (
+                                    <button
+                                        key={size}
+                                        onClick={() => setSelectedSize(size)}
+                                        className={cn(
+                                            "h-11 rounded-xl border text-sm font-medium transition-all duration-300 hover:cursor-pointer",
+                                            "flex items-center justify-center",
+                                            isActive
+                                                ? "border-black dark:border-white bg-black dark:bg-white text-white dark:text-black shadow-md scale-105"
+                                                : "border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-300 hover:border-black dark:hover:border-white hover:text-black dark:hover:text-white hover:scale-105"
+                                        )}
+                                    >
+                                        {size}
+                                    </button>
+                                );
+                            })}
 
                         </div>
+
 
                     </div>
                 )}
+
 
             </div>
 
 
 
             {/* Actions */}
-            <div className="space-y-4 pt-4">
+            <div className="space-y-4 pt-2">
 
-                <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center justify-between mb-4">
 
                     <span className="text-sm font-bold text-zinc-900 dark:text-white">Quantity</span>
 
-                    <div className="flex items-center bg-zinc-100 dark:bg-zinc-900 rounded-full h-9 px-1">
+                    <div className="flex items-center gap-3 bg-zinc-100 dark:bg-zinc-900 px-2 py-1 rounded-full border border-zinc-200 dark:border-zinc-800 shadow-inner">
 
-                        <button
+                        {/* Minus */}
+                        <motion.button
+                            whileHover={{ scale: 1.15 }}
+                            whileTap={{ scale: 0.9 }}
                             onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                            className="w-8 h-full flex items-center justify-center rounded-full hover:bg-white dark:hover:bg-zinc-800 transition shadow-sm text-zinc-600 dark:text-zinc-400"
+                            className="relative w-6 h-6 flex items-center justify-center rounded-full bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 shadow-md hover:shadow-lg hover:ring-2 hover:ring-black/10 dark:hover:ring-white/10 transition-all hover:cursor-pointer"
                         >
-                            <Minus className="w-3.5 h-3.5" />
-                        </button>
+                            <Minus className="w-4 h-4" />
+                            <span className="absolute inset-0 rounded-full bg-black/5 dark:bg-white/5 opacity-0 hover:opacity-100 transition" />
+                        </motion.button>
 
-                        <span className="w-8 text-center font-bold text-sm">{quantity}</span>
+                        {/* Count */}
+                        <span className="w-10 text-center text-sm font-semibold text-zinc-900 dark:text-white">
+                            {quantity}
+                        </span>
 
-                        <button
+                        {/* Plus */}
+                        <motion.button
+                            whileHover={{ scale: 1.15 }}
+                            whileTap={{ scale: 0.9 }}
                             onClick={() => setQuantity(quantity + 1)}
-                            className="w-8 h-full flex items-center justify-center rounded-full hover:bg-white dark:hover:bg-zinc-800 transition shadow-sm text-zinc-600 dark:text-zinc-400"
+                            className="relative w-6 h-6 flex items-center justify-center rounded-full bg-black dark:bg-white text-white dark:text-black shadow-lg hover:shadow-xl hover:ring-2 hover:ring-black/20 dark:hover:ring-white/20 transition-all hover:cursor-pointer"
                         >
-                            <Plus className="w-3.5 h-3.5" />
-                        </button>
+                            <Plus className="w-4 h-4" />
+                            <span className="absolute inset-0 rounded-full bg-white/10 dark:bg-black/10 opacity-0 hover:opacity-100 transition" />
+                        </motion.button>
 
                     </div>
+
 
                 </div>
 
 
 
                 {/* Actions */}
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-4">
 
-                    <Button className="h-14 rounded-full text-base font-bold bg-zinc-900 hover:bg-zinc-800 text-white shadow-xl active:scale-[0.98] transition-all">
-                        Buy Now
-                    </Button>
 
-                    <Button variant="outline" className="h-14 rounded-full text-base font-bold border-2 border-zinc-200 dark:border-zinc-800 hover:border-black dark:hover:border-white hover:bg-transparent text-zinc-900 dark:text-white active:scale-[0.98] transition-all">
-                        Add to Cart
-                    </Button>
+                    {/* Buy Now */}
+                    <motion.button
+                        whileHover={{ scale: 1.04 }}
+                        whileTap={{ scale: 0.97 }}
+                        className="group relative h-14 rounded-full bg-black dark:bg-white text-white dark:text-black font-semibold text-base hover:cursor-pointer
+                         shadow-[0_10px_40px_rgba(0,0,0,0.3)] dark:shadow-[0_10px_40px_rgba(255,255,255,0.2)] overflow-hidden">
+
+                        {/* Glow */}
+                        <span className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition duration-500" />
+
+                        <span className="relative z-10 flex items-center justify-center gap-2">
+                            Buy Now
+                            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                        </span>
+
+                    </motion.button>
+
+
+
+                    {/* Add to Cart */}
+                    <motion.button
+                        whileHover={{ scale: 1.04 }}
+                        whileTap={{ scale: 0.97 }}
+                        className="group relative h-14 rounded-full border-2 border-zinc-300 dark:border-zinc-700 hover:cursor-pointer
+                         text-zinc-900 dark:text-white font-semibold text-base hover:border-black dark:hover:border-white overflow-hidden">
+                       
+                        {/* Hover fill */}
+                        <span className="absolute inset-0 bg-zinc-900 dark:bg-white opacity-0 group-hover:opacity-100 transition" />
+
+                        <span className="relative z-10 flex items-center justify-center gap-2 group-hover:text-white dark:group-hover:text-black">
+                            <ShoppingCart className="w-4 h-4" />
+                            Add to Cart
+                        </span>
+                    
+                    </motion.button>
+
 
                 </div>
-
 
 
                 {/* Stock Indicator */}
                 {product.stock && (
 
                     <div className="flex items-center gap-2 text-sm justify-center pt-2">
-                        <div className={`w-2 h-2 rounded-full ${product.stock < 10 ? 'bg-orange-500 animate-pulse' : 'bg-emerald-500'}`} />
+                        <div className={`w-2 h-2 mt-1 rounded-full ${product.stock < 10 ? 'bg-orange-500 animate-pulse' : 'bg-emerald-500'}`} />
                         <span className={product.stock < 10 ? 'text-orange-600 font-medium' : 'text-emerald-600 font-medium'}>
                             {product.stock < 10 ? `Hurry! Only ${product.stock} left in stock` : 'In Stock & Ready to Ship'}
                         </span>
@@ -281,7 +399,7 @@ export function ProductInfo({ product, quantity, setQuantity }: ProductInfoProps
             <div className="grid grid-cols-2 gap-4 pt-4 border-t border-zinc-200 dark:border-zinc-800">
 
 
-                <div className="flex items-start gap-3 border border-zinc-100 dark:border-zinc-800 p-3 rounded-2xl bg-zinc-50/50 dark:bg-zinc-900/50">
+                <div className="flex items-start gap-3 border-2 border-zinc-100 dark:border-zinc-800 p-3 rounded-2xl bg-zinc-50/50 dark:bg-zinc-900/50">
 
                     <div className="w-8 h-8 rounded-full bg-white dark:bg-zinc-800 flex items-center justify-center shrink-0 shadow-sm">
                         <Truck className="w-4 h-4 text-zinc-600 dark:text-zinc-400" />
@@ -295,7 +413,7 @@ export function ProductInfo({ product, quantity, setQuantity }: ProductInfoProps
                 </div>
 
 
-                <div className="flex items-start gap-3 border border-zinc-100 dark:border-zinc-800 p-3 rounded-2xl bg-zinc-50/50 dark:bg-zinc-900/50">
+                <div className="flex items-start gap-3 border-2 border-zinc-100 dark:border-zinc-800 p-3 rounded-2xl bg-zinc-50/50 dark:bg-zinc-900/50">
 
                     <div className="w-8 h-8 rounded-full bg-white dark:bg-zinc-800 flex items-center justify-center shrink-0 shadow-sm">
                         <RotateCcw className="w-4 h-4 text-zinc-600 dark:text-zinc-400" />
