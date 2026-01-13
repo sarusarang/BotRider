@@ -9,6 +9,18 @@ import ProductGrid from "@/components/shop/ProductGrid";
 import { products, sortOptions } from "@/data/shop-data";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select";
 import { FilterState, initialFilterState } from "@/types/filters";
+import {
+    Pagination,
+    PaginationContent,
+    PaginationItem,
+    PaginationLink,
+    PaginationPrevious,
+    PaginationNext,
+    PaginationEllipsis,
+} from "@/components/ui/pagination";
+
+
+
 
 
 
@@ -220,18 +232,62 @@ export default function ShopPage() {
                         <ProductGrid products={products} />
 
 
-                        {/* Load More Button */}
-                        {products.length > 0 && (
-                            <div className="mt-20 flex flex-col items-center gap-4">
-                                <p className="text-sm text-zinc-400">Showing {products.length} of {products.length} products</p>
-                                <div className="w-48 h-1 bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
-                                    <div className="h-full w-full bg-black dark:bg-white rounded-full"></div>
-                                </div>
-                                <Button variant="outline" size="lg" className="min-w-[200px] mt-4 rounded-full border-zinc-300 dark:border-zinc-700 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all">
-                                    Load More
-                                </Button>
-                            </div>
-                        )}
+
+
+                        {/* Pagination */}
+                        <div className="mt-10 flex flex-col items-center gap-6">
+
+
+                            <Pagination>
+
+
+                                <PaginationContent>
+
+
+                                    {/* Prev */}
+                                    <PaginationItem>
+                                        <PaginationPrevious
+
+                                            className={1 === 1 ? "pointer-events-none opacity-40" : ""}
+                                        />
+                                    </PaginationItem>
+
+
+                                    {/* Page Numbers */}
+                                    {Array.from({ length: 5 }).map((_, i) => {
+
+                                        const page = i + 1;
+                                        const isActive = page === 1;
+
+                                        return (
+                                            <PaginationItem key={page}>
+                                                <PaginationLink
+                                                    isActive={isActive}
+                                                    className={`rounded-full px-4 py-2 ${isActive ? "bg-black text-white dark:bg-white dark:text-black shadow-xl" : "hover:bg-zinc-100 dark:hover:bg-zinc-800"}`}
+                                                >
+                                                    {page}
+                                                </PaginationLink>
+                                            </PaginationItem>
+                                        );
+
+                                    })}
+
+
+                                    {/* Next */}
+                                    <PaginationItem>
+                                        <PaginationNext
+
+                                            className={1 == 1 ? "pointer-events-none opacity-40" : ""}
+                                        />
+                                    </PaginationItem>
+
+                                </PaginationContent>
+
+                            </Pagination>
+
+                        </div>
+
+
 
 
                         {products.length === 0 && (

@@ -10,6 +10,7 @@ import Image from 'next/image';
 import { Badge } from '../ui/badge';
 import { usePathname } from "next/navigation";
 import { MENU_ITEMS, BIKES_CATEGORIES, ACCESSORIES_CATEGORIES } from '../../data/headerData';
+import MegaMenu from './MegaMenu';
 
 
 
@@ -23,7 +24,7 @@ export default function Header() {
 
   // State
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  const [selectedSubCategory, setSelectedSubCategory] = useState<any>(null);
+
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
 
@@ -95,21 +96,6 @@ export default function Header() {
     if (category === 'Accessories') return ACCESSORIES_CATEGORIES;
     return [];
   };
-
-
-
-  // Set default selected category when dropdown opens
-  useEffect(() => {
-    if (activeDropdown) {
-      const content = getDropdownContent(activeDropdown);
-      if (content.length > 0) {
-        setSelectedSubCategory(content[0]);
-      } else {
-        setSelectedSubCategory(null);
-      }
-    }
-  }, [activeDropdown]);
-
 
 
 
@@ -256,180 +242,14 @@ export default function Header() {
         </div>
 
 
-
         {/* ================= MEGA MENU ================= */}
-        <AnimatePresence>
-
-          {activeDropdown && (
-
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.2 }}
-              onMouseEnter={() => setActiveDropdown(activeDropdown)}
-              onMouseLeave={() => setActiveDropdown(null)}
-              className="max-w-7xl h-[88vh] mx-auto absolute top-16 left-0 right-0 bg-white border rounded-xl border-gray-100 shadow-xl hidden lg:block overflow-hidden overflow-x-hidden"
-            >
-
-              <div className="w-full h-full mx-auto px-8 py-8 overflow-hidden">
-
-                <div className="grid grid-cols-4 gap-8 h-full">
-
-                  {/* ================= LEFT : CATEGORY LIST ================= */}
-                  <div className="col-span-1 border-r border-gray-200 pr-6 h-full flex flex-col">
-
-                    <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-6 shrink-0">
-                      {activeDropdown} Categories
-                    </h3>
-
-                    <ul className="space-y-2 overflow-y-auto flex-1 pr-2 thin-scroll">
-
-                      {getDropdownContent(activeDropdown).map((cat) => (
-
-                        <li
-                          key={cat.title}
-                          onMouseEnter={() => setSelectedSubCategory(cat)}
-                          className="cursor-pointer"
-                        >
-
-                          <div
-                            className={`flex items-center justify-between p-3 rounded-lg transition-all duration-200
-                              ${selectedSubCategory?.title === cat.title
-                                ? "bg-gray-50 text-red-600 pl-5"
-                                : "text-gray-900 hover:bg-gray-50 hover:pl-4"}`}
-                          >
-
-                            <span className="text-lg font-medium">
-                              {cat.title}
-                            </span>
-
-                            {selectedSubCategory?.title === cat.title && (
-                              <ChevronRight className="w-4 h-4 text-red-600" />
-                            )}
-
-                          </div>
-
-                        </li>
-
-                      ))}
-
-                    </ul>
-
-                  </div>
+        <MegaMenu activeDropdown={activeDropdown} setActiveDropdown={setActiveDropdown} />
 
 
-
-                  {/* ================= RIGHT : CONTENT ================= */}
-                  <div className="col-span-3 h-full overflow-y-auto overflow-x-hidden pr-4 thin-scroll">
-
-                    <AnimatePresence mode="wait">
-
-                      {selectedSubCategory && (
-
-                        <motion.div
-                          layout="position"
-                          key={selectedSubCategory.title}
-                          initial={{ opacity: 0, x: 20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          exit={{ opacity: 0, x: 20 }}
-                          transition={{ duration: 0.3 }}
-                          className="space-y-8 min-h-full"
-                        >
-
-                          {/* ===== HERO ===== */}
-                          <div className="relative w-full h-[200px] rounded-2xl overflow-hidden shadow-sm">
-
-                            <img
-                              src={selectedSubCategory.image}
-                              alt={selectedSubCategory.title}
-                              loading='lazy'
-                              className="absolute inset-0 w-full h-full object-cover"
-                            />
-
-                            <div className="absolute inset-0 bg-black/40" />
-
-                            <div className="absolute bottom-6 left-8 text-white">
-
-                              <h2 className="text-3xl font-bold">
-                                {selectedSubCategory.title}
-                              </h2>
-
-                              <Link
-                                href={selectedSubCategory.href}
-                                className="text-sm font-medium underline decoration-1 underline-offset-4 hover:text-red-400 transition-colors mt-2 inline-block"
-                              >
-                                View All {selectedSubCategory.title}
-                              </Link>
-
-                            </div>
-
-                          </div>
-
-
-                          {/* ===== MEGA MENU PRODUCT GRID ===== */}
-                          <div className="grid grid-cols-4 gap-5">
-
-                            {selectedSubCategory.items?.map((item: any, idx: number) => (
-
-                              <motion.div
-                                key={idx}
-                                initial={{ opacity: 0, y: 24, scale: 0.96 }}
-                                animate={{ opacity: 1, y: 0, scale: 1 }}
-                                transition={{ delay: idx * 0.05, duration: 0.5, ease: "easeOut" }}
-                                whileHover="hover"
-                                className="group relative cursor-pointer"
-                              >
-
-                                <div className="relative overflow-hidden rounded-2xl bg-white/60 backdrop-blur-md border border-gray-200">
-
-                                  <div className="absolute inset-0 bg-linear-to-br from-black/5 via-transparent to-black/10 opacity-0 group-hover:opacity-100 transition duration-500" />
-
-                                  <motion.div
-                                    variants={{ hover: { scale: 1.08 } }}
-                                    transition={{ duration: 1.2, ease: "easeOut" }}
-                                    className="relative aspect-4/3 overflow-hidden"
-                                  >
-
-                                    {item.image ? (
-                                      <img
-                                        src={item.image}
-                                        alt={item.name}
-                                        loading='lazy'
-                                        className="h-full w-full object-cover"
-                                      />
-
-                                    ) : (
-                                      <div className="flex h-full w-full items-center justify-center text-gray-400">
-                                        No Image
-                                      </div>
-                                    )}
-                                  </motion.div>
-                                  <div className="p-4">
-                                    <h4 className="text-sm font-medium tracking-tight text-gray-900 group-hover:text-black transition">
-                                      {item.name}
-                                    </h4>
-                                    {item.price && (
-                                      <p className="mt-1 text-xs text-gray-500">
-                                        {item.price}
-                                      </p>
-                                    )}
-                                    <div className="mt-3 h-px w-6 bg-gray-300 group-hover:w-28 transition-all duration-500" />
-                                  </div>
-                                </div>
-                              </motion.div>
-                            ))}
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </motion.header>
+
+
+
 
       {/* Mobile Menu Drawer */}
       <AnimatePresence>

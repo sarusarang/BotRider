@@ -115,7 +115,7 @@ const item: Variants = {
         scale: 1,
         transition: {
             duration: 0.9,
-            delay: i * 0.16, // 🔥 stagger per card
+            delay: i * 0.16, 
             ease: [0.16, 1, 0.3, 1],
         },
     }),
@@ -170,7 +170,7 @@ export default function CategorySlider() {
 
                         {/* Text */}
                         <div>
-                            <h2 className="text-4xl font-extrabold tracking-tight bg-linear-to-r from-black to-zinc-600 dark:from-white dark:to-zinc-400 bg-clip-text text-transparent">
+                            <h2 className="text-3xl font-extrabold tracking-tight bg-linear-to-r from-black to-zinc-600 dark:from-white dark:to-zinc-400 bg-clip-text text-transparent">
                                 Shop By
                             </h2>
                             <p className="text-sm text-gray-500 dark:text-gray-400">

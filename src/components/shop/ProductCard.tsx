@@ -7,6 +7,7 @@ import { ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { getBadgeStyle } from "@/hooks/badge";
+import Link from "next/link";
 
 
 
@@ -42,6 +43,8 @@ export default function ProductCard({ product, className }: ProductCardProps) {
                 className
             )}
         >
+
+            <Link href={`/product/${product.id}`} className="absolute inset-0 z-10" />
 
 
             {/* Badge */}
@@ -159,7 +162,7 @@ export default function ProductCard({ product, className }: ProductCardProps) {
 
 
                 {/* CTA */}
-                <Button className="w-full mt-3 rounded-full bg-black text-white hover:bg-zinc-800 dark:bg-white dark:text-black dark:hover:bg-zinc-200 transition flex gap-2">
+                <Button className="w-full mt-3 rounded-full bg-black text-white hover:bg-zinc-800 dark:bg-white dark:text-black dark:hover:bg-zinc-200 transition flex gap-2 relative z-20">
                     <ShoppingBag className="w-4 h-4" />
                     Add to Cart
                 </Button>

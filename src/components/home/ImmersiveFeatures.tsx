@@ -2,28 +2,28 @@
 
 
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Gauge, ShieldCheck, Trophy, Wind, Zap } from "lucide-react";
+import { BadgeCheck, Bike, Gauge, ShieldCheck, Trophy, Wind, Zap } from "lucide-react";
 import { useRef } from "react";
 
 
 
 const features = [
     {
-        icon: Wind,
-        title: "Aerodynamic Mastery",
-        desc: "Every curve is sculpted in the wind tunnel for maximum efficiency and speed.",
+        icon: Bike,
+        title: "Premium Bikes Brands",
+        desc: "Curated selection of world-class, high-performance bicycles.",
         color: "from-blue-500 to-cyan-500"
     },
     {
         icon: Zap,
-        title: "Instant Response",
-        desc: "Proprietary carbon layup delivers explosive acceleration with every pedal stroke.",
+        title: "Authorized Distributor",
+        desc: "Genuine products backed by official manufacturer warranties.",
         color: "from-yellow-400 to-orange-500"
     },
     {
         icon: Gauge,
-        title: "Precision Engineering",
-        desc: "Components machined to microscopic tolerances for flawless performance.",
+        title: "Expert Guidance",
+        desc: "Professional advice to match riders with perfect bicycles.",
         color: "from-red-500 to-pink-500"
     },
     {
@@ -34,9 +34,15 @@ const features = [
     },
     {
         icon: Trophy,
-        title: "Championship DNA",
-        desc: "Ridden by world champions across road, mountain, and gravel disciplines.",
+        title: "Complete Cycling Solutions",
+        desc: "Sales, accessories, service, and after-sales support.",
         color: "from-purple-500 to-indigo-500"
+    },
+    {
+        icon: BadgeCheck,
+        title: "Trusted Retail Experience",
+        desc: "Quality, reliability, and customer satisfaction guaranteed.",
+        color: "from-blue-500 to-cyan-500"
     }
 ];
 
@@ -88,11 +94,11 @@ export default function ImmersiveFeatures() {
                         >
                             <h2 className="text-sm font-bold tracking-[0.3em] text-gray-500 uppercase mb-4">Why Choose Us</h2>
                             <h3 className="text-5xl md:text-6xl font-black tracking-tighter leading-none mb-6">
-                                ENGINEERED FOR <br />
-                                <span className="text-transparent bg-clip-text bg-linear-to-r from-white to-gray-500">PERFECTION</span>
+                                EXPERT CARE AND RELIABLE SERVICE <br />
+                                <span className="text-transparent bg-clip-text bg-linear-to-r from-white to-gray-500">FOR EVERY RIDE YOU TAKE!</span>
                             </h3>
-                            <p className="text-lg text-gray-400 max-w-lg leading-relaxed">
-                                We don&apos;t just build bikes; we craft experiences. Every detail is obsessively refined to push the boundaries of what&apos;s possible on two wheels.
+                            <p className="text-lg text-gray-400 max-w-lg leading-relaxed text-justify">
+                                Boatrider is a trusted distributor and retail shop of premium bicycles, offering world-class brands, high-performance models, and expert service for cycling enthusiasts and professionals alike.
                             </p>
                         </motion.div>
 
@@ -117,7 +123,7 @@ export default function ImmersiveFeatures() {
                                     </div>
 
                                     <div>
-                                        <h4 className="text-xl font-bold mb-2 group-hover:text-white transition-colors duration-300">{feature.title}</h4>
+                                        <h4 className="text-xl font-bold mb-0 group-hover:text-white transition-colors duration-300">{feature.title}</h4>
                                         <p className="text-sm text-gray-500 leading-relaxed group-hover:text-gray-300 transition-colors duration-300">{feature.desc}</p>
                                     </div>
 
@@ -133,7 +139,7 @@ export default function ImmersiveFeatures() {
 
                     <motion.div
                         style={{ y: y1 }}
-                        className="relative h-[600px] lg:h-[800px] w-full rounded-3xl overflow-hidden hidden lg:block mt-20"
+                        className="relative h-[600px] lg:h-[900px] w-full rounded-3xl overflow-hidden hidden lg:block mt-20"
                     >
 
                         <div className="absolute inset-0 bg-linear-to-t from-black via-transparent to-transparent z-10" />

@@ -103,7 +103,7 @@ export default function HeroSlider() {
                                 transition={{ duration: 1.1, ease: "easeOut" }}
                                 className="absolute inset-0 z-20 flex items-center"
                             >
-                                <div className="max-w-3xl px-6 sm:px-10 md:px-16">
+                                <div className="max-w-3xl px-6 sm:px-10 md:px-10">
 
                                     <h1 className="text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold leading-tight tracking-tight">
                                         {slide.title}

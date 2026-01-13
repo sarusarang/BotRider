@@ -170,31 +170,31 @@ export default function FilterSidebar({ className, onClose, filters, onFilterCha
             <div className="flex-1 overflow-y-auto thin-scroll p-6 lg:p-0 lg:pr-6">
 
 
-                {/* Categories */}
-                <FilterSection title="Category">
+                {/* Bikes */}
+                <FilterSection title="Bikes">
 
                     <div className="space-y-3">
 
-                        {filterCategories.categories.map((category) => {
+                        {filterCategories.bikes.map((bike) => {
 
-                            const isChecked = filters.categories.includes(category);
+                            const isChecked = filters.categories.includes(bike);
 
                             return (
 
-                                <div key={category} className="flex items-center gap-3 group" onClick={() => toggleFilter("categories", category)}>
+                                <div key={bike} className="flex items-center gap-3 group" onClick={() => toggleFilter("categories", bike)}>
 
                                     <Checkbox
-                                        id={category}
+                                        id={bike}
                                         checked={isChecked}
-                                        onCheckedChange={() => toggleFilter("categories", category)}
+                                        onCheckedChange={() => toggleFilter("categories", bike)}
                                         className="rounded-sm w-5 h-5 border-zinc-300 dark:border-zinc-700 data-[state=checked]:bg-black dark:data-[state=checked]:bg-white data-[state=checked]:border-black dark:data-[state=checked]:border-white"
                                     />
 
                                     <label
-                                        htmlFor={category}
+                                        htmlFor={bike}
                                         className="text-base text-zinc-600 dark:text-zinc-400 cursor-pointer group-hover:text-zinc-900 dark:group-hover:text-zinc-200 transition-colors w-full"
                                     >
-                                        {category}
+                                        {bike}
                                     </label>
 
                                 </div>

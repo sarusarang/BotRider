@@ -151,7 +151,7 @@ export default function FeaturedCollection() {
 
                             {/* Text */}
                             <div>
-                                <h2 className="text-4xl md:text-5xl font-black tracking-tight text-neutral-900 dark:text-white">
+                                <h2 className="text-4xl md:text-4xl font-black tracking-tight text-neutral-900 dark:text-white">
                                     Featured Masterpieces
                                 </h2>
 
