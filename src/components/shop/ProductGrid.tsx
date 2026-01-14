@@ -42,7 +42,7 @@ export default function ProductGrid({ products }: { products: Product[] }) {
 
                 <motion.div key={product.id} variants={item}>
 
-                    <ProductCard product={product} />
+                    <ProductCard product={product} height="h-[520px] sm:h-[540px]" />
 
                 </motion.div>
 

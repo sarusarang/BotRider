@@ -36,7 +36,7 @@ export function ProductInfo({ product, quantity, setQuantity }: ProductInfoProps
     return (
 
 
-        <div className="space-y-4">
+        <div className="space-y-4 px-3 sm:px-4 sm:py-0">
 
 
             {/* Title & Price */}
@@ -53,27 +53,26 @@ export function ProductInfo({ product, quantity, setQuantity }: ProductInfoProps
 
 
                             {/* Title + Tag */}
-                            <div className="flex items-center gap-3 min-w-0">
+                            <div className="flex items-start gap-3 w-full">
 
-
-                                <h1 className="text-3xl sm:text-3xl font-bold text-zinc-900 dark:text-white tracking-tight leading-tight truncate">
+                                {/* Title */}
+                                <h1
+                                    className="flex-1 min-w-0 text-2xl sm:text-3xl font-bold text-zinc-900 dark:text-white tracking-tight leading-tight wrap-break-word     line-clamp-2    sm:line-clamp-none"
+                                >
                                     {product.title}
                                 </h1>
 
-
+                                {/* Badge */}
                                 {product.tag && (
-
-
-                                    <div className="">
-
-
-                                        <div className={`relative overflow-hidden px-2.5 py-1 text-[10px] font-black tracking-wider rounded-full uppercase shadow-md ${getBadgeStyle(product.tag)}`}>
-
-
+                                    <div className="shrink-0">
+                                        <div
+                                            className={`relative overflow-hidden px-2.5 py-1 text-[10px] font-black tracking-wider rounded-full uppercase shadow-md ${getBadgeStyle(
+                                                product.tag
+                                            )}`}
+                                        >
                                             <span className="relative z-10">{product.tag}</span>
 
-
-                                            {/* Shimmer Effect */}
+                                            {/* Shimmer */}
                                             <motion.div
                                                 className="absolute inset-0 -skew-x-12 bg-linear-to-r from-transparent via-white/40 to-transparent"
                                                 initial={{ x: "-100%" }}
@@ -82,18 +81,12 @@ export function ProductInfo({ product, quantity, setQuantity }: ProductInfoProps
                                                     repeat: Infinity,
                                                     duration: 2,
                                                     ease: "easeInOut",
-                                                    repeatDelay: 1
+                                                    repeatDelay: 1,
                                                 }}
                                             />
-
                                         </div>
-
-
                                     </div>
-
                                 )}
-
-
                             </div>
 
 
@@ -363,7 +356,7 @@ export function ProductInfo({ product, quantity, setQuantity }: ProductInfoProps
                         whileTap={{ scale: 0.97 }}
                         className="group relative h-14 rounded-full border-2 border-zinc-300 dark:border-zinc-700 hover:cursor-pointer
                          text-zinc-900 dark:text-white font-semibold text-base hover:border-black dark:hover:border-white overflow-hidden">
-                       
+
                         {/* Hover fill */}
                         <span className="absolute inset-0 bg-zinc-900 dark:bg-white opacity-0 group-hover:opacity-100 transition" />
 
@@ -371,7 +364,7 @@ export function ProductInfo({ product, quantity, setQuantity }: ProductInfoProps
                             <ShoppingCart className="w-4 h-4" />
                             Add to Cart
                         </span>
-                    
+
                     </motion.button>
 
 
@@ -396,7 +389,7 @@ export function ProductInfo({ product, quantity, setQuantity }: ProductInfoProps
 
 
             {/* Trust Badges */}
-            <div className="grid grid-cols-2 gap-4 pt-4 border-t border-zinc-200 dark:border-zinc-800">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 pt-4 border-t border-zinc-200 dark:border-zinc-800">
 
 
                 <div className="flex items-start gap-3 border-2 border-zinc-100 dark:border-zinc-800 p-3 rounded-2xl bg-zinc-50/50 dark:bg-zinc-900/50">

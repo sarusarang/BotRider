@@ -34,12 +34,12 @@ export function ProductReviews({ reviews, rating = 0, reviewCount = 0 }: Product
     return (
 
 
-        <div className="space-y-12 pt-12 border-t border-zinc-200 dark:border-zinc-800">
+        <div className="space-y-6 pt-2 px-3 sm:px-5 sm:py-6">
 
 
             <div className="flex items-center justify-between">
 
-                <h2 className="text-3xl font-black text-zinc-900 dark:text-white">Customer Reviews</h2>
+                <h2 className="text-xl sm:text-3xl font-black text-zinc-900 dark:text-white">Customer Reviews</h2>
 
                 <Button
                     onClick={() => setIsWriting(!isWriting)}
@@ -51,7 +51,6 @@ export function ProductReviews({ reviews, rating = 0, reviewCount = 0 }: Product
                 </Button>
 
             </div>
-
 
 
             <div className="grid grid-cols-1 gap-8 lg:gap-12">

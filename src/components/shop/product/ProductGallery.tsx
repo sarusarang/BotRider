@@ -2,7 +2,8 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
-
+import InnerImageZoom from 'react-inner-image-zoom';
+import 'react-inner-image-zoom/lib/styles.min.css';
 
 
 
@@ -23,26 +24,38 @@ export function ProductGallery({ images, selectedImage, onImageSelect, title }: 
     return (
 
 
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 px-3 sm:px-5 sm:py-6">
 
 
             {/* Main Image */}
             <div className="relative w-full rounded-3xl overflow-hidden flex items-center justify-center p-0 border shadow-sm border-zinc-200 dark:border-zinc-800">
 
                 <AnimatePresence mode="wait">
-
-                    <motion.img
+                    <motion.div
                         key={selectedImage}
-                        src={selectedImage}
-                        alt={title}
-                        className="w-full h-full object-contain max-h-[500px]"
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.95 }}
                         transition={{ duration: 0.3 }}
-                    />
-
+                        className="w-full h-full flex items-center justify-center"
+                    >
+                        <InnerImageZoom
+                            src={selectedImage}
+                            zoomType="hover"
+                            zoomScale={1}
+                            
+                            hideHint
+                            hasSpacer
+                            hideCloseButton
+                            className="max-h-[500px] w-full object-contain"
+                            imgAttributes={{
+                                alt: title,
+                                className: "w-full h-full object-contain max-h-[500px]",
+                            }}
+                        />
+                    </motion.div>
                 </AnimatePresence>
+
 
             </div>
 

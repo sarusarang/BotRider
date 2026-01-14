@@ -15,13 +15,15 @@ import Link from "next/link";
 // Props type
 interface ProductCardProps {
     product: Product;
+    hideAddToCart?: boolean;
+    height?: string;
     className?: string;
 }
 
 
 
 
-export default function ProductCard({ product, className }: ProductCardProps) {
+export default function ProductCard({ product, className, hideAddToCart, height }: ProductCardProps) {
 
 
     const [hovered, setHovered] = useState(false);
@@ -37,9 +39,10 @@ export default function ProductCard({ product, className }: ProductCardProps) {
             onHoverStart={() => setHovered(true)}
             onHoverEnd={() => setHovered(false)}
             className={cn(
-                "group relative flex flex-col bg-white dark:bg-zinc-900 rounded-2xl overflow-hidden",
+                "group relative flex flex-col bg-white dark:bg-black rounded-2xl overflow-hidden",
                 "border border-zinc-200 dark:border-zinc-800",
-                "hover:shadow-xl hover:-translate-y-1 transition-all duration-300 h-[520px] sm:h-[540px]",
+                "hover:shadow-xl hover:-translate-y-1 transition-all duration-300",
+                height,
                 className
             )}
         >
@@ -91,7 +94,7 @@ export default function ProductCard({ product, className }: ProductCardProps) {
                     key={hovered ? product.image[1] : product.image[0]}
                     src={hovered && product.image[1] ? product.image[1] : product.image[0]}
                     alt={product.title}
-                    className="absolute inset-0 w-full h-full object-contain p-4"
+                    className="absolute inset-0 w-full h-full object-contain p-0"
                     initial={{ opacity: 0.6, scale: 1.04 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.4 }}
@@ -144,28 +147,31 @@ export default function ProductCard({ product, className }: ProductCardProps) {
 
 
                     {/* Color */}
-                    <div className="flex items-center gap-2 pt-[2px] shrink-0">
+                    {!hideAddToCart && (
+                        <div className="flex items-center gap-2 pt-[2px] shrink-0">
 
-                        <span
-                            className="w-6 h-6 rounded-full border border-zinc-300 dark:border-zinc-700"
-                            style={{ backgroundColor: product.color.code }}
-                        />
+                            {product.color.map((color) => (
+                                <span
+                                    key={color.name}
+                                    className="w-6 h-6 rounded-full border border-zinc-300 dark:border-zinc-700"
+                                    style={{ backgroundColor: color.code }}
+                                />
+                            ))}
 
-                        <span className="text-sm font-semibold text-zinc-500">
-                            {product.color.name}
-                        </span>
-
-                    </div>
+                        </div>
+                    )}
 
                 </div>
 
 
 
                 {/* CTA */}
-                <Button className="w-full mt-3 rounded-full bg-black text-white hover:bg-zinc-800 dark:bg-white dark:text-black dark:hover:bg-zinc-200 transition flex gap-2 relative z-20">
-                    <ShoppingBag className="w-4 h-4" />
-                    Add to Cart
-                </Button>
+                {!hideAddToCart && (
+                    <Button className="w-full mt-3 rounded-full bg-black text-white hover:bg-zinc-800 dark:bg-white dark:text-black dark:hover:bg-zinc-200 transition flex gap-2 relative z-20">
+                        <ShoppingBag className="w-4 h-4" />
+                        Add to Cart
+                    </Button>
+                )}
 
             </div>
 

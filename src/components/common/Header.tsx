@@ -4,6 +4,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { products } from '../../data/shop-data';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, User, ShoppingBag, Menu, X, ChevronRight, ShoppingCart } from 'lucide-react';
 import Image from 'next/image';
@@ -81,12 +82,19 @@ export default function Header() {
 
 
   // Header Appearance
+  const productId = pathname.startsWith('/product/') ? pathname.split('/').pop() : null;
+  const currentProduct = productId ? products.find(p => p.id === productId) : null;
+  const isDarkProduct = currentProduct?.isdark;
+
   const isTransparent = isHome && !isScrolled;
-  const headerBg = isTransparent ? "rgba(0,0,0,0)" : "#ffffff";
-  const textColor = isTransparent ? "text-white" : "text-gray-900";
-  const iconColor = isTransparent ? "text-white" : "text-gray-900";
-  const hoverBg = isTransparent ? "hover:bg-white/10" : "hover:bg-gray-100";
-  const logoSrc = isTransparent ? '/white-logo.png' : '/logo.png';
+
+
+  const headerBg = isTransparent ? "rgba(0,0,0,0)" : (isDarkProduct ? "#000000" : "#ffffff");
+  const textColor = (isTransparent || isDarkProduct) ? "text-white" : "text-gray-900";
+  const iconColor = (isTransparent || isDarkProduct) ? "text-white" : "text-gray-900";
+  const hoverBg = (isTransparent || isDarkProduct) ? "hover:bg-white/10" : "hover:bg-gray-100";
+  const logoSrc = (isTransparent || isDarkProduct) ? '/white-logo.png' : '/logo.png';
+  const backdropFilter = (isTransparent || (isDarkProduct && isScrolled)) ? "blur(12px)" : (isTransparent ? "blur(0px)" : "blur(12px)");
 
 
 

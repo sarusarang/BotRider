@@ -3,6 +3,12 @@ export interface ProductColor {
     code: string;
 }
 
+export interface ProductPoster {
+    image: string;
+    title: string;
+    description: string;
+}
+
 export interface Product {
     id: string;
     title: string;
@@ -17,11 +23,13 @@ export interface Product {
     wheelSize: string;
     material: string;
     suspension: string;
-    color: ProductColor [];
+    color: ProductColor[];
     description?: string;
     rating?: number;
     reviewCount?: number;
 
+    productposters?: ProductPoster[];
+    isdark?: boolean;
     isNew?: boolean;
     isFeatured?: boolean;
     tag?: "Best Seller" | "New Arrival" | "Trending" | "Limited";
@@ -29,7 +37,7 @@ export interface Product {
 
     stock?: number;
     emi?: string;
-    video?: string; 
+    video?: string;
     specs?: {
         label: string;
         items: { name: string; value: string }[];
@@ -151,7 +159,30 @@ export const products: Product[] = [
         suspension: "Front",
         color: [{ name: "Red", code: "#ef4444" }, { name: "Black", code: "#000000" }],
         image: ["https://cradiac.com/cdn/shop/files/ft.jpg?v=1742208888", "https://cradiac.com/cdn/shop/files/Secondary2.0_1066x.jpg?v=1730970258"],
+        productposters: [
+            {
+                image: "https://media.istockphoto.com/id/1288946192/photo/crop-of-cyclists-handlebars-and-front-wheel-during-sunrise.jpg?s=612x612&w=0&k=20&c=3vjUqZ_3fiEzO5Sv2auTu_sqrWHRRRzji-bKaOpFAn4=",
+                title: "New Fit for More Comfort",
+                description: "We increased the stack by 15mm to help take pressure off your hands, neck and shoulders."
+            },
+            {
+                image: "https://media.istockphoto.com/id/2164408933/photo/woman-riding-her-roadbike-on-road-in-the-austrian-alps-under-dramatic-sky.jpg?s=612x612&w=0&k=20&c=XS_3a-Xqiehbq6ZmUbqi2bYx7zlrlfQlAd_yrUIDbqY=",
+                title: "More Confidence, More Stability",
+                description: "A 7mm longer wheelbase for confidence to push the pace on descents."
+            },
+            {
+                image: "https://media.istockphoto.com/id/1288946192/photo/crop-of-cyclists-handlebars-and-front-wheel-during-sunrise.jpg?s=612x612&w=0&k=20&c=3vjUqZ_3fiEzO5Sv2auTu_sqrWHRRRzji-bKaOpFAn4=",
+                title: "Carve the Corners with Precision",
+                description: "A 0.5° Slacker Headtube creates nimble but intuitive handling. Reading your mind."
+            },
+            {
+                image: "https://media.istockphoto.com/id/673085384/photo/cyclist-riding-mountain-road-on-racing-bike.jpg?s=612x612&w=0&k=20&c=tuktU7zpFdXptGDi0Po1TEwUSw_1OYtJq6R_lWU_AlU=",
+                title: "Carve the Corners with Precision",
+                description: "A 0.5° Slacker Headtube creates nimble but intuitive handling. Reading your mind."
+            },
+        ],
         isNew: true,
+        isdark: true,
         tag: "Best Seller",
         originalPrice: 80000,
         discountPercent: 20,
@@ -231,7 +262,30 @@ export const products: Product[] = [
         suspension: "Rigid",
         color: [{ name: "Black", code: "#000000" }, { name: "Green", code: "#22c55e" }],
         image: ["https://cdn.shopify.com/s/files/1/0628/5547/9548/files/ZeetaPlus27ICMBlk_533x.jpg?v=1714986541", "https://5.imimg.com/data5/SELLER/Default/2025/6/518411085/LK/TL/AF/64907775/27-5-zeeta-plus-ic-electric-bicycle.png"],
+        productposters: [
+            {
+                image: "https://media.istockphoto.com/id/1288946192/photo/crop-of-cyclists-handlebars-and-front-wheel-during-sunrise.jpg?s=612x612&w=0&k=20&c=3vjUqZ_3fiEzO5Sv2auTu_sqrWHRRRzji-bKaOpFAn4=",
+                title: "New Fit for More Comfort",
+                description: "We increased the stack by 15mm to help take pressure off your hands, neck and shoulders."
+            },
+            {
+                image: "https://media.istockphoto.com/id/2164408933/photo/woman-riding-her-roadbike-on-road-in-the-austrian-alps-under-dramatic-sky.jpg?s=612x612&w=0&k=20&c=XS_3a-Xqiehbq6ZmUbqi2bYx7zlrlfQlAd_yrUIDbqY=",
+                title: "More Confidence, More Stability",
+                description: "A 7mm longer wheelbase for confidence to push the pace on descents."
+            },
+            {
+                image: "https://media.istockphoto.com/id/1288946192/photo/crop-of-cyclists-handlebars-and-front-wheel-during-sunrise.jpg?s=612x612&w=0&k=20&c=3vjUqZ_3fiEzO5Sv2auTu_sqrWHRRRzji-bKaOpFAn4=",
+                title: "Carve the Corners with Precision",
+                description: "A 0.5° Slacker Headtube creates nimble but intuitive handling. Reading your mind."
+            },
+            {
+                image: "https://media.istockphoto.com/id/673085384/photo/cyclist-riding-mountain-road-on-racing-bike.jpg?s=612x612&w=0&k=20&c=tuktU7zpFdXptGDi0Po1TEwUSw_1OYtJq6R_lWU_AlU=",
+                title: "Carve the Corners with Precision",
+                description: "A 0.5° Slacker Headtube creates nimble but intuitive handling. Reading your mind."
+            },
+        ],
         isFeatured: true,
+        isdark: true,
         tag: "New Arrival",
         originalPrice: 280000,
         discountPercent: 10,
@@ -269,7 +323,7 @@ export const products: Product[] = [
         ],
         stock: 5,
         emi: "₹20,833/month",
-        video: "q6h3g6g",
+        video: "8RXApPZzOmg",
         specs: [
             {
                 label: "Frameset",
@@ -339,9 +393,31 @@ export const products: Product[] = [
                 isVerified: true
             }
         ],
+        productposters: [
+            {
+                image: "https://media.istockphoto.com/id/1288946192/photo/crop-of-cyclists-handlebars-and-front-wheel-during-sunrise.jpg?s=612x612&w=0&k=20&c=3vjUqZ_3fiEzO5Sv2auTu_sqrWHRRRzji-bKaOpFAn4=",
+                title: "New Fit for More Comfort",
+                description: "We increased the stack by 15mm to help take pressure off your hands, neck and shoulders."
+            },
+            {
+                image: "https://media.istockphoto.com/id/2164408933/photo/woman-riding-her-roadbike-on-road-in-the-austrian-alps-under-dramatic-sky.jpg?s=612x612&w=0&k=20&c=XS_3a-Xqiehbq6ZmUbqi2bYx7zlrlfQlAd_yrUIDbqY=",
+                title: "More Confidence, More Stability",
+                description: "A 7mm longer wheelbase for confidence to push the pace on descents."
+            },
+            {
+                image: "https://media.istockphoto.com/id/1288946192/photo/crop-of-cyclists-handlebars-and-front-wheel-during-sunrise.jpg?s=612x612&w=0&k=20&c=3vjUqZ_3fiEzO5Sv2auTu_sqrWHRRRzji-bKaOpFAn4=",
+                title: "Carve the Corners with Precision",
+                description: "A 0.5° Slacker Headtube creates nimble but intuitive handling. Reading your mind."
+            },
+            {
+                image: "https://media.istockphoto.com/id/673085384/photo/cyclist-riding-mountain-road-on-racing-bike.jpg?s=612x612&w=0&k=20&c=tuktU7zpFdXptGDi0Po1TEwUSw_1OYtJq6R_lWU_AlU=",
+                title: "Carve the Corners with Precision",
+                description: "A 0.5° Slacker Headtube creates nimble but intuitive handling. Reading your mind."
+            },
+        ],
         stock: 8,
         emi: "₹15,000/month",
-        video: "dummy_video_3",
+        video: "8RXApPZzOmg",
         specs: [
             {
                 label: "Chassis",
@@ -420,7 +496,7 @@ export const products: Product[] = [
             }
         ],
         emi: "₹7,083/month",
-        video: "dummy_video_4",
+        video: "8RXApPZzOmg",
         specs: [
             {
                 label: "General",
@@ -490,7 +566,7 @@ export const products: Product[] = [
             }
         ],
         emi: "₹4,583/month",
-        video: "dummy_video_5",
+        video: "8RXApPZzOmg",
         specs: [
             {
                 label: "Frameset",
@@ -560,7 +636,7 @@ export const products: Product[] = [
             }
         ],
         emi: "₹54,166/month",
-        video: "dummy_video_6",
+        video: "8RXApPZzOmg",
         specs: [
             {
                 label: "Frameset",
@@ -630,7 +706,7 @@ export const products: Product[] = [
             }
         ],
         emi: "₹3,750/month",
-        video: "dummy_video_7",
+        video: "8RXApPZzOmg",
         specs: [
             {
                 label: "Frameset",
@@ -759,7 +835,7 @@ export const products: Product[] = [
             }
         ],
         emi: "₹2,000/month",
-        video: "dummy_video_9",
+        video: "8RXApPZzOmg",
         specs: [
             {
                 label: "Frameset",
@@ -797,7 +873,7 @@ export const products: Product[] = [
         wheelSize: "700C - hybrid bikes",
         material: "Aluminum",
         suspension: "Rigid",
-        color: [{ name: "Black", code: "#000000"}, { name: "Red", code: "#ef4444" }],
+        color: [{ name: "Black", code: "#000000" }, { name: "Red", code: "#ef4444" }],
         image: ["https://cdn.shopify.com/s/files/1/0628/5547/9548/files/ZeetaPlus27ICMBlk_533x.jpg?v=1714986541", "https://5.imimg.com/data5/SELLER/Default/2025/6/518411085/LK/TL/AF/64907775/27-5-zeeta-plus-ic-electric-bicycle.png"],
         tag: "Limited",
         originalPrice: 85000,
@@ -827,7 +903,7 @@ export const products: Product[] = [
             }
         ],
         emi: "₹6,000/month",
-        video: "dummy_video_10",
+        video: "8RXApPZzOmg",
         specs: [
             {
                 label: "Frameset",
@@ -896,7 +972,7 @@ export const products: Product[] = [
             }
         ],
         emi: "₹4,833/month",
-        video: "dummy_video_11",
+        video: "8RXApPZzOmg",
         specs: [
             {
                 label: "Frameset",
@@ -956,7 +1032,7 @@ export const products: Product[] = [
             }
         ],
         emi: "₹6,500/month",
-        video: "dummy_video_12",
+        video: "8RXApPZzOmg",
         specs: [
             {
                 label: "Frameset",
@@ -1015,7 +1091,7 @@ export const products: Product[] = [
             }
         ],
         emi: "₹4,000/month",
-        video: "dummy_video_13",
+        video: "8RXApPZzOmg",
         specs: [
             {
                 label: "Frameset",
@@ -1074,7 +1150,7 @@ export const products: Product[] = [
             }
         ],
         emi: "₹2,916/month",
-        video: "dummy_video_14",
+        video: "8RXApPZzOmg",
         specs: [
             {
                 label: "Frameset",
@@ -1120,7 +1196,7 @@ export const products: Product[] = [
         description: "Designed for day-long rides on roads and trails. The Riverside 500 hybrid bike has been improved to protect you while riding off the beaten path.",
         stock: 30,
         emi: "₹2,333/month",
-        video: "dummy_video_15",
+        video: "8RXApPZzOmg",
         specs: [
             {
                 label: "Frameset",
