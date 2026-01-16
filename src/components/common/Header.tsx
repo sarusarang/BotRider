@@ -91,10 +91,9 @@ export default function Header() {
 
   const headerBg = isTransparent ? "rgba(0,0,0,0)" : (isDarkProduct ? "#000000" : "#ffffff");
   const textColor = (isTransparent || isDarkProduct) ? "text-white" : "text-gray-900";
-  const iconColor = (isTransparent || isDarkProduct) ? "text-white" : "text-gray-900";
   const hoverBg = (isTransparent || isDarkProduct) ? "hover:bg-white/10" : "hover:bg-gray-100";
   const logoSrc = (isTransparent || isDarkProduct) ? '/white-logo.png' : '/logo.png';
-  const backdropFilter = (isTransparent || (isDarkProduct && isScrolled)) ? "blur(12px)" : (isTransparent ? "blur(0px)" : "blur(12px)");
+
 
 
 
@@ -251,7 +250,7 @@ export default function Header() {
 
 
         {/* ================= MEGA MENU ================= */}
-        <MegaMenu activeDropdown={activeDropdown} setActiveDropdown={setActiveDropdown} />
+        <MegaMenu activeDropdown={activeDropdown} setActiveDropdown={setActiveDropdown} isDark={!!isDarkProduct} />
 
 
       </motion.header>

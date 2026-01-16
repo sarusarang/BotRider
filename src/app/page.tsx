@@ -2,6 +2,7 @@ import CategorySlider from "@/components/home/CategorySlider";
 import VideoShowcase from "@/components/home/VideoShowcase";
 import FeaturedCollection from "@/components/home/FeaturedCollection";
 import ImmersiveFeatures from "@/components/home/ImmersiveFeatures";
+import OurBrands from "@/components/home/OurBrands";
 import { BlurFade } from "@/components/ui/blur-fade";
 import type { Metadata } from "next";
 
@@ -59,9 +60,14 @@ export default function Home() {
         <FeaturedCollection />
       </BlurFade>
 
+      {/* Our Brands */}
+      <BlurFade delay={0.25 * 4} duration={0.5} inView>
+        <OurBrands />
+      </BlurFade>
+
 
       {/* Immersive Features */}
-      <BlurFade delay={0.25 * 3} duration={0.5} inView>
+      <BlurFade delay={0.25 * 5} duration={0.5} inView>
         <ImmersiveFeatures />
       </BlurFade>
 

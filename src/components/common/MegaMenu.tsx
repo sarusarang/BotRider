@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
 import { filterCategories, products, Product } from '../../data/shop-data';
+import { cn } from '@/lib/utils';
 
 
 
@@ -12,6 +13,7 @@ import { filterCategories, products, Product } from '../../data/shop-data';
 interface MegaMenuProps {
     activeDropdown: string | null;
     setActiveDropdown: (value: string | null) => void;
+    isDark?: boolean;
 }
 
 
@@ -27,7 +29,7 @@ interface SubCategory {
 
 
 
-export default function MegaMenu({ activeDropdown, setActiveDropdown }: MegaMenuProps) {
+export default function MegaMenu({ activeDropdown, setActiveDropdown, isDark = false }: MegaMenuProps) {
 
 
     const [selectedSubCategory, setSelectedSubCategory] = useState<SubCategory | null>(null);
@@ -109,7 +111,12 @@ export default function MegaMenu({ activeDropdown, setActiveDropdown }: MegaMenu
                     transition={{ duration: 0.2 }}
                     onMouseEnter={() => setActiveDropdown(activeDropdown)}
                     onMouseLeave={() => setActiveDropdown(null)}
-                    className="max-w-7xl h-[88vh] mx-auto absolute top-16 left-0 right-0 bg-white border rounded-xl border-gray-100 shadow-xl hidden lg:block overflow-hidden overflow-x-hidden"
+                    className={cn(
+                        "max-w-7xl h-[88vh] mx-auto absolute top-16 left-0 right-0 border rounded-xl shadow-xl hidden lg:block overflow-hidden overflow-x-hidden",
+                        isDark
+                            ? "bg-black border-zinc-800 backdrop-blur-xl"
+                            : "bg-white border-gray-100"
+                    )}
                 >
 
 
@@ -120,10 +127,16 @@ export default function MegaMenu({ activeDropdown, setActiveDropdown }: MegaMenu
 
 
                             {/* ================= LEFT : CATEGORY LIST ================= */}
-                            <div className="col-span-1 border-r border-gray-200 pr-6 h-full flex flex-col">
+                            <div className={cn(
+                                "col-span-1 border-r pr-6 h-full flex flex-col",
+                                isDark ? "border-zinc-800" : "border-gray-200"
+                            )}>
 
 
-                                <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-6 shrink-0">
+                                <h3 className={cn(
+                                    "text-sm font-semibold uppercase tracking-wider mb-6 shrink-0",
+                                    isDark ? "text-zinc-500" : "text-gray-400"
+                                )}>
                                     {activeDropdown} Categories
                                 </h3>
 
@@ -139,14 +152,18 @@ export default function MegaMenu({ activeDropdown, setActiveDropdown }: MegaMenu
                                         >
 
                                             <div
-                                                className={`flex items-center justify-between p-3 rounded-lg transition-all duration-200
-                                                 ${selectedSubCategory?.title === cat.title ? 'bg-gray-50 text-red-600 pl-5'
-                                                        : 'text-gray-900 hover:bg-gray-50 hover:pl-4'}`}>
+                                                className={cn(
+                                                    "flex items-center justify-between p-3 rounded-lg transition-all duration-200",
+                                                    selectedSubCategory?.title === cat.title
+                                                        ? (isDark ? "bg-zinc-900 text-white pl-5" : "bg-gray-50 text-red-600 pl-5")
+                                                        : (isDark ? "text-zinc-400 hover:bg-zinc-900 hover:text-white hover:pl-4" : "text-gray-900 hover:bg-gray-50 hover:pl-4")
+                                                )}
+                                            >
 
                                                 <span className="text-lg font-medium">{cat.title}</span>
 
                                                 {selectedSubCategory?.title === cat.title && (
-                                                    <ChevronRight className="w-4 h-4 text-red-600" />
+                                                    <ChevronRight className={cn("w-4 h-4", isDark ? "text-white" : "text-red-600")} />
                                                 )}
 
                                             </div>
@@ -198,7 +215,10 @@ export default function MegaMenu({ activeDropdown, setActiveDropdown }: MegaMenu
 
                                                     <Link
                                                         href={selectedSubCategory.href}
-                                                        className="text-sm font-medium underline decoration-1 underline-offset-4 hover:text-red-400 transition-colors mt-2 inline-block"
+                                                        className={cn(
+                                                            "text-sm font-medium underline decoration-1 underline-offset-4 transition-colors mt-2 inline-block",
+                                                            isDark ? "hover:text-zinc-300" : "hover:text-red-400"
+                                                        )}
                                                         onClick={() => setActiveDropdown(null)}
                                                     >
                                                         View All {selectedSubCategory.title}
@@ -231,7 +251,12 @@ export default function MegaMenu({ activeDropdown, setActiveDropdown }: MegaMenu
 
                                                             <Link href={`/product/${item.id}`} onClick={() => setActiveDropdown(null)}>
 
-                                                                <div className="relative overflow-hidden rounded-2xl bg-white/60 backdrop-blur-md border border-gray-200">
+                                                                <div className={cn(
+                                                                    "relative overflow-hidden rounded-2xl backdrop-blur-md border",
+                                                                    isDark
+                                                                        ? "bg-zinc-900/50 border-zinc-800"
+                                                                        : "bg-white/60 border-gray-200"
+                                                                )}>
 
                                                                     <div className="absolute inset-0 bg-linear-to-br from-black/5 via-transparent to-black/10 opacity-0 group-hover:opacity-100 transition duration-500" />
 
@@ -263,17 +288,28 @@ export default function MegaMenu({ activeDropdown, setActiveDropdown }: MegaMenu
 
                                                                     <div className="p-4">
 
-                                                                        <h4 className="text-sm font-medium tracking-tight text-gray-900 group-hover:text-black transition line-clamp-1">
+                                                                        <h4 className={cn(
+                                                                            "text-sm font-medium tracking-tight transition line-clamp-1",
+                                                                            isDark
+                                                                                ? "text-zinc-200 group-hover:text-white"
+                                                                                : "text-gray-900 group-hover:text-black"
+                                                                        )}>
                                                                             {item.title}
                                                                         </h4>
 
                                                                         {item.price && (
-                                                                            <p className="mt-1 text-xs text-gray-500">
+                                                                            <p className={cn(
+                                                                                "mt-1 text-xs",
+                                                                                isDark ? "text-zinc-500" : "text-gray-500"
+                                                                            )}>
                                                                                 ₹{item.price.toLocaleString()}
                                                                             </p>
                                                                         )}
 
-                                                                        <div className="mt-3 h-px w-6 bg-gray-300 group-hover:w-28 transition-all duration-500" />
+                                                                        <div className={cn(
+                                                                            "mt-3 h-px w-6 transition-all duration-500",
+                                                                            isDark ? "bg-zinc-700 group-hover:w-28 group-hover:bg-white" : "bg-gray-300 group-hover:w-28"
+                                                                        )} />
 
                                                                     </div>
 

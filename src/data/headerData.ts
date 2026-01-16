@@ -1,10 +1,10 @@
 
 export const MENU_ITEMS = [
   { name: 'Home', href: '/' },
+  { name: 'About', href: '/about' },
   { name: 'Bikes', href: '/shop/bikes', hasDropdown: true },
   { name: 'Accessories', href: '/shop/accessories', hasDropdown: true },
   { name: 'Events', href: '/events', },
-  { name: 'About', href: '/about' },
   { name: 'Contact', href: '/contact' },
 ];
 
@@ -78,7 +78,7 @@ export const ACCESSORIES_CATEGORIES = [
 ];
 
 export const getDropdownContent = (category: string) => {
-    if (category === 'Bikes') return BIKES_CATEGORIES;
-    if (category === 'Accessories') return ACCESSORIES_CATEGORIES;
-    return [];
+  if (category === 'Bikes') return BIKES_CATEGORIES;
+  if (category === 'Accessories') return ACCESSORIES_CATEGORIES;
+  return [];
 };
