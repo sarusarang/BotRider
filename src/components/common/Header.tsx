@@ -1,7 +1,5 @@
 'use client';
 
-
-
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { products } from '../../data/shop-data';
@@ -12,6 +10,7 @@ import { Badge } from '../ui/badge';
 import { usePathname } from "next/navigation";
 import { MENU_ITEMS, BIKES_CATEGORIES, ACCESSORIES_CATEGORIES } from '../../data/headerData';
 import MegaMenu from './MegaMenu';
+import SearchModal from './SearchModal';
 
 
 
@@ -20,13 +19,14 @@ export default function Header() {
 
 
   const pathname = usePathname();
-  const isHome = pathname === "/";
+  const isHome = pathname === "/" || pathname === "/events";
 
 
   // State
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
 
   // Scroll State
@@ -202,30 +202,32 @@ export default function Header() {
             {/* Actions */}
             <div className="hidden lg:flex items-center space-x-3">
 
-              <button className={`p-2 rounded-full transition-colors ${textColor} ${hoverBg}`}>
+              <button
+                onClick={() => setIsSearchOpen(true)}
+                className={`p-2 rounded-full transition-colors hover:cursor-pointer ${textColor} ${hoverBg}`}
+              >
                 <Search className="w-5 h-5" />
               </button>
 
-              <button className={`p-2 rounded-full transition-colors ${textColor} ${hoverBg}`}>
-                <User className="w-5 h-5" />
-              </button>
+              <Link href="/account">
+                <button className={`p-2 rounded-full transition-colors hover:cursor-pointer ${textColor} ${hoverBg}`}>
+                  <User className="w-5 h-5" />
+                </button>
+              </Link>
 
-              <button className={`relative p-2 rounded-full transition-colors ${textColor} ${hoverBg}`}>
-
-                <ShoppingCart className="w-5 h-5" />
-
-                {count > 0 && (
-
-                  <Badge
-                    variant="destructive"
-                    className="absolute -top-1 -right-1 h-5 min-w-[20px] px-1 flex items-center justify-center rounded-full text-[11px] leading-none"
-                  >
-                    {count > 99 ? "99+" : count}
-                  </Badge>
-
-                )}
-
-              </button>
+              <Link href="/cart">
+                <button className={`relative p-2 rounded-full transition-colors hover:cursor-pointer ${textColor} ${hoverBg}`}>
+                  <ShoppingCart className="w-5 h-5" />
+                  {count > 0 && (
+                    <Badge
+                      variant="destructive"
+                      className="absolute -top-1 -right-1 h-5 min-w-[20px] px-1 flex items-center justify-center rounded-full text-[11px] leading-none"
+                    >
+                      {count > 99 ? "99+" : count}
+                    </Badge>
+                  )}
+                </button>
+              </Link>
 
             </div>
 
@@ -341,24 +343,30 @@ export default function Header() {
 
               <div className="p-6 border-t border-gray-100 bg-gray-50">
                 <div className="flex items-center justify-around">
-                  <button className="flex flex-col items-center gap-1 text-gray-600">
+                  <Link href="/account" className="flex flex-col items-center gap-1 text-gray-600">
                     <User className="w-6 h-6" />
                     <span className="text-xs">Account</span>
-                  </button>
-                  <button className="flex flex-col items-center gap-1 text-gray-600">
+                  </Link>
+                  <button
+                    onClick={() => setIsSearchOpen(true)}
+                    className="flex flex-col items-center gap-1 text-gray-600"
+                  >
                     <Search className="w-6 h-6" />
                     <span className="text-xs">Search</span>
                   </button>
-                  <button className="flex flex-col items-center gap-1 text-gray-600">
+                  <Link href="/cart" className="flex flex-col items-center gap-1 text-gray-600">
                     <ShoppingBag className="w-6 h-6" />
                     <span className="text-xs">Cart</span>
-                  </button>
+                  </Link>
                 </div>
               </div>
             </motion.div>
           </>
         )}
       </AnimatePresence>
+
+      {/* Search Modal */}
+      <SearchModal open={isSearchOpen} onOpenChange={setIsSearchOpen} />
     </>
   );
 }

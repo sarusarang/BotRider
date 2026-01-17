@@ -83,8 +83,7 @@ export function YouMayAlsoLike({ products }: YouMayAlsoLikeProps) {
                         1024: { slidesPerView: 3.2 },
                         1280: { slidesPerView: 4 },
                     }}
-                    className="w-full overflow-visible!"
-                    style={{ overflow: "visible" }}
+                    className="w-full"
                 >
 
                     {products.map((product) => (

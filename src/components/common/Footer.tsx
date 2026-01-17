@@ -116,17 +116,19 @@ export default function Footer() {
 
               <li className="flex items-start space-x-3">
                 <MapPin className="w-5 h-5 text-red-600 shrink-0 mt-1" />
-                <span>123 Cycling Way,<br />Morgan Hill, CA 95037</span>
+                <span>Boatrider Sports Pvt. Ltd<br />16/1040, Pushpa Junction, Francis Road,
+                  Calicut, Kerala – 673 002
+                </span>
               </li>
 
               <li className="flex items-center space-x-3">
                 <Phone className="w-5 h-5 text-red-600 shrink-0" />
-                <span>+91 9876543210</span>
+                <span>0495 4850666</span>
               </li>
 
               <li className="flex items-center space-x-3">
                 <Mail className="w-5 h-5 text-red-600 shrink-0" />
-                <span>support@specialized.com</span>
+                <span>boatridersportsclt@gmail.com</span>
               </li>
 
             </ul>
