@@ -1,31 +1,20 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Filter, SlidersHorizontal, ArrowUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import FilterSidebar from "@/components/shop/FilterSidebar";
 import ProductGrid from "@/components/shop/ProductGrid";
 import { products, sortOptions } from "@/data/shop-data";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select";
 import { FilterState, initialFilterState } from "@/types/filters";
-import {
-    Pagination,
-    PaginationContent,
-    PaginationItem,
-    PaginationLink,
-    PaginationPrevious,
-    PaginationNext,
-    PaginationEllipsis,
-} from "@/components/ui/pagination";
-
-
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select";
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationPrevious, PaginationNext, } from "@/components/ui/pagination";
 
 
 
 
 export default function ShopPage() {
-
 
 
     const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
@@ -41,6 +30,7 @@ export default function ShopPage() {
             [key]: value,
         }));
     };
+
 
 
     // Clear all filters
@@ -60,7 +50,6 @@ export default function ShopPage() {
 
 
     console.log("SEND TO API 👇", apiPayload);
-
 
 
 
@@ -94,7 +83,7 @@ export default function ShopPage() {
 
                             <Select value={sortBy} onValueChange={setSortBy}>
 
-                                <SelectTrigger className="w-[160px] h-11 rounded-full border-zinc-200 bg-transparent">
+                                <SelectTrigger className="w-40 h-11 rounded-full border-zinc-200 bg-transparent">
                                     <span className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide">
                                         <ArrowUpDown className="w-3 h-3" />
                                         Sort
@@ -209,7 +198,7 @@ export default function ShopPage() {
 
                                 <Select value={sortBy} onValueChange={setSortBy}>
 
-                                    <SelectTrigger className="w-[180px] bg-transparent border-zinc-200 dark:border-zinc-800 rounded-full">
+                                    <SelectTrigger className="w-45 bg-transparent border-zinc-200 dark:border-zinc-800 rounded-full">
                                         <SelectValue placeholder="Featured" />
                                     </SelectTrigger>
 

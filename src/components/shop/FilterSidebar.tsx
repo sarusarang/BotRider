@@ -1,4 +1,4 @@
-"use client";
+
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -146,7 +146,7 @@ export default function FilterSidebar({ className, onClose, filters, onFilterCha
     };
 
 
-    if (!filters) return null; 
+    if (!filters) return null;
 
 
 
