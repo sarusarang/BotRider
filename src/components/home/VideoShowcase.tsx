@@ -57,7 +57,7 @@ export default function VideoShowcase() {
 
 
             {/* Content */}
-            <div className="relative z-10 w-full h-full mx-auto px-4 md:px-16 flex flex-col justify-center">
+            <div className="relative z-10 w-full h-full mx-auto px-4 md:px-12 flex flex-col justify-center">
 
 
                 <div ref={textRef} className="max-w-7xl space-y-8">

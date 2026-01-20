@@ -19,7 +19,7 @@ export default function Header() {
 
 
   const pathname = usePathname();
-  const isHome = pathname === "/" || pathname === "/events";
+  const isHome = pathname === "/" || pathname === "/events" || pathname === "/contact" || pathname === "/about";
 
 
   // State
