@@ -1,17 +1,20 @@
+"use client";
 
 
-import { useState, useEffect } from "react";
+
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, X, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
 import { cn } from "@/lib/utils";
-import { filterCategories } from "@/data/shop-data";
-import { FilterState } from "@/types/filters";
+import { ReadonlyURLSearchParams } from "next/navigation";
+import { SidebarResponse } from "@/types/product";
 
 
 
+/* ---------------- Filter Section ---------------- */
 interface FilterSectionProps {
     title: string;
     isOpen?: boolean;
@@ -26,7 +29,6 @@ const FilterSection = ({ title, isOpen = true, children }: FilterSectionProps) =
     const [open, setOpen] = useState(isOpen);
 
 
-
     return (
 
 
@@ -38,20 +40,16 @@ const FilterSection = ({ title, isOpen = true, children }: FilterSectionProps) =
                 className="flex items-center justify-between w-full text-left group hover:cursor-pointer"
             >
 
-                <span className="font-bold text-base text-zinc-900 dark:text-zinc-100 group-hover:text-black dark:group-hover:text-white transition-colors">
+                <span className="font-bold text-base text-zinc-900 dark:text-zinc-100">
                     {title}
                 </span>
 
-
-                <motion.div
-                    animate={{ rotate: open ? 180 : 0 }}
-                    transition={{ duration: 0.2 }}
-                >
-                    <ChevronDown className="w-5 h-5 text-zinc-400 group-hover:text-zinc-600 dark:text-zinc-500" />
+                <motion.div animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }}>
+                    <ChevronDown className="w-5 h-5 text-zinc-400" />
                 </motion.div>
 
-
             </button>
+
 
 
             <AnimatePresence initial={false}>
@@ -62,13 +60,10 @@ const FilterSection = ({ title, isOpen = true, children }: FilterSectionProps) =
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3, ease: [0.04, 0.62, 0.23, 0.98] }}
+                        transition={{ duration: 0.3 }}
                         className="overflow-hidden"
                     >
-                        <div className="pt-4 pb-2 space-y-4">
-                            {children}
-                        </div>
-
+                        <div className="pt-4 pb-2 space-y-4">{children}</div>
                     </motion.div>
 
                 )}
@@ -83,454 +78,303 @@ const FilterSection = ({ title, isOpen = true, children }: FilterSectionProps) =
 
 
 
-
-
-// Props for FilterSidebar
+/* ---------------- Props ---------------- */
 interface FilterSidebarProps {
     className?: string;
     onClose?: () => void;
-    filters?: FilterState;
-    onFilterChange?: (key: keyof FilterState, value: any) => void;
-    onClearAll?: () => void;
+    categoriesData: SidebarResponse;
+    searchParams: ReadonlyURLSearchParams;
+    onToggle: (key: string, value: string) => void;
+    onSetRange: (
+        minKey: string,
+        maxKey: string,
+        min: number,
+        max: number
+    ) => void;
+    onClearAll: () => void;
 }
 
 
 
-export default function FilterSidebar({ className, onClose, filters, onFilterChange, onClearAll }: FilterSidebarProps) {
+/* ---------------- Component ---------------- */
+export default function FilterSidebar({ className, onClose, categoriesData, searchParams, onToggle, onSetRange, onClearAll, }: FilterSidebarProps) {
+
+
+    const isChecked = (key: string, value: string) => searchParams.getAll(key).includes(value);
+
+    const isBike = categoriesData.product_type === "bike";
 
 
 
-    // Helper to toggle array items
-    const toggleFilter = (key: keyof FilterState, value: string) => {
-
-        if (!filters || !onFilterChange) return;
-
-        const currentList = (filters[key] as string[]) || [];
-        const isActive = currentList.includes(value);
-
-        let newList;
-
-        if (isActive) {
-            newList = currentList.filter((item) => item !== value);
-        } else {
-            newList = [...currentList, value];
-        }
-
-        onFilterChange(key, newList);
-
-    };
+    const bikeCategories = isBike ? categoriesData.bikes : categoriesData.accessories;
+    const subCategories = isBike ? [] : categoriesData.sub_categories;
+    const brands = categoriesData.brands;
+    const sizes = isBike ? categoriesData.sizes : [];
+    const wheelSizes = isBike ? categoriesData.wheel_sizes : [];
+    const materials = isBike ? categoriesData.materials : [];
+    const suspensions = isBike ? categoriesData.suspensions : [];
+    const colors = isBike ? categoriesData.colors : [];
 
 
-
-    // Price Range Local State for smooth sliding
-    const [localPrice, setLocalPrice] = useState<[number, number] | null>(null);
-
-
-
-    useEffect(() => {
-        if (filters) {
-            setLocalPrice(filters.priceRange);
-        }
-    }, [filters?.priceRange]);
-
-
-    const handlePriceChange = (val: number[]) => {
-        setLocalPrice([val[0], val[1]]);
-    };
-
-
-    const handlePriceCommit = (val: number[]) => {
-        if (onFilterChange) {
-            onFilterChange("priceRange", [val[0], val[1]]);
-        }
-    };
-
-
-    if (!filters) return null;
+    const minPrice = Number(searchParams.get("min_price") || 0);
+    const maxPrice = Number(searchParams.get("max_price") || 500000);
 
 
 
     return (
 
 
-        <div className={cn("bg-white dark:bg-zinc-900 h-full flex flex-col overflow-hidden", className)}>
+        <div className={cn("bg-white dark:bg-zinc-900 h-full flex flex-col", className)}>
 
 
             {/* Mobile Header */}
-            <div className="flex items-center justify-between p-6 border-b border-zinc-100 dark:border-zinc-800 lg:hidden">
-                <h2 className="font-bold text-xl flex items-center gap-2">
-                    Filters
-                </h2>
+            <div className="flex items-center justify-between p-6 border-b lg:hidden">
+                <h2 className="font-bold text-xl">Filters</h2>
                 <Button variant="ghost" size="icon" onClick={onClose}>
                     <X className="w-6 h-6" />
                 </Button>
             </div>
 
 
-            <div className="flex-1 overflow-y-auto thin-scroll p-6 lg:p-0 lg:pr-6">
+            <div className="flex-1 overflow-y-auto p-6 lg:p-0 lg:pr-6">
 
 
-                {/* Bikes */}
-                <FilterSection title="Bikes">
-
-                    <div className="space-y-3">
-
-                        {filterCategories.bikes.map((bike) => {
-
-                            const isChecked = filters.categories.includes(bike);
-
-                            return (
-
-                                <div key={bike} className="flex items-center gap-3 group" onClick={() => toggleFilter("categories", bike)}>
-
-                                    <Checkbox
-                                        id={bike}
-                                        checked={isChecked}
-                                        onCheckedChange={() => toggleFilter("categories", bike)}
-                                        className="rounded-sm w-5 h-5 border-zinc-300 dark:border-zinc-700 data-[state=checked]:bg-black dark:data-[state=checked]:bg-white data-[state=checked]:border-black dark:data-[state=checked]:border-white"
-                                    />
-
-                                    <label
-                                        htmlFor={bike}
-                                        className="text-base text-zinc-600 dark:text-zinc-400 cursor-pointer group-hover:text-zinc-900 dark:group-hover:text-zinc-200 transition-colors w-full"
-                                    >
-                                        {bike}
-                                    </label>
-
-                                </div>
-
-                            );
-
-                        })}
+                {/* Categories */}
+                {bikeCategories?.length > 0 && (
+                    <FilterSection title={isBike ? "Bikes" : "Categories"}>
+                        {bikeCategories?.map((cat: string) => (
+                            <div key={cat} className="flex items-center gap-3">
+                                <Checkbox
+                                    className="hover:cursor-pointer"
+                                    checked={isChecked(isBike ? "bike_category" : "category", cat)}
+                                    onCheckedChange={() =>
+                                        onToggle(isBike ? "bike_category" : "category", cat)
+                                    }
+                                />
+                                <span>{cat}</span>
+                            </div>
+                        ))}
+                    </FilterSection>
+                )}
 
 
-                    </div>
-
-                </FilterSection>
+                {/* Sub Categories */}
+                {subCategories?.length > 0 && (
+                    <FilterSection title="Sub Categories">
+                        {subCategories?.map((sub: string, idx: number) => (
+                            <div key={idx} className="flex items-center gap-3">
+                                <Checkbox
+                                    className="hover:cursor-pointer"
+                                    checked={isChecked("sub_category", sub)}
+                                    onCheckedChange={() => onToggle("sub_category", sub)}
+                                />
+                                <span>{sub}</span>
+                            </div>
+                        ))}
+                    </FilterSection>
+                )}
 
 
 
                 {/* Brands */}
-                <FilterSection title="Brands">
-
-                    <div className="space-y-3">
-
-                        {filterCategories.brands.map((brand) => {
-
-                            const isChecked = filters.brands.includes(brand);
-
-                            return (
-
-                                <div key={brand} className="flex items-center gap-3 group" onClick={() => toggleFilter("brands", brand)}>
-
-                                    <Checkbox
-                                        id={brand}
-                                        checked={isChecked}
-                                        onCheckedChange={() => toggleFilter("brands", brand)}
-                                        className="rounded-sm w-5 h-5 border-zinc-300 dark:border-zinc-700 data-[state=checked]:bg-black dark:data-[state=checked]:bg-white"
-                                    />
-
-                                    <label htmlFor={brand} className="text-base text-zinc-600 dark:text-zinc-400 cursor-pointer group-hover:text-zinc-900 dark:group-hover:text-zinc-200 w-full transition-colors">
-                                        {brand}
-                                    </label>
-
-                                </div>
-
-                            );
-
-                        })}
-
-                    </div>
-
-                </FilterSection>
+                {brands?.length > 0 && (
+                    <FilterSection title="Brands">
+                        {brands?.map((brand: string) => (
+                            <div key={brand} className="flex items-center gap-3">
+                                <Checkbox
+                                    className="hover:cursor-pointer"
+                                    checked={isChecked(isBike ? "bike_brand" : "brand", brand)}
+                                    onCheckedChange={() =>
+                                        onToggle(isBike ? "bike_brand" : "brand", brand)
+                                    }
+                                />
+                                <span>{brand}</span>
+                            </div>
+                        ))}
+                    </FilterSection>
+                )}
 
 
 
+                {/* Colors */}
+                {colors?.length > 0 && (
+                    <FilterSection title="Color">
+                        <div className="grid grid-cols-4 gap-3">
+                            {colors?.map((c: any) => {
+                                const selected = isChecked("color", c?.name);
 
-                {/* Color */}
-                <FilterSection title="Color">
-
-
-                    <div className="grid grid-cols-4 gap-2">
-
-
-                        {filterCategories.colors.map((color) => {
-
-
-                            const isSelected = filters.colors.includes(color.name);
-
-
-                            return (
-
-                                <div
-                                    key={color.name}
-                                    onClick={() => toggleFilter("colors", color.name)}
-                                    className="flex flex-col items-center justify-center gap-1 p-3 rounded-xl cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors group"
-                                >
-
+                                return (
                                     <div
-                                        className={cn(
-                                            "relative w-9 h-9 rounded-full border border-zinc-200 dark:border-zinc-700 shadow-sm flex items-center justify-center transition-all",
-                                            isSelected
-                                                ? "ring-2 ring-black dark:ring-white scale-105"
-                                                : "group-hover:scale-110"
-                                        )}
-                                        style={{ backgroundColor: color.code }}
+                                        key={c?.name}
+                                        onClick={() => onToggle("color", c?.name)}
+                                        className="flex flex-col items-center cursor-pointer select-none"
                                     >
+                                        <div
+                                            className={cn(
+                                                "w-9 h-9 rounded-full border-2 flex items-center justify-center relative transition-all",
+                                                selected && "ring-2 ring-black dark:ring-white"
+                                            )}
+                                            style={{
+                                                background:
+                                                    c?.code?.length === 2
+                                                        ? `linear-gradient(180deg, ${c?.code[0]} 50%, ${c?.code[1]} 50%)`
+                                                        : c?.code[0],
+                                            }}
+                                        >
 
+                                            {selected && (
+                                                <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/40 dark:bg-white/30">
+                                                    <Check
+                                                        className={cn(
+                                                            "w-4 h-4",
+                                                            c?.code[0]?.toLowerCase() === "#ffffff" ||
+                                                                c?.name.toLowerCase() === "white"
+                                                                ? "text-black dark:text-white"
+                                                                : "text-white"
+                                                        )}
+                                                    />
+                                                </div>
+                                            )}
+                                        </div>
 
-                                        <span className="absolute inset-1 rounded-full bg-white/10" />
-
-
-                                        {isSelected && (
-
-                                            <Check
-                                                className={cn(
-                                                    "w-4 h-4 z-10",
-                                                    color.name === "White" || color.name === "Yellow"
-                                                        ? "text-black"
-                                                        : "text-white"
-                                                )}
-                                                strokeWidth={3}
-                                            />
-
-                                        )}
-
+                                        <span
+                                            title={c?.name}
+                                            className="text-xs mt-1 max-w-10 truncate text-center"
+                                        >
+                                            {c?.name}
+                                        </span>
                                     </div>
-
-
-                                    <span
-                                        className={cn(
-                                            "text-xs text-center",
-                                            isSelected
-                                                ? "font-semibold text-zinc-900 dark:text-white"
-                                                : "text-zinc-500 dark:text-zinc-400"
-                                        )}
-                                    >
-                                        {color.name}
-                                    </span>
-
-                                </div>
-
-                            );
-
-                        })}
-
-                    </div>
-
-                </FilterSection>
+                                );
+                            })}
+                        </div>
+                    </FilterSection>
+                )}
 
 
 
 
-                {/* Size - Using Chips */}
-                <FilterSection title="Size" isOpen={false}>
+                {/* Sizes */}
+                {sizes?.length > 0 && (
+                    <FilterSection title="Size" isOpen={false}>
+                        <div className="flex flex-wrap gap-2">
+                            {sizes?.map((s: string) => (
+                                <button
+                                    key={s}
+                                    onClick={() => onToggle("size", s)}
+                                    className={cn(
+                                        "px-4 h-10 rounded-lg border hover:cursor-pointer",
+                                        isChecked("size", s)
+                                            ? "bg-black text-white dark:bg-white dark:text-black"
+                                            : "border-zinc-300"
+                                    )}
+                                >
+                                    {s}
+                                </button>
+                            ))}
+                        </div>
+                    </FilterSection>
+                )}
 
 
-                    <div className="flex flex-wrap gap-2">
 
-                        {filterCategories.sizes.map((size) => {
+                {/* Wheel Size */}
+                {wheelSizes?.length > 0 && (
+                    <FilterSection title="Wheel Size" isOpen={false}>
+                        <div className="flex flex-wrap gap-2">
+                            {wheelSizes?.map((s: string) => (
+                                <button
+                                    key={s}
+                                    onClick={() => onToggle("wheel_size", s)}
+                                    className={cn(
+                                        "px-4 h-10 rounded-lg border hover:cursor-pointer",
+                                        isChecked("wheel_size", s)
+                                            ? "bg-black text-white dark:bg-white dark:text-black"
+                                            : "border-zinc-300"
+                                    )}
+                                >
+                                    {s}
+                                </button>
+                            ))}
+                        </div>
+                    </FilterSection>
+                )}
 
-                            const isSelected = filters.sizes.includes(size);
 
-                            return (
+                {/* Material */}
+                {materials?.length > 0 && (
+                    <FilterSection title="Material" isOpen={false}>
+                        {materials?.map((m: string) => (
+                            <div key={m} className="flex items-center gap-3">
+                                <Checkbox
+                                    className="hover:cursor-pointer"
+                                    checked={isChecked("material", m)}
+                                    onCheckedChange={() => onToggle("material", m)}
+                                />
+                                <span>{m}</span>
+                            </div>
+                        ))}
+                    </FilterSection>
+                )}
 
-                                <div key={size} className="relative">
 
-                                    <label
 
-                                        onClick={() => toggleFilter("sizes", size)}
-
-                                        className={cn(
-                                            "flex items-center justify-center w-12 h-10 rounded-lg border text-sm font-medium cursor-pointer transition-all select-none",
-                                            isSelected
-                                                ? "bg-black text-white border-black dark:bg-white dark:text-black dark:border-white"
-                                                : "border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:border-zinc-400 dark:hover:border-zinc-600"
-                                        )}
-                                    >
-                                        {size}
-
-                                    </label>
-
-                                </div>
-
-                            );
-
-                        })}
-
-                    </div>
-
-                </FilterSection>
+                {/* Suspension */}
+                {suspensions?.length > 0 && (
+                    <FilterSection title="Suspension" isOpen={false}>
+                        {suspensions?.map((s: string) => (
+                            <div key={s} className="flex items-center gap-3">
+                                <Checkbox
+                                    className="hover:cursor-pointer"
+                                    checked={isChecked("suspension", s)}
+                                    onCheckedChange={() => onToggle("suspension", s)}
+                                />
+                                <span>{s}</span>
+                            </div>
+                        ))}
+                    </FilterSection>
+                )}
 
 
 
                 {/* Price Range */}
                 <FilterSection title="Price Range">
-
                     <div className="px-1">
-
-                        <div className="flex items-center justify-between text-sm font-semibold text-zinc-900 dark:text-zinc-100 mb-4">
-                            <span>₹{(localPrice ? localPrice[0] : 0).toLocaleString()}</span>
-                            <span>₹{(localPrice ? localPrice[1] : 500000).toLocaleString()}+</span>
+                        <div className="flex justify-between text-sm font-semibold mb-4">
+                            <span>₹{minPrice.toLocaleString()}</span>
+                            <span>₹{maxPrice.toLocaleString()}</span>
                         </div>
-
                         <Slider
-                            value={localPrice || [0, 500000]}
+                            value={[minPrice, maxPrice]}
                             max={600000}
                             step={1000}
-                            className="my-4"
-                            onValueChange={handlePriceChange}
-                            onValueCommit={handlePriceCommit}
+                            onValueCommit={([min, max]) =>
+                                onSetRange("min_price", "max_price", min, max)
+                            }
                         />
-
-                        {/* Quick Select Buttons */}
-                        <div className="mt-4 flex flex-wrap gap-2">
-                            {filterCategories.priceRanges.slice(0, 4).map((range) => (
-                                <button
-                                    key={range.label}
-                                    onClick={() => onFilterChange && onFilterChange("priceRange", [range.min, range.max === Infinity ? 600000 : range.max])}
-                                    className="text-[11px] font-medium px-3 py-1.5 bg-zinc-100 dark:bg-zinc-800 rounded-full hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all border border-transparent hover:border-black dark:hover:border-white"
-                                >
-                                    {range.label}
-                                </button>
-                            ))}
-                        </div>
-
                     </div>
-
                 </FilterSection>
 
-
-                {/* Wheel Size - Using Chips */}
-                <FilterSection title="Wheel Size" isOpen={false}>
-
-                    <div className="flex flex-wrap gap-2">
-
-                        {filterCategories.wheelSizes.map((size) => {
-
-                            const isSelected = filters.wheelSizes.includes(size);
-
-                            return (
-
-                                <div key={size} className="relative">
-
-                                    <label
-                                        onClick={() => toggleFilter("wheelSizes", size)}
-                                        className={cn(
-                                            "flex items-center px-4 h-10 rounded-lg border text-sm font-medium cursor-pointer transition-all select-none",
-                                            isSelected
-                                                ? "bg-black text-white border-black dark:bg-white dark:text-black dark:border-white"
-                                                : "border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:border-zinc-400 dark:hover:border-zinc-600"
-                                        )}
-                                    >
-
-                                        {size}
-
-                                    </label>
-
-                                </div>
-
-                            );
-
-                        })}
-
-                    </div>
-
-                </FilterSection>
-
-
-
-                {/* Material */}
-                <FilterSection title="Material" isOpen={false}>
-
-                    <div className="space-y-3">
-
-                        {filterCategories.material.map((mat) => {
-
-                            const isChecked = filters.materials.includes(mat);
-
-                            return (
-
-                                <div key={mat} className="flex items-center gap-3 group" onClick={() => toggleFilter("materials", mat)}>
-
-                                    <Checkbox
-                                        id={mat}
-                                        checked={isChecked}
-                                        onCheckedChange={() => toggleFilter("materials", mat)}
-                                    />
-
-                                    <label htmlFor={mat} className="text-base text-zinc-600 dark:text-zinc-400 cursor-pointer group-hover:text-zinc-900 dark:group-hover:text-zinc-200 transition-colors w-full">
-                                        {mat}
-                                    </label>
-
-                                </div>
-
-                            );
-
-                        })}
-
-                    </div>
-
-                </FilterSection>
-
-
-
-                {/* Suspension */}
-                <FilterSection title="Suspension" isOpen={false}>
-
-                    <div className="space-y-3">
-
-                        {filterCategories.suspension.map((sus) => {
-
-                            const isChecked = filters.suspensions.includes(sus);
-
-                            return (
-
-                                <div key={sus} className="flex items-center gap-3 group" onClick={() => toggleFilter("suspensions", sus)}>
-
-                                    <Checkbox
-                                        id={sus}
-                                        checked={isChecked}
-                                        onCheckedChange={() => toggleFilter("suspensions", sus)}
-                                    />
-
-                                    <label htmlFor={sus} className="text-base text-zinc-600 dark:text-zinc-400 cursor-pointer group-hover:text-zinc-900 dark:group-hover:text-zinc-200 transition-colors w-full">
-                                        {sus}
-                                    </label>
-                                </div>
-                            );
-
-                        })}
-
-                    </div>
-
-                </FilterSection>
 
             </div>
 
 
+            {/* Footer */}
+            <div className="p-6 border-t sticky bottom-0 bg-white dark:bg-zinc-900">
 
-            <div className="p-6 border-t border-zinc-100 dark:border-zinc-800 mt-auto bg-white dark:bg-zinc-900 z-10 sticky bottom-0">
-
-                <Button
-                    variant="outline"
-                    size="lg"
-                    className="w-full rounded-full border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-                    onClick={onClearAll}
-                >
+                <Button variant="outline" size="lg" className="w-full" onClick={onClearAll}>
                     Clear All Filters
                 </Button>
 
-                {/* Mobile only Show Results button is redundant if results update live, but keeping it for closing sidebar */}
                 <div className="lg:hidden mt-3">
-                    <Button size="lg" className="w-full rounded-full bg-black dark:bg-white text-white dark:text-black" onClick={onClose}>
+                    <Button size="lg" className="w-full" onClick={onClose}>
                         Show Results
                     </Button>
                 </div>
 
             </div>
 
-
         </div>
+
     );
+
 }

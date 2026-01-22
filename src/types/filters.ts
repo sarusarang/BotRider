@@ -1,5 +1,6 @@
 export interface FilterState {
   categories: string[];
+  subCategories: string[];
   brands: string[];
   colors: string[];
   sizes: string[];
@@ -11,6 +12,7 @@ export interface FilterState {
 
 export const initialFilterState: FilterState = {
   categories: [],
+  subCategories: [],
   brands: [],
   colors: [],
   sizes: [],

@@ -71,7 +71,7 @@ export default function MegaMenu({ activeDropdown, setActiveDropdown, isDark = f
 
             return {
                 title: subCatTitle,
-                href: `/shop/${category.toLowerCase()}?category=${encodeURIComponent(subCatTitle)}`,
+                href: `/shop/${category.toLowerCase()}?bike_category=${encodeURIComponent(subCatTitle)}`,
                 image: heroImage,
                 items: previewItems,
             };

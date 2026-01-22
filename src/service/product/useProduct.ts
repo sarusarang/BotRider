@@ -1,22 +1,22 @@
 import { useQuery } from "@tanstack/react-query"
-import { GetFliterSidebar } from "./productApi"
-
+import { GetFliterSidebarApi } from "./productApi"
+import { SidebarResponse } from "@/types/product"
 
 
 
 // Hook to Get Filter Sidebar Data
-export const useGetFliterSidebar = (key : string) => {
+export const useGetFliterSidebar = (key: string) => {
 
-    return useQuery({
+    return useQuery<SidebarResponse>({
 
-        queryKey: ["Fliter-Sidebar" , key],
+        queryKey: ["Fliter-Sidebar", key],
 
         queryFn: async () => {
 
-            return await GetFliterSidebar(key);
+            return await GetFliterSidebarApi(key) as SidebarResponse;
 
         },
-        staleTime: 5 * 60 * 1000, // 5 minutes
+        staleTime: 1000 * 60 * 10, // 10 minutes
         refetchOnWindowFocus: false,
         retry: 1,
 

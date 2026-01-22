@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
+import Providers from "./providers";
+
+
 
 
 export const metadata: Metadata = {
@@ -67,7 +70,7 @@ export default function RootLayout({
 
           {/* Page content */}
           <main className="flex-1">
-            {children}
+            <Providers>{children}</Providers>
           </main>
 
           {/* Footer */}

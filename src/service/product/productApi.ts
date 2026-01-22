@@ -2,10 +2,10 @@ import { CommonApi } from "@/lib/CommonApi";
 
 
 
-export const GetFliterSidebar = async (key : string) => {
+export const GetFliterSidebarApi = async (key: string) => {
 
-    const params = new URLSearchParams({key}.toString());
+const params = new URLSearchParams({ sidebar: key }).toString();
 
-    return await CommonApi("GET" , `/product/bike-filter-side-bar/?${params}`);
+    return await CommonApi("GET", `/product/products-filter-side-bar/?${params}`);
 
 }
