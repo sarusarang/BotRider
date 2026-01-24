@@ -5,7 +5,7 @@ import AboutClient from "./AboutClient";
 
 export const metadata: Metadata = {
 
-  title: "About Us | Boat Rider – Premium Bikes & Cycling Community",
+  title: "About Us",
 
   description: "Boat Rider has been delivering premium bicycles, expert service, and a passionate cycling community since 1974. Discover our mission, team, and values.",
 
@@ -25,13 +25,13 @@ export const metadata: Metadata = {
   publisher: "Boat Rider",
 
   openGraph: {
-    title: "About Boat Rider – Ride Beyond Limits",
+    title: "About Us",
     description: "More than a bike shop. Premium brands, expert mechanics, and a cycling community built on passion and performance.",
-    url: "https://yourdomain.com/about",
+    url: "https://bot-rider.vercel.app/logo.png",
     siteName: "Boat Rider",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1541625602330-2277a4c46182",
+        url: "https://bot-rider.vercel.app/logo.png",
         width: 1200,
         height: 630,
         alt: "Boat Rider cycling community",
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "About Boat Rider – Ride Beyond Limits",
+    title: "About Us",
     description: "Premium bikes, expert service, and a passionate cycling community since 1974.",
     images: [
       "https://images.unsplash.com/photo-1541625602330-2277a4c46182",
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
   },
 
   alternates: {
-    canonical: "https://yourdomain.com/about",
+    canonical: "https://bot-rider.vercel.app/about",
   },
   
 };

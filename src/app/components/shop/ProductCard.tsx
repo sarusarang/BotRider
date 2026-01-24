@@ -3,7 +3,7 @@
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { ShoppingBag } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/app/components/ui/button";
 import { useState } from "react";
 import { getBadgeStyle } from "@/hooks/badge";
 import Link from "next/link";
@@ -117,7 +117,7 @@ export default function ProductCard({ product, className, hideAddToCart, height,
                 onMouseEnter={() => setHovered(true)}
                 onMouseLeave={() => setHovered(false)}
             >
-                <Link href={`/product/${product.id}`} aria-label={product.name}>
+                <Link href={`/product/${product.unique_id}?type=${product.product_type}`} aria-label={product.name}>
 
                     <motion.img
                         key={hovered ? images?.[1] : images?.[0]}
@@ -147,7 +147,7 @@ export default function ProductCard({ product, className, hideAddToCart, height,
                     </h3>
 
                     <span className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
-                        {isBike ? product?.bike_brand : product?.sub_category}
+                        {product?.brand}
                     </span>
 
                 </div>

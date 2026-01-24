@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Header from "@/components/common/Header";
-import Footer from "@/components/common/Footer";
+import Header from "@/app/components/common/Header";
+import Footer from "@/app/components/common/Footer";
 import Providers from "./providers";
 
 
 
 
 export const metadata: Metadata = {
-  
+
   metadataBase: new URL("https://bot-rider.vercel.app"),
 
   title: {
@@ -16,11 +16,11 @@ export const metadata: Metadata = {
     template: "%s | Boat Rider",
   },
 
-  description:"Boat Rider is a premium cycling store for high-performance bikes, accessories, and riding gear.",
+  description: "Boat Rider is a premium cycling store for high-performance bikes, accessories, and riding gear.",
 
   openGraph: {
     title: "Boat Rider — Premium Cycling Store",
-    description:"Shop premium road, mountain & electric bikes along with accessories at Boat Rider.",
+    description: "Shop premium road, mountain & electric bikes along with accessories at Boat Rider.",
     url: "https://bot-rider.vercel.app",
     siteName: "Boat Rider",
     images: [
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Boat Rider — Premium Cycling Store",
-    description:"Shop premium road, mountain & electric bikes along with accessories at Boat Rider.",
+    description: "Shop premium road, mountain & electric bikes along with accessories at Boat Rider.",
     images: ["https://bot-rider.vercel.app/logo.png"],
   },
 
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     icon: "/logo.png",
     apple: "/apple-touch-icon.png",
   },
-  
+
 };
 
 
@@ -63,20 +63,22 @@ export default function RootLayout({
         className="antialiased"
       >
 
-        <div className="flex flex-col min-h-screen">
+        <Providers>
+          <div className="flex flex-col min-h-screen">
 
-          {/* Header */}
-          <Header />
+            {/* Header */}
+            <Header />
 
-          {/* Page content */}
-          <main className="flex-1">
-            <Providers>{children}</Providers>
-          </main>
+            {/* Page content */}
+            <main className="flex-1">
+              {children}
+            </main>
 
-          {/* Footer */}
-          <Footer />
+            {/* Footer */}
+            <Footer />
 
-        </div>
+          </div>
+        </Providers>
 
       </body>
     </html>

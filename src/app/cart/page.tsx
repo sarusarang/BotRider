@@ -82,7 +82,7 @@ export default function CartPage() {
                                 >
                                     <div className="flex gap-4 md:gap-6">
                                         {/* Product Image */}
-                                        <Link href={`/product/${item.product?.id}`} className="shrink-0">
+                                        <Link href={`/product/${item.product?.id}?type=${item.product?.product_type}`} className="shrink-0">
                                             <div className="w-24 h-24 md:w-32 md:h-32 rounded-xl bg-gray-50 overflow-hidden group">
                                                 <img
                                                     src={item.product?.image[0]}
@@ -96,7 +96,7 @@ export default function CartPage() {
                                         <div className="flex-1 min-w-0">
                                             <div className="flex justify-between gap-4 mb-2">
                                                 <div className="flex-1 min-w-0">
-                                                    <Link href={`/product/${item.product?.id}`}>
+                                                    <Link href={`/product/${item.product?.id}?type=${item.product?.product_type}`}>
                                                         <p className="text-xs text-gray-500 mb-1 font-medium">{item.product?.brand}</p>
                                                         <h3 className="font-bold text-gray-900 mb-2 line-clamp-2 text-sm md:text-base">
                                                             {item.product?.title}

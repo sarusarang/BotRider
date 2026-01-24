@@ -1,8 +1,7 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Star, Minus, Plus, Truck, RotateCcw, Check, ArrowRight, ShoppingCart } from "lucide-react";
-import { Product } from "@/data/shop-data";
+import { Minus, Plus, Truck, RotateCcw, Check, ArrowRight, ShoppingCart, Star } from "lucide-react";
+import { BikeProduct, AccessoryProduct } from "@/types/product";
 import { getBadgeStyle } from "@/hooks/badge";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -14,23 +13,35 @@ import { useState } from "react";
 
 // Props type
 interface ProductInfoProps {
-    product: Product;
+    product: BikeProduct | AccessoryProduct;
     quantity: number;
     setQuantity: (q: number) => void;
+    selectedColorIndex: number;
+    setSelectedColorIndex: (index: number) => void;
 }
 
 
 
 
-export function ProductInfo({ product, quantity, setQuantity }: ProductInfoProps) {
+export function ProductInfo({ product, quantity, setQuantity, selectedColorIndex, setSelectedColorIndex }: ProductInfoProps) {
 
 
-    // State for selected color
-    const [selectedColor, setSelectedColor] = useState(product.color[0]);
+    const isbike = product.product_type === "bike";
+
+
+    // Derived values
+    const price = Number(product.is_discount ? product.discount_price : product.price);
+    const originalPrice = product.is_discount ? Number(product.price) : null;
+    const discountPercent = product.is_discount ? Number(product.discount_percentage) : 0;
+
+    const colors = isbike ? product.bike_colors : [];
+    const sizes = isbike ? product.sizes : [];
+
 
 
     // State for selected size
-    const [selectedSize, setSelectedSize] = useState(product.size[0]);
+    const [selectedSize, setSelectedSize] = useState(sizes?.length > 0 ? sizes[0] : "");
+
 
 
     return (
@@ -59,18 +70,18 @@ export function ProductInfo({ product, quantity, setQuantity }: ProductInfoProps
                                 <h1
                                     className="flex-1 min-w-0 text-2xl sm:text-3xl font-bold text-zinc-900 dark:text-white tracking-tight leading-tight wrap-break-word     line-clamp-2    sm:line-clamp-none"
                                 >
-                                    {product.title}
+                                    {product.name}
                                 </h1>
 
                                 {/* Badge */}
-                                {product.tag && (
+                                {product.special_tag && (
                                     <div className="shrink-0">
                                         <div
                                             className={`relative overflow-hidden px-2.5 py-1 text-[10px] font-black tracking-wider rounded-full uppercase shadow-md ${getBadgeStyle(
-                                                product.tag
+                                                product.special_tag
                                             )}`}
                                         >
-                                            <span className="relative z-10">{product.tag}</span>
+                                            <span className="relative z-10">{product.special_tag}</span>
 
                                             {/* Shimmer */}
                                             <motion.div
@@ -105,11 +116,11 @@ export function ProductInfo({ product, quantity, setQuantity }: ProductInfoProps
                             <Star className="w-4 h-4 fill-yellow-500 text-yellow-500" />
 
                             <span className="text-sm font-bold text-zinc-900 dark:text-white">
-                                {product.rating || "4.8"}
+                                {"4.8"}
                             </span>
 
                             <span className="text-xs text-zinc-500">
-                                ({product.reviewCount || 124})
+                                (124)
                             </span>
 
                         </div>
@@ -119,44 +130,27 @@ export function ProductInfo({ product, quantity, setQuantity }: ProductInfoProps
                 </div>
 
 
-
                 {/* Price */}
                 <div className="space-y-1">
-
                     <div className="flex items-center gap-3">
-
                         <div className="flex items-baseline gap-3">
-
                             <span className="text-3xl font-semibold text-zinc-900 dark:text-white">
-                                ₹{product.price.toLocaleString()}
+                                ₹{price.toLocaleString()}
                             </span>
-
-                            {product.originalPrice && (
+                            {originalPrice && (
                                 <span className="text-lg text-zinc-400 line-through font-medium">
-                                    ₹{product.originalPrice.toLocaleString()}
+                                    ₹{originalPrice.toLocaleString()}
                                 </span>
                             )}
-
                         </div>
 
-
                         {/* Discount Badge */}
-                        {product.discountPercent && (
+                        {discountPercent > 0 && (
                             <span className="bg-emerald-500 text-white px-2 py-0.5 rounded-full text-xs font-bold">
-                                -{product.discountPercent}%
+                                -{discountPercent}%
                             </span>
                         )}
-
                     </div>
-
-                    {product.emi && (
-
-                        <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
-                            EMI starts at <span className="text-green-700 dark:text-white font-bold">{product.emi}</span>
-                        </p>
-
-                    )}
-
                 </div>
 
             </div>
@@ -171,76 +165,80 @@ export function ProductInfo({ product, quantity, setQuantity }: ProductInfoProps
 
 
                 {/* Color Selector */}
-                <div className="space-y-4">
-
-                    <span className="text-sm font-semibold text-zinc-900 dark:text-white">
-                        Color:
-                        <span className="ml-2 font-normal text-zinc-500">
-                            {selectedColor.name}
-                        </span>
-                    </span>
-
-                    <div className="flex flex-wrap gap-3 mt-2">
-
-                        {product.color.map((color) => {
-
-                            const isActive = selectedColor.name === color.name;
-
-                            return (
-                                <button
-                                    key={color.name}
-                                    onClick={() => setSelectedColor(color)}
-                                    className={cn(
-                                        "relative w-12 h-12 rounded-full transition-all duration-300 hover:cursor-pointer",
-                                        "border-2 dark:border-zinc-700",
-                                        isActive
-                                            ? "border-black dark:border-white ring-2 ring-black dark:ring-white"
-                                            : "border-zinc-200 hover:scale-110 hover:ring-1 hover:ring-zinc-300 dark:hover:ring-zinc-600"
-                                    )}
-                                >
-
-                                    {/* Color bubble */}
-                                    <span
-                                        className="absolute inset-1 rounded-full"
-                                        style={{ backgroundColor: color.code }}
-                                    />
-
-                                    {/* Check Icon */}
-                                    <AnimatePresence>
-                                        {isActive && (
-                                            <motion.span
-                                                initial={{ scale: 0.5, opacity: 0 }}
-                                                animate={{ scale: 1, opacity: 1 }}
-                                                exit={{ scale: 0.5, opacity: 0 }}
-                                                className="absolute inset-0 flex items-center justify-center"
-                                            >
-                                                <Check
-                                                    className={cn(
-                                                        "w-5 h-5",
-                                                        color.name === "White" || color.name === "Yellow"
-                                                            ? "text-black"
-                                                            : "text-white"
-                                                    )}
-                                                    strokeWidth={3}
-                                                />
-                                            </motion.span>
-                                        )}
-                                    </AnimatePresence>
-
-                                </button>
-                            );
-                        })}
-
-                    </div>
-
-                </div>
-
-
-                {/* Frame Size */}
-                {product.size && Array.isArray(product.size) && (
+                {colors?.length > 0 && (
 
                     <div className="space-y-4">
 
+                        <span className="text-sm font-semibold text-zinc-900 dark:text-white">
+                            Color:
+                            <span className="ml-2 font-normal text-zinc-500">
+                                {colors[selectedColorIndex].color}
+                            </span>
+                        </span>
+
+                        <div className="flex flex-wrap gap-3 mt-2">
+
+                            {colors.map((color, index) => {
+
+                                const isActive = selectedColorIndex === index;
+                                const [topColor, bottomColor] = color.color_code;
+
+                                return (
+                                    <button
+                                        key={color.color}
+                                        onClick={() => setSelectedColorIndex(index)}
+                                        className={cn(
+                                            "relative w-12 h-12 rounded-full transition-all duration-300 hover:cursor-pointer",
+                                            "border-2 dark:border-zinc-700",
+                                            isActive
+                                                ? "border-black dark:border-white ring-2 ring-black dark:ring-white"
+                                                : "border-zinc-200 hover:scale-110 hover:ring-1 hover:ring-zinc-300 dark:hover:ring-zinc-600"
+                                        )}
+                                    >
+                                        {/* Color bubble */}
+                                        <span
+                                            className="absolute inset-1 rounded-full"
+                                            style={{
+                                                background: bottomColor
+                                                    ? `linear-gradient(to bottom, ${topColor} 50%, ${bottomColor} 50%)`
+                                                    : topColor,
+                                            }}
+                                        />
+
+                                        {/* Check Icon */}
+                                        <AnimatePresence>
+                                            {isActive && (
+                                                <motion.span
+                                                    initial={{ scale: 0.5, opacity: 0 }}
+                                                    animate={{ scale: 1, opacity: 1 }}
+                                                    exit={{ scale: 0.5, opacity: 0 }}
+                                                    className="absolute inset-0 flex items-center justify-center"
+                                                >
+                                                    <Check
+                                                        className={cn(
+                                                            "w-5 h-5",
+                                                            color.color === "White" || color.color === "Yellow"
+                                                                ? "text-black"
+                                                                : "text-white"
+                                                        )}
+                                                        strokeWidth={3}
+                                                    />
+                                                </motion.span>
+                                            )}
+                                        </AnimatePresence>
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    </div>
+                )}
+
+
+                {/* Frame Size */}
+                {sizes?.length > 0 && (
+
+                    <div className="space-y-4">
+                       
                         <div className="flex justify-between items-center">
                             <span className="text-sm font-semibold text-zinc-900 dark:text-white">
                                 Size : {selectedSize}
@@ -252,8 +250,7 @@ export function ProductInfo({ product, quantity, setQuantity }: ProductInfoProps
                         </div>
 
                         <div className="grid grid-cols-4 gap-3">
-
-                            {product.size.map((size) => {
+                            {sizes.map((size) => {
                                 const isActive = selectedSize === size;
 
                                 return (
@@ -272,10 +269,7 @@ export function ProductInfo({ product, quantity, setQuantity }: ProductInfoProps
                                     </button>
                                 );
                             })}
-
                         </div>
-
-
                     </div>
                 )}
 
@@ -328,60 +322,76 @@ export function ProductInfo({ product, quantity, setQuantity }: ProductInfoProps
 
 
                 {/* Actions */}
-                <div className="grid grid-cols-2 gap-4">
+                {product?.is_out_of_stock ? (
+
+                    <div className="grid grid-cols-1">
+
+                        <button
+                            disabled
+                            className="h-14 rounded-full bg-zinc-300 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-400 font-semibold text-base cursor-not-allowed">
+                            Out of Stock
+                        </button>
+
+                    </div>
+
+                ) : (
 
 
-                    {/* Buy Now */}
-                    <motion.button
-                        whileHover={{ scale: 1.04 }}
-                        whileTap={{ scale: 0.97 }}
-                        className="group relative h-14 rounded-full bg-black dark:bg-white text-white dark:text-black font-semibold text-base hover:cursor-pointer
-                         shadow-[0_10px_40px_rgba(0,0,0,0.3)] dark:shadow-[0_10px_40px_rgba(255,255,255,0.2)] overflow-hidden">
-
-                        {/* Glow */}
-                        <span className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition duration-500" />
-
-                        <span className="relative z-10 flex items-center justify-center gap-2">
-                            Buy Now
-                            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                        </span>
-
-                    </motion.button>
+                    <div className="grid grid-cols-2 gap-4">
 
 
+                        {/* Buy Now */}
+                        <motion.button
+                            whileHover={{ scale: 1.04 }}
+                            whileTap={{ scale: 0.97 }}
+                            className="group relative h-14 rounded-full bg-black dark:bg-white text-white dark:text-black font-semibold text-base shadow-[0_10px_40px_rgba(0,0,0,0.3)] dark:shadow-[0_10px_40px_rgba(255,255,255,0.2)] overflow-hidden">
 
-                    {/* Add to Cart */}
-                    <motion.button
-                        whileHover={{ scale: 1.04 }}
-                        whileTap={{ scale: 0.97 }}
-                        className="group relative h-14 rounded-full border-2 border-zinc-300 dark:border-zinc-700 hover:cursor-pointer
-                         text-zinc-900 dark:text-white font-semibold text-base hover:border-black dark:hover:border-white overflow-hidden">
+                            <span className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition duration-500" />
 
-                        {/* Hover fill */}
-                        <span className="absolute inset-0 bg-zinc-900 dark:bg-white opacity-0 group-hover:opacity-100 transition" />
+                            <span className="relative z-10 flex items-center justify-center gap-2">
+                                Buy Now
+                                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                            </span>
 
-                        <span className="relative z-10 flex items-center justify-center gap-2 group-hover:text-white dark:group-hover:text-black">
-                            <ShoppingCart className="w-4 h-4" />
-                            Add to Cart
-                        </span>
-
-                    </motion.button>
+                        </motion.button>
 
 
-                </div>
+                        {/* Add to Cart */}
+                        <motion.button
+                            whileHover={{ scale: 1.04 }}
+                            whileTap={{ scale: 0.97 }}
+                            className="group relative h-14 rounded-full border-2 border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-white font-semibold text-base hover:border-black dark:hover:border-white overflow-hidden">
+
+                            <span className="absolute inset-0 bg-zinc-900 dark:bg-white opacity-0 group-hover:opacity-100 transition" />
+
+                            <span className="relative z-10 flex items-center justify-center gap-2 group-hover:text-white dark:group-hover:text-black">
+                                <ShoppingCart className="w-4 h-4" />
+                                Add to Cart
+                            </span>
+
+                        </motion.button>
+
+
+                    </div>
+
+
+                )}
+
 
 
                 {/* Stock Indicator */}
-                {product.stock && (
+                <div className="flex items-center gap-2 text-sm justify-center pt-2">
 
-                    <div className="flex items-center gap-2 text-sm justify-center pt-2">
-                        <div className={`w-2 h-2 mt-1 rounded-full ${product.stock < 10 ? 'bg-orange-500 animate-pulse' : 'bg-emerald-500'}`} />
-                        <span className={product.stock < 10 ? 'text-orange-600 font-medium' : 'text-emerald-600 font-medium'}>
-                            {product.stock < 10 ? `Hurry! Only ${product.stock} left in stock` : 'In Stock & Ready to Ship'}
-                        </span>
-                    </div>
+                    <div className={`w-2 h-2 mt-1 rounded-full ${product.stock === 0 ? "bg-red-500" : product.stock < 10 ? "bg-orange-500 animate-pulse" : "bg-emerald-500"}`} />
 
-                )}
+                    <span
+                        className={`font-medium ${product.stock === 0 ? "text-red-600" : product.stock < 10 ? "text-orange-600" : "text-emerald-600"}`}
+                    >
+                        {product.stock === 0 ? "Out of Stock" : product.stock < 10 ? `Hurry! Only ${product.stock} left in stock` : "In Stock & Ready to Ship"}
+
+                    </span>
+
+                </div>
 
 
             </div>

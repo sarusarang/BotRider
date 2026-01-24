@@ -33,6 +33,7 @@ export interface Product {
     isNew?: boolean;
     isFeatured?: boolean;
     tag?: "Best Seller" | "New Arrival" | "Trending" | "Limited";
+    product_type: "bike" | "accessories";
 
 
     stock?: number;
@@ -159,6 +160,7 @@ export const products: Product[] = [
         suspension: "Front",
         color: [{ name: "Red", code: "#ef4444" }, { name: "Black", code: "#000000" }],
         image: ["https://cradiac.com/cdn/shop/files/ft.jpg?v=1742208888", "https://cradiac.com/cdn/shop/files/Secondary2.0_1066x.jpg?v=1730970258"],
+        product_type: "bike",
         productposters: [
             {
                 image: "https://media.istockphoto.com/id/1288946192/photo/crop-of-cyclists-handlebars-and-front-wheel-during-sunrise.jpg?s=612x612&w=0&k=20&c=3vjUqZ_3fiEzO5Sv2auTu_sqrWHRRRzji-bKaOpFAn4=",
@@ -262,6 +264,7 @@ export const products: Product[] = [
         suspension: "Rigid",
         color: [{ name: "Black", code: "#000000" }, { name: "Green", code: "#22c55e" }],
         image: ["https://cdn.shopify.com/s/files/1/0628/5547/9548/files/ZeetaPlus27ICMBlk_533x.jpg?v=1714986541", "https://5.imimg.com/data5/SELLER/Default/2025/6/518411085/LK/TL/AF/64907775/27-5-zeeta-plus-ic-electric-bicycle.png"],
+        product_type: "bike",
         productposters: [
             {
                 image: "https://media.istockphoto.com/id/1288946192/photo/crop-of-cyclists-handlebars-and-front-wheel-during-sunrise.jpg?s=612x612&w=0&k=20&c=3vjUqZ_3fiEzO5Sv2auTu_sqrWHRRRzji-bKaOpFAn4=",
@@ -367,6 +370,7 @@ export const products: Product[] = [
         suspension: "Front & Rear",
         color: [{ name: "Purple", code: "#a855f7" }],
         image: ["https://cradiac.com/cdn/shop/files/ft.jpg?v=1742208888", "https://cradiac.com/cdn/shop/files/Secondary2.0_1066x.jpg?v=1730970258"],
+        product_type: "bike",
         tag: "Trending",
         originalPrice: 200000,
         discountPercent: 15,
@@ -459,6 +463,7 @@ export const products: Product[] = [
         suspension: "Rigid",
         color: [{ name: "Black", code: "#000000" }],
         image: ["https://cdn.shopify.com/s/files/1/0628/5547/9548/files/ZeetaPlus27ICMBlk_533x.jpg?v=1714986541", "https://5.imimg.com/data5/SELLER/Default/2025/6/518411085/LK/TL/AF/64907775/27-5-zeeta-plus-ic-electric-bicycle.png"],
+        product_type: "bike",
         tag: "Limited",
         originalPrice: 100000,
         discountPercent: 25,
@@ -538,6 +543,7 @@ export const products: Product[] = [
         suspension: "Front",
         color: [{ name: "Blue", code: "#3b82f6" }],
         image: ["https://cradiac.com/cdn/shop/files/ft.jpg?v=1742208888", "https://cradiac.com/cdn/shop/files/Secondary2.0_1066x.jpg?v=1730970258"],
+        product_type: "bike",
         tag: "Best Seller",
         originalPrice: 80000,
         discountPercent: 20,
@@ -607,6 +613,7 @@ export const products: Product[] = [
         suspension: "Rigid",
         color: [{ name: "Green", code: "#22c55e" }, { name: "Black", code: "#000000" }],
         image: ["https://cdn.shopify.com/s/files/1/0628/5547/9548/files/ZeetaPlus27ICMBlk_533x.jpg?v=1714986541", "https://5.imimg.com/data5/SELLER/Default/2025/6/518411085/LK/TL/AF/64907775/27-5-zeeta-plus-ic-electric-bicycle.png"],
+        product_type: "bike",
         isFeatured: true,
         tag: "New Arrival",
         originalPrice: 80000,
@@ -678,6 +685,7 @@ export const products: Product[] = [
         suspension: "Rigid",
         color: [{ name: "Grey", code: "#6b7280" }, { name: "White", code: "#ffffff" }],
         image: ["https://cradiac.com/cdn/shop/files/ft.jpg?v=1742208888", "https://cradiac.com/cdn/shop/files/Secondary2.0_1066x.jpg?v=1730970258"],
+        product_type: "bike",
         tag: "Trending",
         originalPrice: 60000,
         discountPercent: 10,
@@ -747,6 +755,7 @@ export const products: Product[] = [
         suspension: "Front",
         color: [{ name: "Black", code: "#000000" }],
         image: ["https://cdn.shopify.com/s/files/1/0628/5547/9548/files/ZeetaPlus27ICMBlk_533x.jpg?v=1714986541", "https://5.imimg.com/data5/SELLER/Default/2025/6/518411085/LK/TL/AF/64907775/27-5-zeeta-plus-ic-electric-bicycle.png"],
+        product_type: "bike",
         tag: "Limited",
         originalPrice: 60000,
         discountPercent: 10,
@@ -816,6 +825,7 @@ export const products: Product[] = [
         suspension: "Front",
         color: [{ name: "Black", code: "#000000" }],
         image: ["https://cdn.shopify.com/s/files/1/0628/5547/9548/files/ZeetaPlus27ICMBlk_533x.jpg?v=1714986541", "https://5.imimg.com/data5/SELLER/Default/2025/6/518411085/LK/TL/AF/64907775/27-5-zeeta-plus-ic-electric-bicycle.png"],
+        product_type: "bike",
         tag: "Limited",
         originalPrice: 28000,
         discountPercent: 15,
@@ -875,6 +885,7 @@ export const products: Product[] = [
         suspension: "Rigid",
         color: [{ name: "Black", code: "#000000" }, { name: "Red", code: "#ef4444" }],
         image: ["https://cdn.shopify.com/s/files/1/0628/5547/9548/files/ZeetaPlus27ICMBlk_533x.jpg?v=1714986541", "https://5.imimg.com/data5/SELLER/Default/2025/6/518411085/LK/TL/AF/64907775/27-5-zeeta-plus-ic-electric-bicycle.png"],
+        product_type: "bike",
         tag: "Limited",
         originalPrice: 85000,
         discountPercent: 15,
@@ -944,6 +955,7 @@ export const products: Product[] = [
         suspension: "Front",
         color: [{ name: "Orange", code: "#f97316" }, { name: "Black", code: "#000000" }],
         image: ["https://cdn.shopify.com/s/files/1/0628/5547/9548/files/ZeetaPlus27ICMBlk_533x.jpg?v=1714986541", "https://5.imimg.com/data5/SELLER/Default/2025/6/518411085/LK/TL/AF/64907775/27-5-zeeta-plus-ic-electric-bicycle.png"],
+        product_type: "bike",
         tag: "Limited",
         originalPrice: 65000,
         discountPercent: 10,
@@ -1013,6 +1025,7 @@ export const products: Product[] = [
         suspension: "Rigid",
         color: [{ name: "Black", code: "#000000" }, { name: "Blue", code: "#3b82f6" }],
         image: ["https://cdn.shopify.com/s/files/1/0628/5547/9548/files/ZeetaPlus27ICMBlk_533x.jpg?v=1714986541", "https://5.imimg.com/data5/SELLER/Default/2025/6/518411085/LK/TL/AF/64907775/27-5-zeeta-plus-ic-electric-bicycle.png"],
+        product_type: "bike",
         tag: "Limited",
         originalPrice: 82000,
         discountPercent: 5,
@@ -1072,6 +1085,7 @@ export const products: Product[] = [
         suspension: "Front",
         color: [{ name: "Green", code: "#22c55e" }, { name: "Black", code: "#000000" }],
         image: ["https://cdn.shopify.com/s/files/1/0628/5547/9548/files/ZeetaPlus27ICMBlk_533x.jpg?v=1714986541", "https://5.imimg.com/data5/SELLER/Default/2025/6/518411085/LK/TL/AF/64907775/27-5-zeeta-plus-ic-electric-bicycle.png"],
+        product_type: "bike",
         tag: "Limited",
         originalPrice: 55000,
         discountPercent: 12,
@@ -1131,6 +1145,7 @@ export const products: Product[] = [
         suspension: "Rigid",
         color: [{ name: "White", code: "#ffffff" }, { name: "Blue", code: "#3b82f6" }],
         image: ["https://cdn.shopify.com/s/files/1/0628/5547/9548/files/ZeetaPlus27ICMBlk_533x.jpg?v=1714986541", "https://5.imimg.com/data5/SELLER/Default/2025/6/518411085/LK/TL/AF/64907775/27-5-zeeta-plus-ic-electric-bicycle.png"],
+        product_type: "bike",
         tag: "Limited",
         originalPrice: 40000,
         discountPercent: 12,
@@ -1190,6 +1205,7 @@ export const products: Product[] = [
         suspension: "Front",
         color: [{ name: "Grey", code: "#6b7280" }, { name: "Black", code: "#000000" }],
         image: ["https://cdn.shopify.com/s/files/1/0628/5547/9548/files/ZeetaPlus27ICMBlk_533x.jpg?v=1714986541", "https://5.imimg.com/data5/SELLER/Default/2025/6/518411085/LK/TL/AF/64907775/27-5-zeeta-plus-ic-electric-bicycle.png"],
+        product_type: "bike",
         tag: "Limited",
         originalPrice: 32000,
         discountPercent: 12,

@@ -1,10 +1,36 @@
 
-// Bike Product
+
+// Base Product Interface
+export interface BaseProduct {
+    id: number;
+    unique_id: string;
+    name: string;
+    description: string;
+    category: string;
+    brand: string;
+    price: string;
+    stock: number;
+    is_available: boolean;
+    is_out_of_stock: boolean;
+    is_discount: boolean;
+    discount_price: string;
+    discount_percentage: string;
+    special_tag: "Best Seller" | "New Arrival" | "Trending" | "Limited";
+    is_dark?: boolean;
+    background_color: string | null;
+    text_color: string | null;
+    created: string | Date;
+}
+
+
+
+// Bike Product Interface
 export interface BikeColorImage {
     color: string;
     bike_images: string[];
     color_code: string[];
 }
+
 
 export interface BikePoster {
     poster: string;
@@ -12,36 +38,32 @@ export interface BikePoster {
     description: string;
 }
 
+
 export interface BikeDownload {
     file: string;
     title: string;
 }
 
-export interface BikeProduct {
 
-    id: number;
+export interface BikeSpecLabel {
+    label: string;
+    bike_spec_values: BikeSpecValue[];
+}
+
+export interface BikeSpecValue {
     name: string;
-    description: string;
+    value: string;
+}
+
+
+export interface BikeProduct extends BaseProduct {
 
     wheel_size: string[];
     material: string[];
     suspension: string[];
     rear_suspension_travel: string[];
 
-    special_tag: "Best Seller" | "New Arrival" | "Trending" | "Limited";
-
-    bike_brand: string;
-    bike_category: string;
     product_type: "bike";
-
-    price: string;
-    is_discount: boolean;
-    discount_price: string;
-    discount_percentage: string;
-
-    background_color: string | null;
-    text_color: string | null;
-    is_dark: boolean;
 
     is_featured: boolean;
     featured_image: string | null;
@@ -49,37 +71,27 @@ export interface BikeProduct {
     youtube_link: string | null;
     youtube_video_id: string | null;
 
-    bike_sizes: string[];
+    sizes: string[];
 
     bike_colors: BikeColorImage[];
+
+    bike_spec_labels: BikeSpecLabel[];
 
     bike_posters: BikePoster[];
     bike_downloads: BikeDownload[];
 
-    created: string;
 }
 
 
 
 // Accessory Product
-export interface AccessoryProduct {
+export interface AccessoryProduct extends BaseProduct {
 
-    id: number;
-    name: string;
-    description: string;
     product_type: "accessories";
-    price: string;
-    is_discount: boolean;
-    discount_price: string;
-    discount_percentage: string;
     sub_category: string;
     accessory_images: string[];
-    id_dark: boolean;
-    special_tag: "Best Seller" | "New Arrival" | "Trending" | "Limited";
-    created: Date;
 
 }
-
 
 
 
@@ -95,36 +107,35 @@ export interface PaginatedResponse<T> {
 
 
 
-// sidebar 
+// sidebar  
 export interface BikeSidebarColor {
     name: string;
     code: string[];
 }
 
 
-export interface BikeSidebarResponse {
-    bikes: string[];
+export interface BaseSideBar {
+    categories: string[];
     brands: string[];
+    special_tags: string[];
+}
+
+
+export interface BikeSidebarResponse extends BaseSideBar {
     sizes: string[];
     wheel_sizes: string[];
     materials: string[];
     suspensions: string[];
     rearSuspensionTravel: string[];
     colors: BikeSidebarColor[];
-    special_tags: string[];
     product_type: "bike";
 }
 
 
-
-export interface AccessoriesSidebarResponse {
-    accessories: string[];
+export interface AccessoriesSidebarResponse extends BaseSideBar {
     sub_categories: string[];
-    brands: string[];
-    special_tags: string[];
     product_type: "accessories";
 }
-
 
 
 export type SidebarResponse = BikeSidebarResponse | AccessoriesSidebarResponse;

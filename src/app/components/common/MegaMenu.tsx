@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
-import { filterCategories, products, Product } from '../../data/shop-data';
+import { filterCategories, products, Product } from '../../../data/shop-data';
 import { cn } from '@/lib/utils';
 
 
@@ -249,7 +249,7 @@ export default function MegaMenu({ activeDropdown, setActiveDropdown, isDark = f
                                                             className="group relative cursor-pointer"
                                                         >
 
-                                                            <Link href={`/product/${item.id}`} onClick={() => setActiveDropdown(null)}>
+                                                            <Link href={`/product/${item.id}?type=${item.product_type}`} onClick={() => setActiveDropdown(null)}>
 
                                                                 <div className={cn(
                                                                     "relative overflow-hidden rounded-2xl backdrop-blur-md border",

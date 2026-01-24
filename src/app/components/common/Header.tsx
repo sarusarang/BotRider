@@ -2,15 +2,17 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { products } from '../../data/shop-data';
+import { products } from '../../../data/shop-data';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, User, ShoppingBag, Menu, X, ChevronRight, ShoppingCart } from 'lucide-react';
 import Image from 'next/image';
 import { Badge } from '../ui/badge';
 import { usePathname } from "next/navigation";
-import { MENU_ITEMS, BIKES_CATEGORIES, ACCESSORIES_CATEGORIES } from '../../data/headerData';
+import { MENU_ITEMS, BIKES_CATEGORIES, ACCESSORIES_CATEGORIES } from '../../../data/headerData';
 import MegaMenu from './MegaMenu';
 import SearchModal from './SearchModal';
+import { useTheme } from "@/context/ThemeContext";
+
 
 
 
@@ -18,13 +20,16 @@ import SearchModal from './SearchModal';
 export default function Header() {
 
 
+  const { isHeaderDark } = useTheme();
+
+
   const pathname = usePathname();
   const isHome = pathname === "/" || pathname === "/events" || pathname === "/contact" || pathname === "/about";
 
 
+
   // State
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
@@ -81,20 +86,13 @@ export default function Header() {
 
 
 
-  // Header Appearance
-  const productId = pathname.startsWith('/product/') ? pathname.split('/').pop() : null;
-  const currentProduct = productId ? products.find(p => p.id === productId) : null;
-  const isDarkProduct = currentProduct?.isdark;
-
   const isTransparent = isHome && !isScrolled;
 
-
-  const headerBg = isTransparent ? "rgba(0,0,0,0)" : (isDarkProduct ? "#000000" : "#ffffff");
-  const textColor = (isTransparent || isDarkProduct) ? "text-white" : "text-gray-900";
-  const hoverBg = (isTransparent || isDarkProduct) ? "hover:bg-white/10" : "hover:bg-gray-100";
-  const logoSrc = (isTransparent || isDarkProduct) ? '/white-logo.png' : '/logo.png';
-
-
+  // Use context value for dark mode
+  const headerBg = isTransparent ? "rgba(0,0,0,0)" : (isHeaderDark ? "#000000" : "#ffffff");
+  const textColor = (isTransparent || isHeaderDark) ? "text-white" : "text-gray-900";
+  const hoverBg = (isTransparent || isHeaderDark) ? "hover:bg-white/10" : "hover:bg-gray-100";
+  const logoSrc = (isTransparent || isHeaderDark) ? '/white-logo.png' : '/logo.png';
 
 
   // Get Dropdown Content
@@ -252,7 +250,7 @@ export default function Header() {
 
 
         {/* ================= MEGA MENU ================= */}
-        <MegaMenu activeDropdown={activeDropdown} setActiveDropdown={setActiveDropdown} isDark={!!isDarkProduct} />
+        <MegaMenu activeDropdown={activeDropdown} setActiveDropdown={setActiveDropdown} isDark={!!isHeaderDark} />
 
 
       </motion.header>

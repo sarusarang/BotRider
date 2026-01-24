@@ -1,9 +1,9 @@
-import CategorySlider from "@/components/home/CategorySlider";
-import VideoShowcase from "@/components/home/VideoShowcase";
-import FeaturedCollection from "@/components/home/FeaturedCollection";
-import ImmersiveFeatures from "@/components/home/ImmersiveFeatures";
-import OurBrands from "@/components/home/OurBrands";
-import { BlurFade } from "@/components/ui/blur-fade";
+import CategorySlider from "@/app/components/home/CategorySlider";
+import VideoShowcase from "@/app/components/home/VideoShowcase";
+import FeaturedCollection from "@/app/components/home/FeaturedCollection";
+import ImmersiveFeatures from "@/app/components/home/ImmersiveFeatures";
+import OurBrands from "@/app/components/home/OurBrands";
+import { BlurFade } from "@/app/components/ui/blur-fade";
 import type { Metadata } from "next";
 
 

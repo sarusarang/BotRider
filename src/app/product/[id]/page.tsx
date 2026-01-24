@@ -1,129 +1,118 @@
-"use client";
-
-import { products } from "@/data/shop-data";
-import { useParams } from "next/navigation";
-import { useState, useEffect } from "react";
-import { ProductGallery } from "@/components/shop/product/ProductGallery";
-import { ProductInfo } from "@/components/shop/product/ProductInfo";
-import { ProductDetails } from "@/components/shop/product/ProductDetails";
-import { ProductReviews } from "@/components/shop/product/ProductReviews";
-import { YouMayAlsoLike } from "@/components/shop/product/YouMayAlsoLike";
+import { serverFetch } from "@/lib/fetcher";
+import ProductClient from "./ProductClient";
+import { BikeProduct, AccessoryProduct } from "@/types/product";
+import { notFound } from "next/navigation";
+import { Metadata } from "next";
 
 
 
-export default function ProductPage() {
+// Union type for product
+type Product = BikeProduct | AccessoryProduct;
 
 
-    const params = useParams();
-    const id = params.id as string;
 
 
-    const product = products.find((p) => p.id === id);
+export async function generateMetadata({ params, searchParams }: { params: { id: string }; searchParams: { type?: string }; }): Promise<Metadata> {
 
+    
+    const { id } = await params;
+    const { type } = await searchParams;
+   
+
+    const productType = type || "bike";
+
+
+    const product = await serverFetch<Product>(
+        `/product/product-detail-page/${productType}/${id}/`,
+        { cache: "no-store" }
+    );
 
 
     if (!product) {
-        return (
-            <div className="min-h-screen flex items-center justify-center text-xl font-semibold">
-                Product Not Found
-            </div>
-        );
+        return {
+            title: "Product Not Found",
+        };
+    }
+
+    
+    // Determine the primary image
+    let imageUrl = "/logo.png"; 
+    
+    if (product.product_type === "bike") {
+    
+        const bike = product as BikeProduct;
+        imageUrl = bike.featured_image || bike.bike_colors[0]?.bike_images[0] || imageUrl;
+    
+    } else {
+    
+        const accessory = product as AccessoryProduct;
+        imageUrl = accessory.accessory_images[0] || imageUrl;
+    
     }
 
 
+    const title = `${product.name}`;
 
-    const [selectedImage, setSelectedImage] = useState(product.image[0]);
-    const [quantity, setQuantity] = useState(1);
-    const [activeAccordion, setActiveAccordion] = useState<string | null>(null);
-
-
-    useEffect(() => {
-        setSelectedImage(product.image[0]);
-        setQuantity(1);
-        setActiveAccordion(null);
-    }, [product]);
+    const description = product.description.substring(0, 160);
 
 
-
-    const toggleAccordion = (value: string) => {
-        setActiveAccordion(activeAccordion === value ? null : value);
+    return {
+        title: title,
+        description: description,
+        openGraph: {
+            title: title,
+            description: description,
+            images: [
+                {
+                    url: imageUrl,
+                    alt: product.name,
+                },
+            ],
+            type: "website",
+        },
+        twitter: {
+            card: "summary_large_image",
+            title: title,
+            description: description,
+            images: [imageUrl],
+        },
     };
+    
+}
 
+
+
+export default async function ProductPage({ params, searchParams }: { params: { id: string }; searchParams: { type?: string }; }) {
+
+
+    const { id } = await params;
+    const { type } = await searchParams;
+
+
+    // Default to 'bike' if type is not provided
+    const productType = type || "bike";
+
+
+    // Fetch product
+    const productsRes = await serverFetch<Product>(
+        `/product/product-detail-page/${productType}/${id}/`,
+        { cache: "no-store" }
+    );
+
+
+    // Check if product exists
+    if (!productsRes) {
+        return notFound()
+    }
 
 
     return (
 
 
-        <div className={`min-h-screen pt-20 pb-10 sm:pb-0 sm:pt-16 ${product.isdark ? 'bg-black text-white dark' : 'bg-white dark:bg-zinc-950'}`}>
+        <ProductClient product={productsRes} />
 
-
-            {/* GRID LAYOUT */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 lg:h-[calc(100vh-64px)]">
-
-
-                {/* LEFT COLUMN */}
-                <div className="lg:col-span-7 xl:col-span-8 lg:overflow-y-auto no-scrollbar space-y-5">
-
-
-                    {/* Gallery */}
-                    <ProductGallery
-                        images={product.image}
-                        selectedImage={selectedImage}
-                        onImageSelect={setSelectedImage}
-                        title={product.title}
-                    />
-
-
-                    {/* Mobile Buy Panel (appears after gallery) */}
-                    <div className="block lg:hidden">
-                        <ProductInfo
-                            product={product}
-                            quantity={quantity}
-                            setQuantity={setQuantity}
-                        />
-                    </div>
-
-
-                    {/* Details */}
-                    <ProductDetails
-                        product={product}
-                        activeAccordion={activeAccordion}
-                        toggleAccordion={toggleAccordion}
-                    />
-
-
-                    {/* Reviews */}
-                    <ProductReviews
-                        reviews={product.reviews}
-                        rating={product.rating}
-                        reviewCount={product.reviewCount}
-                    />
-
-
-                    {/* You May Also Like */}
-                    <YouMayAlsoLike
-                        products={products.filter(p => p.id !== product.id)}
-                    />
-
-
-                </div>
-
-
-                {/* RIGHT COLUMN – Desktop Buy Panel */}
-                <div className="hidden lg:block lg:col-span-5 xl:col-span-4 lg:overflow-y-auto no-scrollbar px-6 py-6">
-                    <ProductInfo
-                        product={product}
-                        quantity={quantity}
-                        setQuantity={setQuantity}
-                    />
-                </div>
-
-
-            </div>
-
-
-        </div>
 
     );
+
 
 }

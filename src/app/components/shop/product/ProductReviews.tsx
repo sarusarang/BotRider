@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Star, CheckCircle2, User, ThumbsUp, PenLine } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/app/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Review } from "@/data/shop-data";
 

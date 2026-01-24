@@ -182,7 +182,7 @@ export default function SearchModal({ open, onOpenChange }: SearchModalProps) {
                                         <div className="flex items-center justify-between">
 
                                             <h2 className="text-2xl font-bold text-gray-900">
-                                                Search Results 
+                                                Search Results
                                             </h2>
 
                                             <p className="text-gray-600 italic">
@@ -204,7 +204,7 @@ export default function SearchModal({ open, onOpenChange }: SearchModalProps) {
                                                 >
 
                                                     <Link
-                                                        href={`/product/${product.id}`}
+                                                        href={`/product/${product.id}?type=${product.product_type}`}
                                                         onClick={() => onOpenChange(false)}
                                                         className="group block"
                                                     >

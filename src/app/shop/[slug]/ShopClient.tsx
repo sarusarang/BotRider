@@ -1,19 +1,22 @@
 "use client";
 
-import { startTransition, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Filter, SlidersHorizontal, ArrowUpDown } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import FilterSidebar from "@/components/shop/FilterSidebar";
-import ProductGrid from "@/components/shop/ProductGrid";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select";
-import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationPrevious, PaginationNext } from "@/components/ui/pagination";
+import { Button } from "@/app/components/ui/button";
+import FilterSidebar from "@/app/components/shop/FilterSidebar";
+import ProductGrid from "@/app/components/shop/ProductGrid";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/app/components/ui/select";
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, PaginationEllipsis } from "@/app/components/ui/pagination";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { AccessoryProduct, BikeProduct } from "@/types/product";
 import { useGetFliterSidebar } from "@/service/product/useProduct";
-import FilterSidebarSkeleton from "@/components/loaders/FilterSidebarSkelton";
-import FilterSidebarError from "@/components/loaders/FilterSidebarError";
-import FilterGlobalLoader from "@/components/loaders/FilterGlobalLoader";
+import FilterSidebarSkeleton from "@/app/components/loaders/FilterSidebarSkelton";
+import FilterSidebarError from "@/app/components/loaders/FilterSidebarError";
+import FilterGlobalLoader from "@/app/components/loaders/FilterGlobalLoader";
+import { cn } from "@/lib/utils";
+import EmptyProducts from "@/app/components/shop/EmptyProducts";
+
 
 
 
@@ -32,14 +35,15 @@ interface ShopClientProps {
 export default function ShopClient({ products, type, totalCount, currentPage, totalpages }: ShopClientProps) {
 
 
+    // Navigation
     const router = useRouter();
     const searchParams = useSearchParams();
     const pathname = usePathname();
 
 
 
+    // State variables
     const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
-
     const [isPending, startTransition] = useTransition();
 
 
@@ -49,7 +53,8 @@ export default function ShopClient({ products, type, totalCount, currentPage, to
 
 
 
-    const sortBy = searchParams.get("sort") || "New Arrival";
+    // Sort By
+    const sortBy = searchParams.get("special_tag") || "All";
 
 
 
@@ -62,26 +67,27 @@ export default function ShopClient({ products, type, totalCount, currentPage, to
 
 
 
-
+    // Toggle Param
     const toggleParam = (key: string, value: string) => {
 
+
         const params = new URLSearchParams(searchParams.toString());
-        const values = params.getAll(key);
 
 
-        params.delete("page"); // reset pagination
+        const current = params.get(key)?.split(",").filter(Boolean) ?? [];
 
 
-        if (values.includes(value)) {
+        params.delete("page");
 
+
+        const set = new Set(current);
+        set.has(value) ? set.delete(value) : set.add(value);
+
+
+        if (set.size === 0) {
             params.delete(key);
-            values.filter(v => v !== value).forEach(v => params.append(key, v));
-
         } else {
-
-            values.forEach(v => params.append(key, v));
-            params.append(key, value);
-
+            params.set(key, Array.from(set).join(","));
         }
 
         updateURL(params);
@@ -90,6 +96,8 @@ export default function ShopClient({ products, type, totalCount, currentPage, to
 
 
 
+
+    // Set price range
     const setRange = (minKey: string, maxKey: string, min: number, max: number) => {
 
         const params = new URLSearchParams(searchParams.toString());
@@ -106,11 +114,17 @@ export default function ShopClient({ products, type, totalCount, currentPage, to
 
 
 
+
+    // Handle sort change
     const handleSortChange = (value: string) => {
 
         const params = new URLSearchParams(searchParams.toString());
 
-        params.set("sort", value);
+        if (value === "All") {
+            params.delete("special_tag");
+        } else {
+            params.set("special_tag", value);
+        }
 
         updateURL(params);
 
@@ -118,6 +132,7 @@ export default function ShopClient({ products, type, totalCount, currentPage, to
 
 
 
+    // Clear all filters
     const clearAllFilters = () => {
 
         router.push(pathname);
@@ -126,17 +141,56 @@ export default function ShopClient({ products, type, totalCount, currentPage, to
 
 
 
+    // Handle page change
     const handlePageChange = (page: number) => {
 
         if (page < 1 || page > totalpages) return;
 
         const params = new URLSearchParams(searchParams.toString());
-
         params.set("page", page.toString());
 
         updateURL(params, true);
 
     };
+
+
+
+    /** ---------- PAGINATION LOGIC ---------- */
+    const getPageNumbers = () => {
+
+        const pages = [];
+        const showMax = 5; // Max buttons to show
+
+        if (totalpages <= showMax) {
+
+            for (let i = 1; i <= totalpages; i++) pages.push(i);
+
+        } else {
+
+            // Always show first
+            pages.push(1);
+
+            if (currentPage > 3) pages.push("ellipsis-1");
+
+            // middle range
+            const start = Math.max(2, currentPage - 1);
+            const end = Math.min(totalpages - 1, currentPage + 1);
+
+            for (let i = start; i <= end; i++) {
+                if (!pages.includes(i)) pages.push(i);
+            }
+
+            if (currentPage < totalpages - 2) pages.push("ellipsis-2");
+
+            // Always show last
+            if (!pages.includes(totalpages)) pages.push(totalpages);
+
+        }
+
+        return pages;
+
+    };
+
 
 
 
@@ -185,6 +239,7 @@ export default function ShopClient({ products, type, totalCount, currentPage, to
 
                                 <SelectContent>
 
+                                    <SelectItem value="All">All</SelectItem>
                                     {filterData?.special_tags?.map(option => (
                                         <SelectItem key={option} value={option}>
                                             {option}
@@ -294,8 +349,10 @@ export default function ShopClient({ products, type, totalCount, currentPage, to
 
 
 
+
                     {/* Main Content */}
                     <main className="flex-1 mt-4">
+
 
                         {/* Desktop Sort */}
                         <div className="hidden lg:flex items-center justify-between mb-5">
@@ -309,6 +366,7 @@ export default function ShopClient({ products, type, totalCount, currentPage, to
                                         <SelectValue placeholder="Featured" />
                                     </SelectTrigger>
                                     <SelectContent>
+                                        <SelectItem value="All">All</SelectItem>
                                         {filterData?.special_tags?.map(option => (
                                             <SelectItem key={option} value={option}>
                                                 {option}
@@ -325,46 +383,75 @@ export default function ShopClient({ products, type, totalCount, currentPage, to
 
 
                         {/* Pagination */}
-                        {totalCount > 0 && (
-                            <div className="mt-10 flex flex-col items-center gap-6">
+                        {totalCount > 0 && totalpages > 1 && (
+
+                            <div className="mt-12 flex flex-col items-center gap-6">
+
                                 <Pagination>
-                                    <PaginationContent>
+
+                                    <PaginationContent className="gap-2 sm:gap-3">
+
                                         <PaginationItem>
                                             <PaginationPrevious
                                                 onClick={() => handlePageChange(currentPage - 1)}
-                                                className={currentPage <= 1 ? "pointer-events-none opacity-40" : "cursor-pointer"}
+                                                className={cn(
+                                                    "h-10 w-10 sm:w-auto sm:px-4 rounded-xl border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all",
+                                                    currentPage === 1 ? "pointer-events-none opacity-40" : "cursor-pointer"
+                                                )}
                                             />
                                         </PaginationItem>
 
-                                        <PaginationItem>
-                                            <PaginationLink isActive className="rounded-full shadow-xl bg-black text-white dark:bg-white dark:text-black">
-                                                {currentPage}
-                                            </PaginationLink>
-                                        </PaginationItem>
+                                        {getPageNumbers().map((page, idx) => (
+                                            <PaginationItem key={idx}>
+                                                {page === "ellipsis-1" || page === "ellipsis-2" ? (
+                                                    <PaginationEllipsis className="text-zinc-400" />
+                                                ) : (
+                                                    <PaginationLink
+                                                        onClick={() => handlePageChange(page as number)}
+                                                        isActive={currentPage === page}
+                                                        className={cn(
+                                                            "h-10 w-10 rounded-xl transition-all cursor-pointer font-bold",
+                                                            currentPage === page
+                                                                ? "bg-black text-white dark:bg-white dark:text-black shadow-lg shadow-black/10 dark:shadow-white/10 hover:bg-zinc-800 dark:hover:bg-zinc-200"
+                                                                : "border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400"
+                                                        )}
+                                                    >
+                                                        {page}
+                                                    </PaginationLink>
+                                                )}
+                                            </PaginationItem>
+                                        ))}
 
                                         <PaginationItem>
                                             <PaginationNext
                                                 onClick={() => handlePageChange(currentPage + 1)}
-                                                className={currentPage >= totalpages ? "pointer-events-none opacity-40" : "cursor-pointer"}
+                                                className={cn(
+                                                    "h-10 w-10 sm:w-auto sm:px-4 rounded-xl border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all",
+                                                    currentPage === totalpages ? "pointer-events-none opacity-40" : "cursor-pointer"
+                                                )}
                                             />
                                         </PaginationItem>
+
                                     </PaginationContent>
+
                                 </Pagination>
+
+                                <div className="text-xs font-bold uppercase tracking-widest text-zinc-400 bg-zinc-50 dark:bg-zinc-900/50 px-4 py-2 rounded-full border border-zinc-100 dark:border-zinc-800">
+                                    Page {currentPage} of {totalpages}
+                                </div>
+
                             </div>
+
                         )}
 
 
 
                         {products.length === 0 && (
-                            <div className="mt-20 flex flex-col items-center justify-center text-center">
-                                <p className="text-lg font-medium text-zinc-500">
-                                    No products found matching your criteria.
-                                </p>
-                                <Button onClick={clearAllFilters} variant="link" className="mt-2">
-                                    Clear all filters
-                                </Button>
+                            <div className="mt-20">
+                                <EmptyProducts onClearFilters={clearAllFilters} />
                             </div>
                         )}
+
 
                     </main>
                 </div>

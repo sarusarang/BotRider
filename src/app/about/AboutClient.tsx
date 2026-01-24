@@ -2,10 +2,10 @@
 
 
 import { motion, Variants } from "framer-motion";
-import { CheckCircle2, Users, ArrowRight, Wrench, Heart } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { CheckCircle2, Users, ArrowRight, Wrench, Heart, Quote } from "lucide-react";
+import { Button } from "@/app/components/ui/button";
 import Link from "next/link";
-import CountUp from "@/components/ui/CountUp";
+import CountUp from "@/app/components/ui/CountUp";
 
 
 
@@ -111,7 +111,7 @@ export default function AboutClient() {
 
 
             {/* ================= MISSION SECTION (PRESERVED) ================= */}
-            <section className="py-2 pb-5 md:py-6 px-2 sm:px-6 lg:px-12 max-w-7xl mx-auto">
+            <section className="py-2 pb-5 md:py-6 md:pb-10 px-2 sm:px-6 lg:px-8 max-w-7xl mx-auto">
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-24 items-center">
 
@@ -170,11 +170,11 @@ export default function AboutClient() {
                         </motion.h2>
 
                         <motion.p variants={fadeInUp} className="text-lg text-gray-600 mb-6 leading-relaxed text-justify">
-                            Founded in 1974, Boat Rider started with a simple mission: to provide cyclists with the best equipment and the most knowledgeable support in the industry. What began as a small workshop has grown into a premier destination for road, mountain, and electric bike enthusiasts.
+                            Boatrider is a trusted dealer and distributor of premium bicycles and bikes with over 15 years of industry experience. Built on passion, performance, and perseverance, Boatrider stands for quality, reliability, and customer satisfaction. What began as a focused initiative to deliver world-class bicycles has grown into a complete destination for riders of all ages and skill levels.
                         </motion.p>
 
                         <motion.p variants={fadeInUp} className="text-lg text-gray-600 mb-8 leading-relaxed text-justify">
-                            We believe that every ride should be an adventure. Whether you're commuting to work, racing in a crit, or shredding trails on the weekend, we have the expertise to help you find the perfect ride.
+                            We believe cycling is more than transport—it’s a lifestyle, fitness choice, and passion. By partnering with reputed brands, we ensure products that meet international standards in design, durability, and safety while adapting to evolving rider needs and trends.
                         </motion.p>
 
                         <motion.div variants={fadeInUp} className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
@@ -212,8 +212,105 @@ export default function AboutClient() {
                             </Link>
 
                         </motion.div>
-
                     </motion.div>
+
+                </div>
+
+            </section>
+
+
+
+            {/* ================= CHAIRMAN MESSAGE SECTION ================= */}
+            <section className="py-2 pb-5 md:py-6 md:pb-10 px-2 sm:px-6 lg:px-8 max-w-7xl mx-auto bg-white relative overflow-hidden border-t border-gray-200">
+
+
+                {/* Background Pattern */}
+                <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-[600px] h-[600px] bg-red-50 rounded-full blur-[120px] opacity-40 pointer-events-none" />
+                <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/2 w-[400px] h-[400px] bg-gray-100 rounded-full blur-[100px] opacity-40 pointer-events-none" />
+
+
+                <div className="max-w-7xl mx-auto relative z-10">
+
+
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+
+
+                        {/* Left Side: Profile Image */}
+                        <motion.div
+                            className="lg:col-span-5 relative"
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.8, ease: "easeOut" }}
+                        >
+
+                            <div className="relative rounded-[3rem] overflow-hidden aspect-4/5 shadow-2xl">
+
+                                <img
+                                    src="https://images.unsplash.com/photo-1552581234-26160f608093?q=80&w=2670&auto=format&fit=crop"
+                                    alt="Chairman Vision"
+                                    className="w-full h-full object-cover"
+                                />
+
+                                <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
+
+                                <div className="absolute bottom-10 left-10 right-10">
+                                    <p className="text-red-500 font-bold tracking-widest text-sm uppercase mb-2">Leadership</p>
+                                    <h3 className="text-3xl font-bold text-white mb-1">Mr. Sananth</h3>
+                                    <p className="text-gray-300 text-sm font-medium">Chairman of Boatrider</p>
+                                </div>
+
+                            </div>
+
+
+                            {/* Floating Quote Icon */}
+                            <motion.div
+                                animate={{ y: [0, -20, 0] }}
+                                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                                className="absolute -top-8 -right-8 w-24 h-24 bg-red-600 rounded-3xl items-center justify-center shadow-2xl shadow-red-200 hidden md:flex"
+                            >
+                                <Quote className="w-10 h-10 text-white" />
+                            </motion.div>
+                        </motion.div>
+
+
+                        {/* Right Side: Message Content */}
+                        <motion.div
+                            className="lg:col-span-7"
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true }}
+                            variants={stagger}
+                        >
+
+                            <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-black text-gray-900 leading-tight mb-8">
+                                Trust is our <span className="text-transparent bg-clip-text bg-linear-to-r from-red-600 to-red-800">Most Valuable</span> Asset
+                            </motion.h2>
+
+                            <motion.div variants={fadeInUp} className="space-y-8">
+                                <p className="text-xl md:text-2xl text-gray-700 italic font-medium leading-relaxed border-l-4 border-red-600 pl-8 py-2">
+                                    "At the heart of Boatrider’s success is a clear vision and strong leadership. We believe that trust is the most valuable asset in any business. From the very beginning, the focus has been on building long-term relationships rather than short-term gains."
+                                </p>
+
+                                <div className="space-y-6 text-lg text-gray-600 leading-relaxed text-justify">
+                                    <p>
+                                        “Over the last 15 years, Boatrider has been driven by one simple principle—deliver the best, without compromise. Every bicycle or bike that carries our name reflects our commitment to quality, safety, and customer satisfaction. We have witnessed the cycling culture grow and evolve, and we are proud to be a part of that journey.”
+                                    </p>
+
+                                    <p>
+                                        “Our goal is not just to sell products, but to inspire healthier, more active lifestyles and a deeper connection with riding.”
+                                    </p>
+
+                                    <p className="text-gray-900 font-bold italic">
+                                        We aim the vision of continues to guide Boatrider toward innovation, expansion, and excellence, while staying rooted in integrity and customer-first values.
+                                    </p>
+                                </div>
+
+                            </motion.div>
+
+                        </motion.div>
+
+                    </div>
 
                 </div>
 
