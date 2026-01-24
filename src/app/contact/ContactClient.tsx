@@ -1,3 +1,5 @@
+"use client";
+
 import { motion, Variants } from "framer-motion";
 import { MapPin, Phone, Mail, Clock, Send, MoveRight } from "lucide-react";
 import { Button } from "@/app/components/ui/button";
