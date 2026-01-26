@@ -4,31 +4,70 @@ import { PaginatedResponse, BikeProduct, AccessoryProduct } from "@/types/produc
 import { Metadata } from "next";
 
 
+// Generate metadata for shop page
+export async function generateMetadata({ params, searchParams, }: { params: { slug: "bike" | "accessories" }; searchParams: { [key: string]: string | string[] | undefined }; }): Promise<Metadata> {
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+
     const { slug } = await params;
 
-    const title = slug === "accessories"
-        ? "Shop Accessories"
-        : "Shop Bikes";
 
-    const description = slug === "accessories"
-        ? "Browse our collection of premium cycling accessories, from helmets to lights."
-        : "Explore our range of high-performance road, mountain, and electric bikes.";
+    const isAccessories = slug === "accessories";
+    const hasFilters = Object.keys(searchParams || {}).length > 0;
+
+
+    const title = isAccessories ? "Shop Cycling Accessories | Helmets, Lights & Gear" : "Shop Bikes | Road, Mountain & Electric Bikes";
+
+
+    const description = isAccessories ? "Browse premium cycling accessories including helmets, lights, locks, and riding gear." : "Explore high-performance road, mountain, and electric bikes built for every rider.";
+
+
+    const canonicalUrl = `https://bot-rider.vercel.app/shop/${slug}`;
+
+
+    const ogImage = isAccessories ? "https://bot-rider.vercel.app/logo.png" : "https://bot-rider.vercel.app/logo.png";
+
 
     return {
-        title: title,
-        description: description,
-        openGraph: {
-            title: title,
-            description: description,
+
+        title,
+        description,
+
+
+        robots: hasFilters ? { index: false, follow: true } : { index: true, follow: true },
+
+
+        alternates: {
+            canonical: canonicalUrl,
         },
+
+
+        openGraph: {
+            title,
+            description,
+            url: canonicalUrl,
+            type: "website",
+            images: [
+                {
+                    url: ogImage,
+                    width: 1200,
+                    height: 630,
+                    alt: title,
+                },
+            ],
+        },
+
+
         twitter: {
-            title: title,
-            description: description,
-        }
+            card: "summary_large_image",
+            title,
+            description,
+            images: [ogImage],
+        },
+
     };
+
 }
+
 
 
 

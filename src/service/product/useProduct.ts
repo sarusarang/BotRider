@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
-import { GetFliterSidebarApi, GetSuggestedProductsApi } from "./productApi"
+import { GetFliterSidebarApi, GetNavbarDataApi, GetSuggestedProductsApi } from "./productApi"
 import { SidebarResponse } from "@/types/product"
-import { BikeProduct , AccessoryProduct } from "@/types/product"
+import { BikeProduct, AccessoryProduct , NavbarProductsResponse } from "@/types/product"
 
 
 
@@ -37,6 +37,28 @@ export const useGetSuggestedProducts = () => {
         queryFn: async () => {
 
             return await GetSuggestedProductsApi() as BikeProduct[] | AccessoryProduct[];
+
+        },
+        staleTime: 1000 * 60 * 10, // 10 minutes
+        refetchOnWindowFocus: false,
+        retry: 1,
+
+    })
+
+}
+
+
+
+// Hook to Get Navbar product Data
+export const useGetNavbarData = () => {
+
+    return useQuery<NavbarProductsResponse>({
+
+        queryKey: ["Navbar-Data"],
+
+        queryFn: async () => {
+
+            return await GetNavbarDataApi() as NavbarProductsResponse;
 
         },
         staleTime: 1000 * 60 * 10, // 10 minutes

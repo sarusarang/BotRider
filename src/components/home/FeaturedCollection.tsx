@@ -4,81 +4,17 @@ import { motion, Variants } from "framer-motion";
 import { ArrowUpRight, ShoppingBag, Star } from "lucide-react";
 import Link from "next/link";
 import { getBadgeStyle, BadgeTag } from "@/hooks/badge";
-
-
-
-// Products
-interface Product {
-    id: number;
-    name: string;
-    category: string;
-    price: string;
-    rating: number;
-    image: string;
-    tag?: BadgeTag;
-}
-
-const products: Product[] = [
-    {
-        id: 1,
-        name: "S-Works Tarmac SL8",
-        category: "Road Performance",
-        price: "$14,000",
-        rating: 5.0,
-        image: "https://images.unsplash.com/photo-1618762044398-ec1e7e048bbd?q=80&w=1000&auto=format&fit=crop",
-        tag: "Best Seller"
-    },
-    {
-        id: 2,
-        name: "Turbo Levo SL",
-        category: "E-MTB Light",
-        price: "$11,500",
-        rating: 4.9,
-        image: "https://images.unsplash.com/photo-1618762044398-ec1e7e048bbd?q=80&w=1000&auto=format&fit=crop",
-        tag: "New Arrival"
-    },
-    {
-        id: 3,
-        name: "Aethos Pro",
-        category: "Ultralight Road",
-        price: "$8,500",
-        rating: 4.8,
-        image: "https://images.unsplash.com/photo-1485965120184-e220f721d03e?q=80&w=1000&auto=format&fit=crop",
-    },
-    {
-        id: 4,
-        name: "Diverge STR",
-        category: "Gravel Suspension",
-        price: "$7,500",
-        rating: 4.9,
-        image: "https://images.unsplash.com/photo-1618762044398-ec1e7e048bbd?q=80&w=1000&auto=format&fit=crop",
-        tag: "Trending"
-    },
-    {
-        id: 5,
-        name: "Epic World Cup",
-        category: "XC Race",
-        price: "$10,000",
-        rating: 5.0,
-        image: "https://images.unsplash.com/photo-1505705694340-019e1e335916?q=80&w=1000&auto=format&fit=crop",
-    },
-    {
-        id: 6,
-        name: "Creo 2",
-        category: "E-Road Gravel",
-        price: "$9,000",
-        rating: 4.7,
-        image: "https://images.unsplash.com/photo-1599058945522-28d584b6f0ff?q=80&w=1000&auto=format&fit=crop",
-        tag: "Limited"
-    }
-];
+import { BikeProduct } from "@/types/product";
+import Image from "next/image";
 
 
 
 
-export default function FeaturedCollection() {
+export default function FeaturedCollection({ data }: { data: BikeProduct[] }) {
 
 
+
+    // Framer Motion Variants
     const itemVariants: Variants = {
         hidden: { opacity: 0, y: 40, scale: 0.96 },
         visible: {
@@ -91,9 +27,6 @@ export default function FeaturedCollection() {
             }
         }
     };
-
-
-
 
 
 
@@ -185,10 +118,10 @@ export default function FeaturedCollection() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 
 
-                    {products.map((product) => (
+                    {data?.map((product) => (
 
                         <motion.div
-                            key={product.id}
+                            key={product?.unique_id}
                             initial="hidden"
                             whileInView="visible"
                             viewport={{ once: true, margin: "-80px" }}
@@ -200,12 +133,12 @@ export default function FeaturedCollection() {
                             <div className="relative aspect-3/4 w-full overflow-hidden rounded-3xl bg-neutral-900 shadow-2xl ring-1 ring-white/10 isolate">
 
                                 {/* Badge */}
-                                {product.tag && (
+                                {product?.special_tag && (
                                     <div className="absolute top-3 left-3 z-20">
 
-                                        <div className={`relative overflow-hidden px-3 py-1.5 text-[10px] font-black tracking-wider rounded-full uppercase shadow-md ${getBadgeStyle(product.tag)}`}>
+                                        <div className={`relative overflow-hidden px-3 py-1.5 text-[10px] font-black tracking-wider rounded-full uppercase shadow-md ${getBadgeStyle(product?.special_tag)}`}>
 
-                                            <span className="relative z-10">{product.tag}</span>
+                                            <span className="relative z-10">{product?.special_tag}</span>
 
                                             {/* Shimmer Effect */}
                                             <motion.div
@@ -225,20 +158,13 @@ export default function FeaturedCollection() {
                                 )}
 
 
-                                {/* Quick Action */}
-                                <div className="absolute top-5 right-5 z-30 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0">
-                                    <button className="p-3 bg-white text-black rounded-full hover:scale-110 transition-transform shadow-lg cursor-pointer">
-                                        <ShoppingBag className="w-5 h-5" />
-                                    </button>
-                                </div>
-
-
                                 {/* Image */}
-                                <img
-                                    src={product.image}
-                                    alt={product.name}
+                                <Image
+                                    src={product?.featured_image ?? ""}
+                                    alt={product?.name}
                                     className="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 ease-out group-hover:scale-110"
-                                    loading="lazy"
+                                    width={500}
+                                    height={500}
                                 />
 
 
@@ -250,44 +176,63 @@ export default function FeaturedCollection() {
                                 <div className="absolute -bottom-20 left-0 right-0 h-1/2 bg-linear-to-t from-black to-transparent opacity-100" />
 
 
+
                                 {/* Content */}
                                 <div className="absolute bottom-0 left-0 w-full p-8 text-white z-20">
 
+
                                     <div className="transform transition-transform duration-500 group-hover:-translate-y-2">
+
+
+                                        {/* Category */}
                                         <div className="flex items-center gap-2 mb-3 opacity-80">
                                             <div className="h-px w-6 bg-white/50" />
-                                            <p className="text-xs font-bold tracking-widest uppercase text-white/90">{product.category}</p>
+                                            <p className="text-xs font-bold tracking-widest uppercase text-white/90">{product?.category}</p>
                                         </div>
 
+
+                                        {/* Name and Rating */}
                                         <div className="flex justify-between items-end mb-4">
-                                            <h3 className="text-3xl font-black leading-tight tracking-tight drop-shadow-lg">{product.name}</h3>
+                                            <h3 className="text-3xl font-black leading-tight tracking-tight drop-shadow-lg">{product?.name}</h3>
                                             <div className="flex flex-col items-center justify-center gap-0.5 bg-white/10 backdrop-blur-md px-2.5 py-1.5 rounded-lg border border-white/10">
                                                 <div className="flex">
                                                     {[...Array(5)].map((_, i) => (
-                                                        <Star key={i} className={`w-2.5 h-2.5 ${i < Math.floor(product.rating) ? "fill-yellow-400 text-yellow-400" : "fill-gray-500 text-gray-500"}`} />
+                                                        <Star key={i} className={`w-2.5 h-2.5 ${i < Math.floor(3.5) ? "fill-yellow-400 text-yellow-400" : "fill-gray-500 text-gray-500"}`} />
                                                     ))}
                                                 </div>
                                             </div>
                                         </div>
 
+
                                         <div className="h-px w-full bg-white/20 mb-5" />
 
+
+
                                         <div className="flex items-center justify-between">
+
+
                                             <span className="text-2xl font-bold bg-clip-text text-transparent bg-linear-to-r from-white to-gray-400">
-                                                {product.price}
+                                                ₹{Number(product?.is_discount ? product?.discount_price : product?.price).toLocaleString("en-IN")}
                                             </span>
 
-                                            <button className="group/btn relative overflow-hidden rounded-full bg-white px-6 py-2 transition-all hover:w-32 hover:bg-neutral-200">
+
+                                            <Link href={`/product/${product?.unique_id}/?type=${product?.product_type}`} className="group/btn relative overflow-hidden rounded-full bg-white px-6 py-2 transition-all hover:w-32 hover:bg-neutral-200">
                                                 <span className="relative z-10 text-xs font-black uppercase tracking-wider text-black flex items-center gap-2">
                                                     Details <ArrowUpRight className="w-3 h-3" />
                                                 </span>
-                                            </button>
+                                            </Link>
+
                                         </div>
+
+
                                     </div>
+
 
                                 </div>
 
+
                             </div>
+
 
                         </motion.div>
 

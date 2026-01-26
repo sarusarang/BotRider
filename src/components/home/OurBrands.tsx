@@ -2,10 +2,10 @@
 
 
 import { motion } from "framer-motion";
-import LogoCarousel from "../ui/logo-carousel";
+import { LogoCarousel } from "../ui/logo-carousel";
 
 
-export default function OurBrands() {
+export default function OurBrands({ data }: { data: string[] }) {
 
 
     return (
@@ -43,7 +43,7 @@ export default function OurBrands() {
 
                     {/* Logo Carousel */}
                     <div className="w-full mt-5">
-                        <LogoCarousel columnCount={6} />
+                        <LogoCarousel data={data} columnCount={6} />
                     </div>
 
                 </div>
@@ -54,4 +54,4 @@ export default function OurBrands() {
     );
 
 
-}
+} 

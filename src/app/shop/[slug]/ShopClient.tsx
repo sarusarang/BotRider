@@ -3,19 +3,19 @@
 import { useState, useTransition } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Filter, SlidersHorizontal, ArrowUpDown } from "lucide-react";
-import { Button } from "@/app/components/ui/button";
-import FilterSidebar from "@/app/components/shop/FilterSidebar";
-import ProductGrid from "@/app/components/shop/ProductGrid";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/app/components/ui/select";
-import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, PaginationEllipsis } from "@/app/components/ui/pagination";
+import { Button } from "@/components/ui/button";
+import FilterSidebar from "@/components/shop/FilterSidebar";
+import ProductGrid from "@/components/shop/ProductGrid";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select";
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, PaginationEllipsis } from "@/components/ui/pagination";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { AccessoryProduct, BikeProduct } from "@/types/product";
 import { useGetFliterSidebar } from "@/service/product/useProduct";
-import FilterSidebarSkeleton from "@/app/components/loaders/FilterSidebarSkelton";
-import FilterSidebarError from "@/app/components/loaders/FilterSidebarError";
-import FilterGlobalLoader from "@/app/components/loaders/FilterGlobalLoader";
+import FilterSidebarSkeleton from "@/components/loaders/FilterSidebarSkelton";
+import FilterSidebarError from "@/components/loaders/FilterSidebarError";
+import FilterGlobalLoader from "@/components/loaders/FilterGlobalLoader";
 import { cn } from "@/lib/utils";
-import EmptyProducts from "@/app/components/shop/EmptyProducts";
+import EmptyProducts from "@/components/shop/EmptyProducts";
 
 
 

@@ -4,9 +4,9 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, X, Check } from "lucide-react";
-import { Button } from "@/app/components/ui/button";
-import { Checkbox } from "@/app/components/ui/checkbox";
-import { Slider } from "@/app/components/ui/slider";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Slider } from "@/components/ui/slider";
 import { cn } from "@/lib/utils";
 import { ReadonlyURLSearchParams } from "next/navigation";
 import { SidebarResponse } from "@/types/product";
@@ -151,7 +151,7 @@ export default function FilterSidebar({ className, onClose, categoriesData, sear
             <div className="flex items-center justify-between p-6 border-b lg:hidden">
                 <h2 className="font-bold text-xl">Filters</h2>
                 <Button variant="ghost" size="icon" onClick={onClose}>
-                    <X className="w-6 h-6" />
+                    <X className="w-8 h-8" />
                 </Button>
             </div>
 

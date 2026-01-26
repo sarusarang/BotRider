@@ -139,3 +139,33 @@ export interface AccessoriesSidebarResponse extends BaseSideBar {
 
 
 export type SidebarResponse = BikeSidebarResponse | AccessoriesSidebarResponse;
+
+
+
+
+
+// Navbar Product Item
+export interface NavbarProductItem {
+    unique_id: string;
+    product_type: "bike" | "accessories";
+    name: string;
+    image: string | null;
+    price: number;
+    brand: string | null;
+    is_discound: boolean;
+    discount_price: number;
+    discount_percentage: number;
+}
+
+// Category inside bikes / accessories
+export interface NavbarCategory {
+    title: string;
+    image: string | null;
+    items: NavbarProductItem[];
+}
+
+// Root navbar response
+export interface NavbarProductsResponse {
+    bikes: NavbarCategory[];
+    accessories: NavbarCategory[];
+}

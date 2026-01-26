@@ -5,10 +5,10 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
 import { ChevronLeft, ChevronRight, AlertTriangle, RefreshCcw } from "lucide-react";
-import ProductCard from "@/app/components/shop/ProductCard";
 import { useGetSuggestedProducts } from "@/service/product/useProduct";
-import { Skeleton } from "@/app/components/ui/skeleton";
-import { Button } from "@/app/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "@/components/ui/button";
+import ProductCard from "@/components/shop/ProductCard";
 
 
 

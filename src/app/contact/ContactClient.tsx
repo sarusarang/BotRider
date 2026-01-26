@@ -2,7 +2,7 @@
 
 import { motion, Variants } from "framer-motion";
 import { MapPin, Phone, Mail, Clock, Send, MoveRight } from "lucide-react";
-import { Button } from "@/app/components/ui/button";
+import { Button } from "@/components/ui/button";
 
 
 
@@ -18,10 +18,10 @@ export default function ContactPage() {
     };
 
 
+
     const stagger = {
         visible: { transition: { staggerChildren: 0.1 } },
     };
-
 
 
 

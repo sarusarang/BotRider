@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { motion } from "framer-motion";
-import { Button } from "@/app/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { RefreshCcw } from "lucide-react";
 
 

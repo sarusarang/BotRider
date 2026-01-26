@@ -46,17 +46,6 @@ const categories = [
 
 
 
-// Trending Searches
-const trendingSearches = [
-    'Trek Marlin 7',
-    'Mountain Bikes',
-    'Electric Bikes',
-    'Road Bikes',
-    'Bike Accessories'
-];
-
-
-
 
 export default function SearchModal({ open, onOpenChange }: SearchModalProps) {
 
@@ -335,45 +324,6 @@ export default function SearchModal({ open, onOpenChange }: SearchModalProps) {
                                 {!searchQuery && (
 
                                     <div className="space-y-8">
-
-                                        {/* Trending Searches */}
-                                        <motion.div
-                                            initial={{ opacity: 0, y: 10 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            transition={{ delay: 0.1 }}
-                                        >
-
-                                            <div className="flex items-center gap-2 mb-4">
-                                                <TrendingUp className="w-5 h-5 text-gray-600" />
-                                                <h3 className="text-sm font-semibold text-gray-600 uppercase tracking-wide">
-                                                    Trending Searches
-                                                </h3>
-                                            </div>
-
-
-                                            <div className="flex flex-wrap gap-2">
-
-                                                {trendingSearches.map((term, index) => (
-
-                                                    <motion.button
-                                                        key={term}
-                                                        initial={{ opacity: 0, scale: 0.9 }}
-                                                        animate={{ opacity: 1, scale: 1 }}
-                                                        transition={{ delay: 0.1 + index * 0.05 }}
-                                                        onClick={() => setSearchQuery(term)}
-                                                        className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-full text-sm font-medium text-gray-700 transition-colors"
-                                                    >
-                                                        {term}
-
-                                                    </motion.button>
-
-                                                ))}
-
-                                            </div>
-
-                                        </motion.div>
-
-
 
                                         {/* Explore by Category */}
                                         <div>

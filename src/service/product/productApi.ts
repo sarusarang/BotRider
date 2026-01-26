@@ -20,3 +20,12 @@ export const GetSuggestedProductsApi = async () => {
     return await CommonApi("GET", `/product/suggested-product/`);
 
 }
+
+
+
+// Get Navbar Data
+export const GetNavbarDataApi = async () => {
+
+    return await CommonApi("GET", `/product/navbar-items/`);
+
+}

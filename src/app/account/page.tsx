@@ -2,10 +2,10 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import AccountSidebar from '@/app/components/common/AccountSidebar';
-import ProfileSection from '@/app/components/account/ProfileSection';
-import OrdersSection from '@/app/components/account/OrdersSection';
-import AddressesSection from '@/app/components/account/AddressesSection';
+import AccountSidebar from '@/components/common/AccountSidebar';
+import ProfileSection from '@/components/account/ProfileSection';
+import OrdersSection from '@/components/account/OrdersSection';
+import AddressesSection from '@/components/account/AddressesSection';
 
 
 

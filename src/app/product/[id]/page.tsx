@@ -14,10 +14,10 @@ type Product = BikeProduct | AccessoryProduct;
 
 export async function generateMetadata({ params, searchParams }: { params: { id: string }; searchParams: { type?: string }; }): Promise<Metadata> {
 
-    
+
     const { id } = await params;
     const { type } = await searchParams;
-   
+
 
     const productType = type || "bike";
 
@@ -29,37 +29,49 @@ export async function generateMetadata({ params, searchParams }: { params: { id:
 
 
     if (!product) {
-        return {
-            title: "Product Not Found",
-        };
+        return { title: "Product Not Found", robots: { index: false } };
     }
 
-    
+
     // Determine the primary image
-    let imageUrl = "/logo.png"; 
-    
+    let imageUrl = "/logo.png";
+
+
     if (product.product_type === "bike") {
-    
+
         const bike = product as BikeProduct;
         imageUrl = bike.featured_image || bike.bike_colors[0]?.bike_images[0] || imageUrl;
-    
+
     } else {
-    
+
         const accessory = product as AccessoryProduct;
         imageUrl = accessory.accessory_images[0] || imageUrl;
-    
+
     }
 
 
-    const title = `${product.name}`;
+    const title = `Buy ${product.name} Online`;
 
     const description = product.description.substring(0, 160);
 
 
     return {
+
         title: title,
         description: description,
+
+        robots: {
+            index: true,
+            follow: true,
+        },
+
+
+        alternates: {
+            canonical: `https://bot-rider.vercel.app/product/${id}`,
+        },
+
         openGraph: {
+            type: "website",
             title: title,
             description: description,
             images: [
@@ -68,16 +80,18 @@ export async function generateMetadata({ params, searchParams }: { params: { id:
                     alt: product.name,
                 },
             ],
-            type: "website",
         },
+
         twitter: {
             card: "summary_large_image",
             title: title,
             description: description,
             images: [imageUrl],
         },
+        
     };
-    
+
+
 }
 
 

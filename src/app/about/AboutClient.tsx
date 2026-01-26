@@ -3,9 +3,9 @@
 
 import { motion, Variants } from "framer-motion";
 import { CheckCircle2, Users, ArrowRight, Wrench, Heart, Quote } from "lucide-react";
-import { Button } from "@/app/components/ui/button";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import CountUp from "@/app/components/ui/CountUp";
+import CountUp from "@/components/ui/CountUp";
 
 
 
@@ -283,7 +283,7 @@ export default function AboutClient() {
                             variants={stagger}
                         >
 
-                            <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-black text-gray-900 leading-tight mb-8">
+                            <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-8">
                                 Trust is our <span className="text-transparent bg-clip-text bg-linear-to-r from-red-600 to-red-800">Most Valuable</span> Asset
                             </motion.h2>
 

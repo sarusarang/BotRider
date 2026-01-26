@@ -4,8 +4,8 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, MapPin, Users, Clock, Route, Award } from 'lucide-react';
-import HeroSlider from '@/app/components/events/HeroSlider';
-import CountUp from '@/app/components/events/CountUp';
+import HeroSlider from '@/components/events/HeroSlider';
+import CountUp from '@/components/events/CountUp';
 import { upcomingEvents } from '@/data/events-data';
 
 

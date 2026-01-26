@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { RefreshCcw, PackageX } from "lucide-react";
-import { Button } from "@/app/components/ui/button";
+import { Button } from "@/components/ui/button";
 
 interface EmptyProductsProps {
     onClearFilters: () => void;

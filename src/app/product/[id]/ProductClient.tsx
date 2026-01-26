@@ -2,11 +2,11 @@
 
 import { BikeProduct, AccessoryProduct } from "@/types/product";
 import { useState, useEffect } from "react";
-import { ProductGallery } from "@/app/components/shop/product/ProductGallery";
-import { ProductInfo } from "@/app/components/shop/product/ProductInfo";
-import { ProductDetails } from "@/app/components/shop/product/ProductDetails";
-import { ProductReviews } from "@/app/components/shop/product/ProductReviews";
-import { YouMayAlsoLike } from "@/app/components/shop/product/YouMayAlsoLike";
+import { ProductGallery } from "@/components/shop/product/ProductGallery";
+import { ProductInfo } from "@/components/shop/product/ProductInfo";
+import { ProductDetails } from "@/components/shop/product/ProductDetails";
+import { ProductReviews } from "@/components/shop/product/ProductReviews";
+import { YouMayAlsoLike } from "@/components/shop/product/YouMayAlsoLike";
 import { useTheme } from "@/context/ThemeContext";
 
 

@@ -1,43 +1,125 @@
-import CategorySlider from "@/app/components/home/CategorySlider";
-import VideoShowcase from "@/app/components/home/VideoShowcase";
-import FeaturedCollection from "@/app/components/home/FeaturedCollection";
-import ImmersiveFeatures from "@/app/components/home/ImmersiveFeatures";
-import OurBrands from "@/app/components/home/OurBrands";
-import { BlurFade } from "@/app/components/ui/blur-fade";
+import CategorySlider from "@/components/home/CategorySlider";
+import VideoShowcase from "@/components/home/VideoShowcase";
+import FeaturedCollection from "@/components/home/FeaturedCollection";
+import ImmersiveFeatures from "@/components/home/ImmersiveFeatures";
+import OurBrands from "@/components/home/OurBrands";
+import { BlurFade } from "@/components/ui/blur-fade";
 import type { Metadata } from "next";
+import { serverFetch } from "@/lib/fetcher";
+import { HomeSliderType, ShopBuyType } from "@/types/home";
+import { BikeProduct } from "@/types/product";
 
 
 
+// Site URL for seo
+const siteUrl = "https://bot-rider.vercel.app";
+
+
+// Social image (1200×630) px
+const socialImage = "https://bot-rider.vercel.app/logo.png";
+
+
+// Metadata for about page
 export const metadata: Metadata = {
 
-  title: "Boat Rider",
-  description: "Buy road bikes, mountain bikes, e-bikes & accessories at Boat Rider. Premium cycling gear built for speed and adventure.",
+  metadataBase: new URL(siteUrl),
+
+  title: "Boat Rider - Premium Bicycles & Cycling Community Since 1974",
+
+  description: "Boat Rider has been delivering premium bicycles, expert service, and a passionate cycling community since 1974. Discover our mission, team, and values.",
+
+  applicationName: "Boat Rider",
+
+  keywords: [
+    "Boat Rider",
+    "premium bicycles",
+    "bicycle shop",
+    "cycling community",
+    "bike service",
+    "road bikes",
+    "mountain bikes",
+    "electric bikes",
+  ],
+
+
+  authors: [{ name: "Boat Rider" }],
+  creator: "Boat Rider",
+  publisher: "Boat Rider",
+
 
   openGraph: {
-    title: "Boat Rider — High Performance Cycling Store",
-    description: "Buy road bikes, mountain bikes, e-bikes & accessories at Boat Rider.",
+    title: "Boat Rider - Premium Bicycles & Cycling Community Since 1974",
+    description: "Get in touch with us for any inquiries or questions.",
+    url: `${siteUrl}`,
+    siteName: "Boat Rider",
     images: [
       {
-        url: "https://bot-rider.vercel.app/logo.png",
+        url: socialImage,
         width: 1200,
         height: 630,
-        alt: "Boat Rider",
+        alt: "Boat Rider – Premium cycling community",
       },
     ],
+    locale: "en_US",
+    type: "website",
   },
+
 
   twitter: {
     card: "summary_large_image",
-    title: "Boat Rider — High Performance Cycling Store",
-    description: "Buy road bikes, mountain bikes, e-bikes & accessories at Boat Rider.",
-    images: ["https://bot-rider.vercel.app/logo.png"],
+    title: "Boat Rider - Premium Bicycles & Cycling Community Since 1974",
+    description: "Get in touch with us for any inquiries or questions.",
+    images: [socialImage],
   },
+
+
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+
+
+  alternates: {
+    canonical: `${siteUrl}`,
+  },
+
 
 };
 
 
 
-export default function Home() {
+export default async function Home() {
+
+
+
+  // Fetch product
+  const [HeroSlider, ShopBuy, FeaturedProduct, BrandsImages] = await Promise.all([
+
+    serverFetch<HomeSliderType>(`/ui/home-slider-video/`, {
+      next: { revalidate: 60 * 60 },
+    }),
+
+    serverFetch<ShopBuyType[]>(`/product/shop-buy/`, {
+      next: { revalidate: 60 * 60 },
+    }),
+
+    serverFetch<BikeProduct[]>(`/product/featured-product/`, {
+      next: { revalidate: 60 * 60 },
+    }),
+
+    serverFetch<string[]>(`/product/brands-images/`, {
+      next: { revalidate: 60 * 60 },
+    }),
+
+  ]);
+
 
 
   return (
@@ -47,22 +129,23 @@ export default function Home() {
 
 
 
-      {/* Video Showcase */}
-      <VideoShowcase />
+      {/* Hero Slider */}
+      <VideoShowcase data={HeroSlider} />
 
 
       {/* Category Slider */}
-      <CategorySlider />
+      <CategorySlider data={ShopBuy} />
 
 
       {/* Featured Collection */}
       <BlurFade delay={0.25 * 2} duration={0.5} inView>
-        <FeaturedCollection />
+        <FeaturedCollection data={FeaturedProduct} />
       </BlurFade>
+
 
       {/* Our Brands */}
       <BlurFade delay={0.25 * 4} duration={0.5} inView>
-        <OurBrands />
+        <OurBrands data={BrandsImages} />
       </BlurFade>
 
 

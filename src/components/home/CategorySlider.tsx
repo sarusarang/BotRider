@@ -6,99 +6,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, useInView, Variants } from "framer-motion";
-
-
-
-// 🔥 Categories
-const categories = [
-    {
-        id: 1,
-        title: "Road Bikes",
-        image:
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpDXe0AL5epdD5DOW10Bj_qDzt9PgjUzPNSA&s",
-        link: "/shop/road-bikes",
-    },
-    {
-        id: 2,
-        title: "Electric Bikes",
-        image:
-            "https://hips.hearstapps.com/hmg-prod/images/cyclist-on-the-col-de-la-colombiere-in-the-french-royalty-free-image-1764964920.pjpeg?crop=0.68538xw:1xh;center,top&resize=640:*",
-        link: "/shop/electric-bikes",
-    },
-    {
-        id: 3,
-        title: "Mountain Bikes",
-        image:
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDpMlLlCvViH7NdTlz2M0K2U-IIMHl0kVL5A&s",
-        link: "/shop/mountain-bikes",
-    },
-    {
-        id: 4,
-        title: "Active Bikes",
-        image:
-            "https://www.healthywomen.org/media-library/the-benefits-of-bike-riding.jpg?id=25707828&width=1200&height=800&quality=70&coordinates=0%2C0%2C0%2C0",
-        link: "/shop/active-bikes",
-    },
-    {
-        id: 5,
-        title: "Kids Bikes",
-        image:
-            "https://thumbs.dreamstime.com/b/urban-biking-young-woman-bike-city-60286904.jpg",
-        link: "/shop/kids-bikes",
-    },
-
-    // 🔥 Accessories
-    {
-        id: 6,
-        title: "Helmets",
-        image:
-            "https://www.canyon.com/dw/image/v2/BCML_PRD/on/demandware.static/-/Sites-canyon-storefront/default/dw4ceb097e/category-landing/seo-landing/seo-mens-helmet.jpg?sw=513&sh=513&sm=cut&sfrm=jpg&q=80",
-        link: "/shop/helmets",
-    },
-    {
-        id: 7,
-        title: "Gloves",
-        image:
-            "https://m.media-amazon.com/images/I/71cW-lnr1pL._AC_UF894,1000_QL80_.jpg",
-        link: "/shop/gloves",
-    },
-    {
-        id: 8,
-        title: "Handle Bars",
-        image:
-            "https://upload.wikimedia.org/wikipedia/commons/f/f1/Shimano_105-5500_shifters.jpg",
-        link: "/shop/handle-bars",
-    },
-    {
-        id: 9,
-        title: "Bike Seats",
-        image:
-            "https://m.media-amazon.com/images/I/51qkI6ZdZHL.jpg",
-        link: "/shop/bike-seats",
-    },
-    {
-        id: 10,
-        title: "Cycling Shoes",
-        image:
-            "https://cdn.mos.cms.futurecdn.net/KdWED77rkr49FtNz3zKt8C.jpg",
-        link: "/shop/shoes",
-    },
-    {
-        id: 11,
-        title: "Water Bottles",
-        image:
-            "https://kingcage.com/cdn/shop/files/Screenshot_2025-02-13_at_1.14.49_PM.png?v=1739477901&width=1946",
-        link: "/shop/water-bottles",
-    },
-    {
-        id: 12,
-        title: "Bike Lights",
-        image:
-            "https://contents.mediadecathlon.com/p1918628/k$36262739d342f4cc422bc0f666d84b12/1800x0/1000pt849/2000xcr1429/default.jpg?format=auto",
-        link: "/shop/bike-lights",
-    },
-];
-
+import { ShopBuyType } from "@/types/home";
+import Image from "next/image";
 
 
 
@@ -123,7 +32,7 @@ const item: Variants = {
 
 
 
-export default function CategorySlider() {
+export default function CategorySlider({ data }: { data: ShopBuyType[] }) {
 
 
     const swiperRef = useRef<any>(null);
@@ -218,9 +127,12 @@ export default function CategorySlider() {
                     className="w-full h-[550px]"
                 >
 
-                    {categories.map((cat, index) => (
 
-                        <SwiperSlide key={cat.id} className="h-full">
+                    {data?.map((cat, index) => (
+
+
+                        <SwiperSlide key={cat?.title} className="h-full">
+
 
                             <motion.div
                                 className="h-full"
@@ -230,15 +142,19 @@ export default function CategorySlider() {
                                 custom={index}
                             >
 
+
                                 <Link
-                                    href={cat.link}
+                                    href={`/shop/${cat?.type}/?category=${cat?.title}`}
                                     className="group relative block h-full rounded-3xl overflow-hidden bg-black shadow-xl hover:shadow-2xl transition-all duration-700"
                                 >
 
                                     {/* Image */}
-                                    <img
-                                        src={cat.image}
-                                        alt={cat.title}
+                                    <Image
+                                        src={cat?.image}
+                                        alt={cat?.title}
+                                        loading="lazy"
+                                        width={100}
+                                        height={100}
                                         className="absolute inset-0 w-full h-full object-cover scale-100 group-hover:scale-110 transition-transform duration-1200ms ease-out"
                                     />
 
@@ -257,7 +173,7 @@ export default function CategorySlider() {
 
                                         <div>
                                             <h3 className="text-white text-2xl font-semibold tracking-tight">
-                                                {cat.title}
+                                                {cat?.title}
                                             </h3>
                                             <p className="text-white/60 text-sm mt-1">
                                                 Explore Collection
