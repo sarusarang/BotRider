@@ -12,7 +12,7 @@ export async function generateMetadata({ params, searchParams, }: { params: { sl
 
 
     const isAccessories = slug === "accessories";
-    const hasFilters = Object.keys(searchParams || {}).length > 0;
+    const hasFilters = Object?.keys(searchParams || {}).length > 0;
 
 
     const title = isAccessories ? "Shop Cycling Accessories | Helmets, Lights & Gear" : "Shop Bikes | Road, Mountain & Electric Bikes";
