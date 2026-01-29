@@ -16,7 +16,7 @@ export default function OurBrands({ data }: { data: string[] }) {
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
         >
-            <div className="py-20 bg-white dark:bg-black">
+            <div className="py-16 bg-white dark:bg-black">
 
                 <div className="w-full max-w-5xl mx-auto flex flex-col items-center justify-center text-center space-y-10 px-4">
 
@@ -42,7 +42,7 @@ export default function OurBrands({ data }: { data: string[] }) {
                     </div>
 
                     {/* Logo Carousel */}
-                    <div className="w-full mt-5">
+                    <div className="w-full mt-2">
                         <LogoCarousel data={data} columnCount={6} />
                     </div>
 
