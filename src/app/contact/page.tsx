@@ -3,11 +3,11 @@ import ContactClient from "./ContactClient";
 
 
 // Site URL for seo
-const siteUrl = "https://bot-rider.vercel.app";
+const siteUrl = "https://boatridersports.in/";
 
 
 // Social image (1200×630) px
-const socialImage = "https://bot-rider.vercel.app/logo.png";
+const socialImage = "https://boatridersports.in/logo.png";
 
 
 // Metadata for about page

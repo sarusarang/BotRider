@@ -21,10 +21,10 @@ export async function generateMetadata({ params, searchParams, }: { params: { sl
     const description = isAccessories ? "Browse premium cycling accessories including helmets, lights, locks, and riding gear." : "Explore high-performance road, mountain, and electric bikes built for every rider.";
 
 
-    const canonicalUrl = `https://bot-rider.vercel.app/shop/${slug}`;
+    const canonicalUrl = `https://boatridersports.in/shop/${slug}`;
 
 
-    const ogImage = isAccessories ? "https://bot-rider.vercel.app/logo.png" : "https://bot-rider.vercel.app/logo.png";
+    const ogImage = isAccessories ? "https://boatridersports.in/logo.png" : "https://boatridersports.in/logo.png";
 
 
     return {

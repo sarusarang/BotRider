@@ -67,7 +67,7 @@ export async function generateMetadata({ params, searchParams }: { params: { id:
 
 
         alternates: {
-            canonical: `https://bot-rider.vercel.app/product/${id}`,
+            canonical: `https://boatridersports.in/product/${id}`,
         },
 
         openGraph: {

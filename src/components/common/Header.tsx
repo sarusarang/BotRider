@@ -11,6 +11,7 @@ import { MENU_ITEMS } from '@/data/headerData';
 import MegaMenu from './MegaMenu';
 import MobileDrawer from './MobileDrawer';
 import { useTheme } from "@/context/ThemeContext";
+import SearchModal from './SearchModal';
 
 
 
@@ -165,6 +166,7 @@ export default function Header() {
                   <Link
                     href={item.href}
                     className={`font-semibold transition-colors py-2 ${textColor} hover:text-red-600`}
+                    onClick={() => setActiveDropdown(null)}
                   >
                     {item.name}
                   </Link>
@@ -212,7 +214,7 @@ export default function Header() {
                   {count > 0 && (
                     <Badge
                       variant="destructive"
-                      className="absolute -top-1 -right-1 h-5 min-w-[20px] px-1 flex items-center justify-center rounded-full text-[11px] leading-none"
+                      className="absolute -top-1 -right-1 h-5 min-w-5 px-1 flex items-center justify-center rounded-full text-[11px] leading-none"
                     >
                       {count > 99 ? "99+" : count}
                     </Badge>
@@ -258,7 +260,7 @@ export default function Header() {
 
 
       {/* Search Modal */}
-      {/* <SearchModal open={isSearchOpen} onOpenChange={setIsSearchOpen} /> */}
+      <SearchModal open={isSearchOpen} onOpenChange={setIsSearchOpen} />
 
 
     </>

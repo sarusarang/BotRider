@@ -78,7 +78,7 @@ export function ProductDetails({ product, activeAccordion, toggleAccordion }: Pr
 
                         <button
                             onClick={() => toggleAccordion("specs")}
-                            className="w-full flex items-center justify-between py-6 text-left px-2 -mx-2 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors"
+                            className="w-full flex items-center justify-between py-6 text-left px-2 -mx-2 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors hover:cursor-pointer"
                         >
 
                             <span className="font-bold text-xl sm:text-2xl text-zinc-900 dark:text-white">

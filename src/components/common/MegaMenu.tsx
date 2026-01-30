@@ -145,7 +145,7 @@ export default function MegaMenu({ activeDropdown, setActiveDropdown, isDark = f
                                     <div className="col-span-3 space-y-8">
 
                                         <div className="relative">
-                                            <Skeleton className="w-full h-[200px] rounded-2xl" />
+                                            <Skeleton className="w-full h-50 rounded-2xl" />
                                             <div className="absolute inset-0 bg-linear-to-t from-black/20 to-transparent rounded-2xl" />
                                         </div>
 
@@ -283,7 +283,7 @@ export default function MegaMenu({ activeDropdown, setActiveDropdown, isDark = f
 
 
                                                     {/* ===== HERO ===== */}
-                                                    <div className="relative w-full h-[200px] rounded-2xl overflow-hidden shadow-sm">
+                                                    <div className="relative w-full h-50 rounded-2xl overflow-hidden shadow-sm">
 
 
                                                         <img

@@ -18,8 +18,8 @@ const SOCIAL_LINKS = [
 // Quick Links
 const QUICK_LINKS = [
   { name: 'Home', href: '/' },
-  { name: 'Bikes', href: '/bikes' },
-  { name: 'Accessories', href: '/accessories' },
+  { name: 'Bikes', href: '/shop/bikes' },
+  { name: 'Accessories', href: '/shop/accessories' },
   { name: 'About Us', href: '/about' },
   { name: 'Contact', href: '/contact' },
 ];
@@ -123,12 +123,12 @@ export default function Footer() {
 
               <li className="flex items-center space-x-3">
                 <Phone className="w-5 h-5 text-red-600 shrink-0" />
-                <span>0495 4850666</span>
+                <a href="tel:04954850666" target='_blank' className="text-white hover:text-red-600 transition-colors">0495 4850666</a>
               </li>
 
               <li className="flex items-center space-x-3">
                 <Mail className="w-5 h-5 text-red-600 shrink-0" />
-                <span>boatridersportsclt@gmail.com</span>
+                <a href="mailto:boatridersportsclt@gmail.com" target='_blank' className="text-white hover:text-red-600 transition-colors">boatridersportsclt@gmail.com</a>
               </li>
 
             </ul>

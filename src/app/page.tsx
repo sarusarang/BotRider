@@ -12,11 +12,12 @@ import { BikeProduct } from "@/types/product";
 
 
 // Site URL for seo
-const siteUrl = "https://bot-rider.vercel.app";
+const siteUrl = "https://boatridersports.in/";
 
 
 // Social image (1200×630) px
-const socialImage = "https://bot-rider.vercel.app/logo.png";
+const socialImage = "https://boatridersports.in/logo.png";
+
 
 
 // Metadata for about page
@@ -49,7 +50,7 @@ export const metadata: Metadata = {
 
   openGraph: {
     title: "Boat Rider - Premium Bicycles & Cycling Community Since 1974",
-    description: "Get in touch with us for any inquiries or questions.",
+    description: "Boat Rider has been delivering premium bicycles, expert service, and a passionate cycling community since 1974. Discover our mission, team, and values.",
     url: `${siteUrl}`,
     siteName: "Boat Rider",
     images: [
@@ -68,7 +69,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Boat Rider - Premium Bicycles & Cycling Community Since 1974",
-    description: "Get in touch with us for any inquiries or questions.",
+    description: "Boat Rider has been delivering premium bicycles, expert service, and a passionate cycling community since 1974. Discover our mission, team, and values.",
     images: [socialImage],
   },
 
