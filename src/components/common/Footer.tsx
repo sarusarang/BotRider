@@ -27,9 +27,11 @@ const QUICK_LINKS = [
 
 // Legal Links
 const LEGAL_LINKS = [
-  { name: 'Privacy Policy', href: '/privacy' },
-  { name: 'Terms of Service', href: '/terms' },
-  { name: 'Shipping & Returns', href: '/shipping' },
+  { name: 'Privacy Policy', href: '/privacy-policy' },
+  { name: 'Terms & Conditions', href: '/terms-and-conditions' },
+  { name: 'Shipping Policy', href: '/shipping-policy' },
+  { name: 'Return & Refund Policy', href: '/return-refund-policy' },
+  { name: 'Cookie Policy', href: '/cookie-policy' },
 ];
 
 

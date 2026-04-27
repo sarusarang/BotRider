@@ -24,6 +24,21 @@ export const metadata: Metadata = {
   description: "Boat Rider is a premium cycling store for high-performance bikes, accessories, and riding gear.",
 
 
+  keywords: [
+      "premium chairs",
+      "office chairs",
+      "executive chairs",
+      "furniture store",
+      "modern seating",
+      "home furniture",
+  ],
+
+
+  authors: [{ name: "Boat Rider" }],  
+  creator: "Boat Rider",
+  publisher: "Boat Rider",
+
+
   alternates: {
     canonical: "https://bot-rider.vercel.app",
   },
