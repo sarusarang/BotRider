@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { X, ChevronRight, User, Search, ShoppingBag } from 'lucide-react';
+import { X, ChevronRight, User, Search, ShoppingBag, Badge } from 'lucide-react';
 import { useGetNavbarData } from '@/service/product/useProduct';
 import { MENU_ITEMS } from '@/data/headerData';
 
@@ -13,12 +13,20 @@ interface MobileDrawerProps {
     onSearchOpen: () => void;
 }
 
+
+
 export default function MobileDrawer({ isOpen, onClose, onSearchOpen }: MobileDrawerProps) {
+
+
     // Get Navbar Data from API
     const { data: navbarData } = useGetNavbarData();
 
+
+
     // Helper function to get dropdown content based on category name
     const getDropdownContent = (categoryName: string) => {
+    
+    
         if (!navbarData) return [];
 
         if (categoryName === 'Bikes') {
@@ -135,12 +143,16 @@ export default function MobileDrawer({ isOpen, onClose, onSearchOpen }: MobileDr
                                     <Search className="w-6 h-6" />
                                     <span className="text-xs">Search</span>
                                 </button>
+
                                 <Link href="/cart" className="flex flex-col items-center gap-1 text-gray-600">
                                     <ShoppingBag className="w-6 h-6" />
                                     <span className="text-xs">Cart</span>
                                 </Link>
+
                             </div>
+
                         </div>
+
                     </motion.div>
                 </>
             )}

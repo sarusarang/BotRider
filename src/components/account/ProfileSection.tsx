@@ -1,14 +1,62 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { currentUser, accountStats } from '@/data/account-data';
-import { Package, MapPin, Mail, Phone, ShoppingCart } from 'lucide-react';
-
-
+import { Package, MapPin, Mail, Phone, ShoppingCart, Loader2, AlertCircle } from 'lucide-react';
+import { useCheckLogin } from '@/service/auth/useAuth';
 
 
 
 export default function ProfileSection() {
+
+
+    // fetch user data
+    const { data, isLoading, isError } = useCheckLogin();
+
+
+
+    // Error Ui
+    if (isError) {
+
+        return (
+
+            <div className="flex justify-center py-12 px-4">
+                <div className="flex flex-col justify-center items-center gap-3 bg-white px-5 py-4">
+                   
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-red-50">
+                        <AlertCircle className="h-10 w-10 text-red-500" />
+                    </div>
+
+                    <div className="text-center">
+                        <p className="text-md font-semibold text-slate-900">
+                            Something went wrong !
+                        </p>
+                        <p className="text-sm text-slate-500">
+                            Failed to load your profile. Please try again later
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        )
+
+    }
+
+
+
+    // Loading State
+    if (isLoading) {
+
+        return (
+
+            <div className="flex justify-center py-12">
+
+                <Loader2 className="w-8 h-8 animate-spin text-gray-900" />
+
+            </div>
+
+        );
+
+    }
 
 
     return (
@@ -73,19 +121,21 @@ export default function ProfileSection() {
                     {/* User Info */}
                     <div className="flex-1">
 
-                        <h2 className="text-2xl font-bold mb-2">{currentUser.name}</h2>
+                        <h2 className="text-2xl font-bold mb-2">{data?.user?.username}</h2>
 
                         <div className="flex flex-col sm:flex-row gap-4 text-sm text-gray-300">
 
                             <div className="flex items-center gap-2">
                                 <Mail className="w-4 h-4" />
-                                <span>{currentUser.email}</span>
+                                <span>{data?.user?.email}</span>
                             </div>
 
-                            <div className="flex items-center gap-2">
-                                <Phone className="w-4 h-4" />
-                                <span>{currentUser.phone}</span>
-                            </div>
+                            {data?.user?.phone && (
+                                <div className="flex items-center gap-2">
+                                    <Phone className="w-4 h-4" />
+                                    <span>{data?.user?.phone}</span>
+                                </div>
+                            )}
 
                         </div>
 
@@ -117,7 +167,7 @@ export default function ProfileSection() {
                         </div>
 
                         <div>
-                            <p className="text-2xl font-bold text-gray-900">{accountStats.totalOrders}</p>
+                            <p className="text-2xl font-bold text-gray-900">{data?.user?.total_orders}</p>
                             <p className="text-sm text-gray-600 font-medium">Total Orders</p>
                         </div>
 
@@ -142,7 +192,7 @@ export default function ProfileSection() {
                         </div>
 
                         <div>
-                            <p className="text-2xl font-bold text-gray-900">{accountStats.savedAddresses}</p>
+                            <p className="text-2xl font-bold text-gray-900">{data?.user?.address_count}</p>
                             <p className="text-sm text-gray-600 font-medium">Addresses</p>
                         </div>
 
@@ -163,7 +213,7 @@ export default function ProfileSection() {
                             <ShoppingCart className="w-6 h-6 text-red-600" />
                         </div>
                         <div>
-                            <p className="text-2xl font-bold text-gray-900">{accountStats.wishlistItems}</p>
+                            <p className="text-2xl font-bold text-gray-900">{data?.user?.cart_count}</p>
                             <p className="text-sm text-gray-600 font-medium">Cart</p>
                         </div>
                     </div>
@@ -186,7 +236,7 @@ export default function ProfileSection() {
                         </div>
 
                         <div>
-                            <p className="text-2xl font-bold text-gray-900">₹{(accountStats.totalSpent / 1000).toFixed(0)}k</p>
+                            <p className="text-2xl font-bold text-gray-900">₹{data?.user?.total_spend.toLocaleString()}</p>
                             <p className="text-sm text-gray-600 font-medium">Total Spent</p>
                         </div>
 

@@ -2,16 +2,16 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { addresses } from '@/data/account-data';
-import { MapPin, Home, Briefcase, Plus, Edit2, Trash2, Check } from 'lucide-react';
-import type { Address } from '@/data/account-data';
+import { MapPin, Home, Briefcase, Plus, Edit2, Trash2, Check, Loader2, AlertCircle } from 'lucide-react';
+import { useGetAddresses, useDeleteAddress } from '@/service/profile/useProfile';
+import { UserAddress } from '@/service/profile/types';
 import AddressFormModal from './AddressFormModal';
 
 
 
 // get address icon based on type
-const getAddressIcon = (type: Address['type']) => {
-    switch (type) {
+const getAddressIcon = (type: string) => {
+    switch (type?.toLowerCase()) {
         case 'home':
             return <Home className="w-5 h-5" />;
         case 'work':
@@ -24,8 +24,8 @@ const getAddressIcon = (type: Address['type']) => {
 
 
 // get address color based on type
-const getAddressColor = (type: Address['type']) => {
-    switch (type) {
+const getAddressColor = (type: string) => {
+    switch (type?.toLowerCase()) {
         case 'home':
             return 'bg-blue-100 text-blue-600';
         case 'work':
@@ -39,21 +39,89 @@ const getAddressColor = (type: Address['type']) => {
 
 
 export default function AddressesSection() {
+
+
+
+    // Modal state
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedAddress, setSelectedAddress] = useState<Address | undefined>(undefined);
+    const [selectedAddress, setSelectedAddress] = useState<UserAddress | undefined>(undefined);
     const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
 
+
+
+    // API calls
+    const { data: addresses, isLoading, isError } = useGetAddresses();
+    const deleteMutation = useDeleteAddress();
+
+
+
+    // handlers
     const handleAddAddress = () => {
         setSelectedAddress(undefined);
         setModalMode('add');
         setIsModalOpen(true);
     };
 
-    const handleEditAddress = (address: Address) => {
+
+
+    // handle edit
+    const handleEditAddress = (address: UserAddress) => {
         setSelectedAddress(address);
         setModalMode('edit');
         setIsModalOpen(true);
     };
+
+
+    // delete handler
+    const handleDeleteAddress = (unique_id: string) => {
+        if (window.confirm("Are you sure you want to delete this address?")) {
+            deleteMutation.mutate(unique_id);
+        }
+    };
+
+
+
+    // Error Ui
+    if (isError) {
+
+        return (
+
+            <div className="flex justify-center py-12 px-4">
+                <div className="flex flex-col justify-center items-center gap-3 bg-white px-5 py-4">
+
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-red-50">
+                        <AlertCircle className="h-10 w-10 text-red-500" />
+                    </div>
+
+                    <div className="text-center">
+                        <p className="text-md font-semibold text-slate-900">
+                            Something went wrong !
+                        </p>
+                        <p className="text-sm text-slate-500">
+                            Failed to load your addresses. Please try again later
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        )
+
+    }
+
+
+    // loading state
+    if (isLoading) {
+        return (
+            <div className="flex justify-center py-12">
+                <Loader2 className="w-8 h-8 animate-spin text-gray-900" />
+            </div>
+        );
+    }
+
+
+    const safeAddresses = addresses || [];
+
+
 
     return (
         <>
@@ -86,7 +154,7 @@ export default function AddressesSection() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
 
-                    {addresses.map((address, index) => (
+                    {safeAddresses.map((address, index) => (
 
 
                         <motion.div
@@ -98,7 +166,7 @@ export default function AddressesSection() {
                         >
 
                             {/* Default Badge */}
-                            {address.isDefault && (
+                            {address.is_default && (
                                 <div className="absolute top-0 right-0">
                                     <div className="bg-linear-to-br from-green-500 to-emerald-600 text-white px-4 py-1.5 rounded-bl-2xl rounded-tr-2xl flex items-center gap-1.5 text-xs font-semibold shadow-lg">
                                         <Check className="w-3.5 h-3.5" />
@@ -109,8 +177,8 @@ export default function AddressesSection() {
 
 
                             {/* Address Type Icon */}
-                            <div className={`w-12 h-12 rounded-xl ${getAddressColor(address.type)} flex items-center justify-center mb-4`}>
-                                {getAddressIcon(address.type)}
+                            <div className={`w-12 h-12 rounded-xl ${getAddressColor(address.address_type)} flex items-center justify-center mb-4`}>
+                                {getAddressIcon(address.address_type)}
                             </div>
 
 
@@ -118,19 +186,18 @@ export default function AddressesSection() {
                             <div className="mb-4">
 
                                 <div className="flex items-center gap-2 mb-2">
-                                    <h3 className="text-lg font-bold text-gray-900 capitalize">{address.type}</h3>
+                                    <h3 className="text-lg font-bold text-gray-900 capitalize">{address.address_type}</h3>
                                 </div>
 
                                 <p className="font-semibold text-gray-900 mb-1">{address.name}</p>
 
                                 <p className="text-sm text-gray-600 leading-relaxed">
-                                    {address.addressLine1}
-                                    {address.addressLine2 && `, ${address.addressLine2}`}
+                                    {address.address}
                                     <br />
                                     {address.city}, {address.state} - {address.pincode}
                                 </p>
 
-                                <p className="text-sm text-gray-600 mt-2">{address.phone}</p>
+                                <p className="text-sm text-gray-600 mt-2">{address.phone_number}</p>
 
                             </div>
 
@@ -149,9 +216,11 @@ export default function AddressesSection() {
                                 </motion.button>
 
                                 <motion.button
+                                    onClick={() => handleDeleteAddress(address.unique_id)}
+                                    disabled={deleteMutation.isPending}
                                     whileHover={{ scale: 1.05 }}
                                     whileTap={{ scale: 0.95 }}
-                                    className="px-4 py-2.5 bg-red-50 text-red-600 rounded-xl font-semibold flex items-center justify-center gap-2 hover:bg-red-100 transition-colors"
+                                    className="px-4 py-2.5 bg-red-50 text-red-600 rounded-xl font-semibold flex items-center justify-center gap-2 hover:bg-red-100 transition-colors disabled:opacity-50"
                                 >
                                     <Trash2 className="w-4 h-4" />
                                 </motion.button>
@@ -168,7 +237,7 @@ export default function AddressesSection() {
                         onClick={handleAddAddress}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: addresses.length * 0.1 }}
+                        transition={{ delay: safeAddresses.length * 0.1 }}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                         className="bg-linear-to-br from-gray-50 to-gray-100 rounded-2xl border-2 border-dashed border-gray-300 p-6 hover:border-gray-400 hover:from-gray-100 hover:to-gray-200 transition-all min-h-[280px] flex flex-col items-center justify-center gap-4 group"

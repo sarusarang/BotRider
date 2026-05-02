@@ -3,8 +3,11 @@
 import { motion } from 'framer-motion';
 import { User, Package, MapPin, LogOut } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useLogout } from '@/service/auth/useAuth';
 
 
+
+// menu items
 interface MenuItem {
     id: string;
     label: string;
@@ -14,7 +17,7 @@ interface MenuItem {
 
 
 
-
+// account sidebar props
 interface AccountSidebarProps {
     activeSection: string;
     onSectionChange: (section: string) => void;
@@ -24,17 +27,27 @@ interface AccountSidebarProps {
 
 
 
-
+// account sidebar
 export default function AccountSidebar({ activeSection, onSectionChange, isMobileMenuOpen = false, onCloseMobileMenu }: AccountSidebarProps) {
-
-
+    
+    
     const router = useRouter();
+    const logoutMutation = useLogout();
 
 
     // Handle logout
     const handleLogout = () => {
-        console.log('Logging out...');
-        router.push('/');
+    
+        logoutMutation.mutate(undefined, {
+
+            onSuccess: () => {
+            
+                router.push('/');
+            
+            }
+    
+        });
+    
     };
 
 
@@ -47,17 +60,23 @@ export default function AccountSidebar({ activeSection, onSectionChange, isMobil
     ];
 
 
-
     // Handle menu click
     const handleMenuClick = (item: MenuItem) => {
+       
         if (item.action) {
+       
             item.action();
+       
         } else {
+       
             onSectionChange(item.id);
         }
         if (onCloseMobileMenu) {
+       
             onCloseMobileMenu();
+       
         }
+    
     };
 
 
@@ -65,9 +84,12 @@ export default function AccountSidebar({ activeSection, onSectionChange, isMobil
     // Desktop Sidebar
     const DesktopSidebar = () => (
 
+
         <div className="hidden lg:block w-72 shrink-0">
 
+
             <div className="sticky top-24">
+
 
                 <motion.div
                     initial={{ opacity: 0, x: -20 }}
@@ -75,9 +97,12 @@ export default function AccountSidebar({ activeSection, onSectionChange, isMobil
                     className="bg-white rounded-2xl border border-gray-200 p-4 shadow-sm"
                 >
 
+
                     <nav className="space-y-2">
 
+
                         {menuItems.map((item, index) => (
+
 
                             <motion.button
                                 key={item.id}

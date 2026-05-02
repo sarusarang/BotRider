@@ -20,6 +20,7 @@ export interface BaseProduct {
     background_color: string | null;
     text_color: string | null;
     created: string | Date;
+    online_purchase_enabled: boolean
 }
 
 
