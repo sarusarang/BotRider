@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { ShoppingBag } from "lucide-react";
+import { Loader2, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { getBadgeStyle } from "@/hooks/badge";
@@ -315,8 +315,8 @@ export default function ProductCard({ product, className, hideAddToCart, height,
                         >
                             <span className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition duration-500" />
                             <span className="relative z-10 flex items-center gap-2">
-                                <ShoppingBag className="w-4 h-4" />
-                                Add to Cart
+                                {addToCartMutation.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <ShoppingBag className="w-4 h-4" />}
+                                {addToCartMutation.isPending ? "Adding to Cart..." : "Add to Cart"}
                             </span>
                         </motion.button>
 

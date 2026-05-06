@@ -3,9 +3,11 @@
 import { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, MapPin, Home, Briefcase } from 'lucide-react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import PhoneInput from 'react-phone-number-input';
+import 'react-phone-number-input/style.css';
 import { UserAddress } from '@/service/profile/types';
 import { useAddAddress, useUpdateAddress } from '@/service/profile/useProfile';
 
@@ -54,6 +56,7 @@ export default function AddressFormModal({ isOpen, onClose, address, mode }: Add
         setValue,
         watch,
         reset,
+        control,
         formState: { errors }
     } = useForm<AddressFormValues>({
         resolver: zodResolver(addressSchema),
@@ -112,8 +115,9 @@ export default function AddressFormModal({ isOpen, onClose, address, mode }: Add
     
     
         const data = new FormData();
+        
         data.append('name', formData.name);
-        data.append('phone_number', formData.phone);
+        data.append('phone_number', formData.phone || '');
         data.append('address_type', formData.type.charAt(0).toUpperCase() + formData.type.slice(1));
         data.append('address', formData.address);
         data.append('city', formData.city);
@@ -239,12 +243,22 @@ export default function AddressFormModal({ isOpen, onClose, address, mode }: Add
                                             <label className="block text-sm font-semibold text-gray-900 mb-2">
                                                 Phone Number *
                                             </label>
-                                            <input
-                                                type="tel"
-                                                {...register('phone')}
-                                                placeholder="+91 98765 43210"
-                                                className={`w-full px-4 py-3 border ${errors.phone ? 'border-red-500 focus:ring-red-500' : 'border-gray-200 focus:ring-gray-900'} rounded-xl focus:outline-none focus:ring-2 focus:border-transparent`}
-                                            />
+                                            <div className={`w-full bg-white border ${errors.phone ? 'border-red-500 focus-within:ring-red-500' : 'border-gray-200 focus-within:ring-gray-900'} rounded-xl focus-within:ring-2 focus-within:border-transparent px-4 py-3 transition-shadow`}>
+                                                <Controller
+                                                    name="phone"
+                                                    control={control}
+                                                    render={({ field: { onChange, value } }) => (
+                                                        <PhoneInput
+                                                            placeholder="Enter phone number"
+                                                            value={value}
+                                                            onChange={onChange}
+                                                            defaultCountry="IN"
+                                                            className="w-full bg-transparent outline-none focus:outline-none"
+                                                            style={{ outline: 'none' }}
+                                                        />
+                                                    )}
+                                                />
+                                            </div>
                                             {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone.message}</p>}
                                         </div>
                                     </div>

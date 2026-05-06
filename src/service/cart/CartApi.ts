@@ -35,7 +35,7 @@ export const DeleteCartItemApi = async (cart_item_id: string, product_type: stri
 // Update Cart Item
 export const UpdateCartItemApi = async (data: FormData) => {
 
-    return await CommonApi("PATCH", `/cart/update-cart-item-quantity/`, data);
+    return await CommonApi("PATCH", `/cart/update-cart-item/`, data);
 
 }
 
@@ -45,5 +45,23 @@ export const UpdateCartItemApi = async (data: FormData) => {
 export const DeleteAllCartItemsApi = async () => {
 
     return await CommonApi("DELETE", `/cart/delete-all-cart-items/`);
+
+}
+
+
+
+//Cart checkout Api
+export const CartCheckoutApi = async (data: FormData) => {
+
+    return await CommonApi("POST", `/order/create-order/`, data);
+
+}
+
+
+
+// Verify Order Payment
+export const VerifyOrderPaymentApi = async (data: FormData) => {
+
+    return await CommonApi("POST", `/order/verify-order/`, data);
 
 }

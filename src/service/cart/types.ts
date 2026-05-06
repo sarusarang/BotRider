@@ -12,7 +12,10 @@ export interface CartItemBike {
     discount_price: string;
     discount_percentage: string;
     featured_image: string | null;
-    brand: number;
+    brand: string;
+    category?: string;
+    sizes?: any[];
+    bike_colors?: CartItemColor[];
 }
 
 export interface CartItemAccessory {
@@ -29,7 +32,8 @@ export interface CartItemAccessory {
     discount_price: string;
     discount_percentage: string;
     featured_image: string | null;
-    brand: number;
+    brand: string;
+    accessory_images?: string[];
 }
 
 export interface CartItemSize {
@@ -39,7 +43,9 @@ export interface CartItemSize {
 
 export interface CartItemColor {
     id: number;
-    color: number;
+    color: string;
+    bike_images?: string[];
+    bike?: number;
 }
 
 export interface CartProduct {
@@ -52,13 +58,17 @@ export interface CartProduct {
     user_cart: number;
 }
 
+
 export interface CartResponse {
     id: number;
     total_products: number;
     total_amount: number;
+    orginal_amount: number;
+    total_discount: number;
     total_bikes: number;
     total_accessories: number;
     all_products: CartProduct[];
+    shipping_charge: number;
     unique_id: string;
     user: number;
 }

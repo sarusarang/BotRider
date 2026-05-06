@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { AddToCartApi, DeleteAllCartItemsApi, DeleteCartItemApi, GetCartListApi, UpdateCartItemApi } from "./CartApi";
+import { AddToCartApi, DeleteAllCartItemsApi, DeleteCartItemApi, GetCartListApi, UpdateCartItemApi, CartCheckoutApi, VerifyOrderPaymentApi } from "./CartApi";
 import { CartResponse } from "./types";
 
 
@@ -147,6 +147,64 @@ export const useDeleteAllCartItems = () => {
         onError: (error: any) => {
 
             toast.error(error?.message || "Failed to clear cart");
+
+        }
+
+    });
+
+};
+
+
+
+
+// Cart Checkout
+export const useCartCheckout = () => {
+
+
+
+    return useMutation({
+
+        mutationFn: async (data: FormData) => {
+
+            return await CartCheckoutApi(data);
+
+        },
+
+        onError: (error: any) => {
+
+            toast.error(error?.message || "Failed to checkout");
+
+        }
+
+    });
+
+};
+
+
+
+// Verify Order Payment
+export const useVerifyOrderPayment = () => {
+
+    const queryClient = useQueryClient();
+
+    return useMutation({
+
+        mutationFn: async (data: FormData) => {
+
+            return await VerifyOrderPaymentApi(data);
+
+        },
+
+        onSuccess: () => {
+
+            queryClient.invalidateQueries({ queryKey: ["cart-list"] });
+            toast.success("Order placed successfully!");
+
+        },
+
+        onError: (error: any) => {
+
+            toast.error(error?.message || "Failed to verify payment");
 
         }
 

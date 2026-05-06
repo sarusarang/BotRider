@@ -25,13 +25,28 @@ export default function CartPage() {
 
 
     // Update cart item from API
-    const updateQuantity = (item: CartProduct, newQuantity: number) => {
-        if (newQuantity < 1) return;
+    const updateCartItem = (item: CartProduct, newQuantity?: number, newColorId?: string, newSizeId?: string) => {
+
+        const qty = newQuantity !== undefined ? newQuantity : item.quantity;
+
+        if (qty < 1) return;
+
         const formData = new FormData();
         formData.append("cart_item_id", item?.id?.toString());
         const product_type = item?.bike ? "bike" : "accessories";
         formData.append("product_type", product_type);
-        formData.append("quantity", newQuantity?.toString());
+        formData.append("quantity", qty.toString());
+
+        if (item.bike) {
+
+            const colorId = newColorId !== undefined ? newColorId : item?.color?.color;
+            const sizeId = newSizeId !== undefined ? newSizeId : item?.size?.size;
+            if (colorId) formData.append("product_color", colorId);
+            if (sizeId) formData.append("product_size", sizeId);
+
+        }
+
+
         updateMutation?.mutate(formData);
     };
 
@@ -57,23 +72,17 @@ export default function CartPage() {
 
 
     // Calculate totals based on UI logic
-    let subtotal = 0;
-
-    allProducts?.forEach(item => {
-
-        const product = item?.bike || item?.accessory;
-
-        if (product) {
-            const price = product?.is_discount ? Number(product?.discount_price) : Number(product?.price);
-            subtotal += price * item?.quantity;
-        }
-
-    });
+    const originalTotal = cartData?.orginal_amount || 0;
+    const totalDiscount = cartData?.total_discount || 0;
+    const subtotal = cartData?.total_amount || 0;
+    const shipping = cartData?.shipping_charge || 0;
+    const total = subtotal + shipping;
 
 
-    const tax = subtotal * 0.18;
-    const shipping = subtotal > 5000 ? 0 : 500;
-    const total = subtotal + tax + shipping;
+    const hasBikes = (cartData?.total_bikes || 0) > 0;
+    const hasAccessories = (cartData?.total_accessories || 0) > 0;
+    const freeShippingThreshold = hasBikes ? 10000 : (hasAccessories ? 1000 : 0);
+    const remainingForFreeShipping = freeShippingThreshold - subtotal;
 
 
 
@@ -185,18 +194,38 @@ export default function CartPage() {
                         </button>
                     </div>
 
+
+
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+
+
                         {/* Cart Items */}
                         <div className="lg:col-span-2 space-y-4">
+
                             <AnimatePresence mode="popLayout">
+
+
                                 {allProducts?.map((item, index) => {
+
                                     const product = item?.bike || item?.accessory;
+
                                     if (!product) return null;
 
                                     const price = product?.is_discount ? Number(product?.discount_price) : Number(product?.price);
                                     const originalPrice = Number(product?.price);
 
+                                    let imageUrl = product?.featured_image;
+
+                                    if (item?.bike && item?.color?.bike_images?.[0]) {
+                                        imageUrl = item.color.bike_images[0];
+
+                                    } else if (item?.accessory && item?.accessory?.accessory_images?.[0]) {
+                                        imageUrl = item.accessory.accessory_images[0];
+                                    }
+
+
                                     return (
+
                                         <motion.div
                                             key={item.id}
                                             initial={{ opacity: 0, y: 20 }}
@@ -205,26 +234,43 @@ export default function CartPage() {
                                             transition={{ delay: index * 0.05 }}
                                             className="bg-white rounded-2xl border border-gray-200 p-4 md:p-6 hover:shadow-lg transition-shadow"
                                         >
+
                                             <div className="flex gap-4 md:gap-6">
+
                                                 {/* Product Image */}
                                                 <Link href={`/product/${product?.id}?type=${product?.product_type}`} className="shrink-0">
+
                                                     <div className="w-24 h-24 md:w-32 md:h-32 rounded-xl bg-gray-50 overflow-hidden group flex items-center justify-center">
-                                                        {product?.featured_image ? (
+
+                                                        {imageUrl ? (
+
                                                             <img
-                                                                src={product?.featured_image}
+                                                                src={imageUrl}
                                                                 alt={product?.name}
                                                                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                                                             />
+
                                                         ) : (
+
                                                             <ShoppingBag className="w-8 h-8 text-gray-300" />
+
                                                         )}
+
                                                     </div>
+
                                                 </Link>
 
                                                 {/* Product Details */}
                                                 <div className="flex-1 min-w-0">
+
                                                     <div className="flex justify-between gap-4 mb-2">
+
                                                         <div className="flex-1 min-w-0">
+
+                                                            <div className="text-xs text-gray-500 mb-1 uppercase font-semibold tracking-wider">
+                                                                {product?.product_type === 'bike' ? 'Bike' : 'Accessory'} • {product?.brand}
+                                                            </div>
+
                                                             <Link href={`/product/${product?.id}?type=${product?.product_type}`}>
                                                                 <h3 className="font-bold text-gray-900 mb-2 line-clamp-2 text-sm md:text-base">
                                                                     {product?.name}
@@ -250,14 +296,74 @@ export default function CartPage() {
                                                                 </div>
                                                             </div>
 
+
+
                                                             {/* Selected Options */}
                                                             <div className="flex flex-wrap gap-2 mb-2">
-                                                                {item?.size && (
+
+                                                                {item?.bike && (
+
+                                                                    <div className="flex gap-2 items-center flex-wrap">
+
+
+                                                                        {/* Size */}
+                                                                        <select
+                                                                            value={item?.size?.size || ''}
+                                                                            onChange={(e) => updateCartItem(item, undefined, undefined, e.target.value)}
+                                                                            disabled={updateMutation?.isPending}
+                                                                            className="px-2 py-1 bg-gray-50 border border-gray-200 rounded-lg text-xs text-gray-700 font-medium focus:outline-none focus:ring-1 focus:ring-gray-900 cursor-pointer disabled:opacity-50"
+                                                                        >
+
+                                                                            <option value="" disabled>Size</option>
+
+                                                                            {item.size && <option value={item.size.size}>{item.size.size || `Size ${item.size.id}`}</option>}
+
+                                                                            {item.bike.sizes?.map((sizeObj: any) => {
+                                                                                const sizeId = typeof sizeObj === 'object' ? sizeObj.id : sizeObj;
+                                                                                const sizeStr = typeof sizeObj === 'object' ? (sizeObj.size || sizeObj.name) : sizeObj.toString();
+                                                                                const sizeValue = sizeStr.startsWith('S') || typeof sizeObj === 'object' ? sizeStr : `S${sizeStr}`;
+                                                                                const sizeLabel = typeof sizeObj === 'object' ? (sizeObj.size || sizeObj.name) : `Size ${sizeValue}`;
+                                                                                if (sizeValue === item?.size?.size) return null;
+                                                                                return <option key={sizeId} value={sizeValue}>{sizeLabel}</option>;
+                                                                            })}
+
+                                                                        </select>
+
+
+                                                                        {/* Color  */}
+                                                                        <select
+                                                                            value={item?.color?.color || ''}
+                                                                            onChange={(e) => updateCartItem(item, undefined, e.target.value, undefined)}
+                                                                            disabled={updateMutation?.isPending}
+                                                                            className="px-2 py-1 bg-gray-50 border border-gray-200 rounded-lg text-xs text-gray-700 font-medium focus:outline-none focus:ring-1 focus:ring-gray-900 cursor-pointer disabled:opacity-50"
+                                                                        >
+
+                                                                            <option value="" disabled>Color</option>
+
+                                                                            {item.color && <option value={item.color.color}>{item.color.color || `Color ${item.color.id}`}</option>}
+
+                                                                            {item.bike.bike_colors?.map((colorObj: any) => {
+                                                                                const colorId = typeof colorObj === 'object' ? colorObj.id : colorObj;
+                                                                                const colorValue = typeof colorObj === 'object' ? (colorObj.color || colorObj.name) : colorObj.toString();
+                                                                                const colorLabel = typeof colorObj === 'object' ? (colorObj.color || colorObj.name) : `Color ${colorObj}`;
+                                                                                if (colorValue === item?.color?.color) return null;
+                                                                                return <option key={colorId} value={colorValue}>{colorLabel}</option>;
+                                                                            })}
+
+                                                                        </select>
+
+                                                                    </div>
+                                                                )}
+
+
+                                                                {item?.accessory && item?.size && (
                                                                     <span className="px-2 py-1 bg-gray-100 rounded-lg text-xs text-gray-700 font-medium">
                                                                         Size: {item?.size?.size}
                                                                     </span>
                                                                 )}
+
                                                             </div>
+
                                                         </div>
 
                                                         {/* Remove Button - Desktop */}
@@ -276,7 +382,7 @@ export default function CartPage() {
                                                         <div className="flex items-center gap-3">
                                                             <div className="flex items-center border border-gray-200 rounded-lg">
                                                                 <button
-                                                                    onClick={() => updateQuantity(item, item?.quantity - 1)}
+                                                                    onClick={() => updateCartItem(item, item?.quantity - 1)}
                                                                     disabled={updateMutation?.isPending}
                                                                     className="p-2 hover:bg-gray-50 transition-colors disabled:opacity-50"
                                                                 >
@@ -286,7 +392,7 @@ export default function CartPage() {
                                                                     {item?.quantity}
                                                                 </span>
                                                                 <button
-                                                                    onClick={() => updateQuantity(item, item?.quantity + 1)}
+                                                                    onClick={() => updateCartItem(item, item?.quantity + 1)}
                                                                     disabled={updateMutation?.isPending}
                                                                     className="p-2 hover:bg-gray-50 transition-colors disabled:opacity-50"
                                                                 >
@@ -348,6 +454,14 @@ export default function CartPage() {
                                 {/* Price Breakdown */}
                                 <div className="space-y-4 mb-6">
                                     <div className="flex justify-between text-gray-600">
+                                        <span>Original Price</span>
+                                        <span className="font-semibold line-through">₹{originalTotal?.toLocaleString()}</span>
+                                    </div>
+                                    <div className="flex justify-between text-green-600">
+                                        <span>Total Discount</span>
+                                        <span className="font-semibold">-₹{totalDiscount?.toLocaleString()}</span>
+                                    </div>
+                                    <div className="flex justify-between text-gray-600">
                                         <span>Subtotal</span>
                                         <span className="font-semibold">₹{subtotal?.toLocaleString()}</span>
                                     </div>
@@ -364,46 +478,30 @@ export default function CartPage() {
                                             )}
                                         </span>
                                     </div>
-                                    {shipping > 0 && (
-                                        <div className="text-xs text-gray-500 bg-blue-50 p-3 rounded-lg">
-                                            Add ₹{(5000 - subtotal)?.toLocaleString()} more for free shipping!
+                                    {shipping > 0 && remainingForFreeShipping > 0 && (
+                                        <div className="text-xs text-gray-500 bg-green-100 p-3 rounded-lg">
+                                            Add ₹{remainingForFreeShipping?.toLocaleString()} more for free shipping!
                                         </div>
                                     )}
-                                    <div className="flex justify-between text-gray-600">
-                                        <span>Tax (GST 18%)</span>
-                                        <span className="font-semibold">₹{tax?.toLocaleString()}</span>
-                                    </div>
                                     <div className="pt-4 border-t border-gray-200">
                                         <div className="flex justify-between">
-                                            <span className="text-lg font-bold text-gray-900">Total</span>
+                                            <span className="text-lg font-bold text-gray-900">Total Payable</span>
                                             <span className="text-2xl font-bold text-gray-900">₹{total?.toLocaleString()}</span>
                                         </div>
                                     </div>
                                 </div>
 
-                                {/* Promo Code */}
-                                <div className="mb-6">
-                                    <div className="flex gap-2">
-                                        <input
-                                            type="text"
-                                            placeholder="Promo code"
-                                            className="flex-1 px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
-                                        />
-                                        <button className="px-6 py-3 bg-gray-100 text-gray-700 rounded-xl font-semibold hover:bg-gray-200 transition-colors">
-                                            Apply
-                                        </button>
-                                    </div>
-                                </div>
-
                                 {/* Checkout Button */}
-                                <motion.button
-                                    whileHover={{ scale: 1.02 }}
-                                    whileTap={{ scale: 0.98 }}
-                                    className="w-full py-4 bg-gray-900 text-white rounded-xl font-semibold hover:bg-gray-800 transition-colors flex items-center justify-center gap-2"
-                                >
-                                    Proceed to Checkout
-                                    <ArrowRight className="w-5 h-5" />
-                                </motion.button>
+                                <Link href="/checkout" className="block w-full">
+                                    <motion.button
+                                        whileHover={{ scale: 1.02 }}
+                                        whileTap={{ scale: 0.98 }}
+                                        className="w-full py-4 bg-gray-900 text-white rounded-xl font-semibold hover:bg-gray-800 transition-colors flex items-center justify-center gap-2"
+                                    >
+                                        Proceed to Checkout
+                                        <ArrowRight className="w-5 h-5" />
+                                    </motion.button>
+                                </Link>
                             </motion.div>
                         </div>
                     </div>

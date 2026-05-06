@@ -217,12 +217,12 @@ export default function Header() {
               <Link href="/cart">
                 <button className={`relative p-2 rounded-full transition-colors hover:cursor-pointer ${textColor} ${hoverBg}`}>
                   <ShoppingCart className="w-5 h-5" />
-                  {cartData && !isLoading && cartData?.all_products.length > 0 && (
+                  {cartData && !isLoading && cartData?.all_products?.length > 0 && (
                     <Badge
                       variant="destructive"
                       className="absolute -top-1 -right-1 h-5 min-w-5 px-1 flex items-center justify-center rounded-full text-[11px] leading-none"
                     >
-                      {cartData.all_products.length > 99 ? "99+" : cartData.all_products.length}
+                      {cartData?.all_products?.length > 99 ? "99+" : cartData?.all_products?.length}
                     </Badge>
                   )}
                 </button>
