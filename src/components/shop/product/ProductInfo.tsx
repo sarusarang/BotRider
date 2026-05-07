@@ -10,6 +10,7 @@ import { useCheckLogin } from "@/service/auth/useAuth";
 import { useRouter, usePathname } from "next/navigation";
 import { toast } from "sonner";
 import { useAddToCart } from "@/service/cart/useCart";
+import { createProductEnquiryWhatsAppUrl } from "@/lib/whatsapp";
 
 
 
@@ -40,10 +41,18 @@ export function ProductInfo({ product, quantity, setQuantity, selectedColorIndex
 
     const colors = isbike ? product.bike_colors : [];
     const sizes = isbike ? product.sizes : [];
+    const isOutOfStock = product.is_out_of_stock || product.stock <= 0;
 
 
     // State for selected size
     const [selectedSize, setSelectedSize] = useState(sizes?.length > 0 ? sizes[0] : "");
+    const selectedColor = isbike ? colors?.[selectedColorIndex]?.color : undefined;
+    const enquiryUrl = createProductEnquiryWhatsAppUrl({
+        productName: product.name,
+        quantity,
+        color: selectedColor,
+        size: selectedSize,
+    });
 
 
     // User and path
@@ -62,6 +71,11 @@ export function ProductInfo({ product, quantity, setQuantity, selectedColorIndex
 
         // Loading guard
         if (isLoading) return;
+
+        if (isOutOfStock) {
+            toast.error("This product is currently out of stock");
+            return;
+        }
 
 
         // Login check
@@ -83,10 +97,8 @@ export function ProductInfo({ product, quantity, setQuantity, selectedColorIndex
         if (isbike) {
 
             formData.append("size", selectedSize);
-            const selectedColor = colors[selectedColorIndex];
-
             if (selectedColor) {
-                formData.append("color", selectedColor.color);
+                formData.append("color", selectedColor);
             }
 
         }
@@ -341,7 +353,7 @@ export function ProductInfo({ product, quantity, setQuantity, selectedColorIndex
                 </div>
 
                 {/* Actions */}
-                {product?.is_out_of_stock ? (
+                {isOutOfStock ? (
 
                     <div className="grid grid-cols-1">
                         <button
@@ -356,7 +368,7 @@ export function ProductInfo({ product, quantity, setQuantity, selectedColorIndex
                     <div className="grid grid-cols-1 gap-4">
 
                         <motion.a
-                            href={`https://wa.me/917994801127?text=${encodeURIComponent(`Hi, I would like to enquire about ${product.name}`)}`}
+                            href={enquiryUrl}
                             target="_blank"
                             rel="noopener noreferrer"
                             whileHover={{ scale: 1.02 }}
@@ -380,7 +392,7 @@ export function ProductInfo({ product, quantity, setQuantity, selectedColorIndex
                         {/* Buy Now */}
                         <motion.button
                             onClick={() => handleAction('buy')}
-                            disabled={addToCartMutation.isPending}
+                            disabled={addToCartMutation.isPending || isOutOfStock}
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
                             className="group relative h-14 rounded-full bg-linear-to-r from-zinc-800 to-black dark:from-white dark:to-zinc-200 hover:from-black hover:to-black dark:hover:from-zinc-200 dark:hover:to-zinc-300 hover:cursor-pointer text-white dark:text-black font-bold text-lg shadow-[0_10px_30px_rgba(0,0,0,0.4)] hover:shadow-[0_15px_40px_rgba(0,0,0,0.5)] dark:shadow-[0_10px_30px_rgba(255,255,255,0.3)] dark:hover:shadow-[0_15px_40px_rgba(255,255,255,0.4)] transition-all duration-300 overflow-hidden disabled:opacity-70 disabled:cursor-not-allowed">

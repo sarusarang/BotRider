@@ -12,6 +12,7 @@ import { useCheckLogin } from "@/service/auth/useAuth";
 import { useRouter, usePathname } from "next/navigation";
 import { toast } from "sonner";
 import { useAddToCart } from "@/service/cart/useCart";
+import { createProductEnquiryWhatsAppUrl } from "@/lib/whatsapp";
 
 
 
@@ -32,6 +33,7 @@ export default function ProductCard({ product, className, hideAddToCart, height,
 
     /* ---------------- Variables ---------------- */
     const isBike = product?.product_type === "bike";
+    const isOutOfStock = product?.is_out_of_stock || product?.stock <= 0;
 
 
 
@@ -58,6 +60,11 @@ export default function ProductCard({ product, className, hideAddToCart, height,
     const handleAddToCart = () => {
 
         if (isLoading) return;
+
+        if (isOutOfStock) {
+            toast.error("This product is currently out of stock");
+            return;
+        }
 
         if (!user?.is_logged_in) {
 
@@ -107,6 +114,14 @@ export default function ProductCard({ product, className, hideAddToCart, height,
     const originalPrice = product?.is_discount ? Number(product?.price) : null;
 
     const discountPercent = product?.is_discount ? Number(product?.discount_percentage) : 0;
+    const selectedColor = isBike ? product?.bike_colors?.[selectedColorIndex]?.color : undefined;
+    const selectedSize = isBike ? product?.sizes?.[0] : undefined;
+    const enquiryUrl = createProductEnquiryWhatsAppUrl({
+        productName: product.name,
+        quantity: 1,
+        color: selectedColor,
+        size: selectedSize,
+    });
 
 
 
@@ -168,7 +183,11 @@ export default function ProductCard({ product, className, hideAddToCart, height,
 
 
             {/* ---------------- Discount Badge ---------------- */}
-            {discountPercent > 0 && (
+            {isOutOfStock ? (
+                <span className="absolute top-3 right-3 z-20 bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded-full shadow">
+                    OUT OF STOCK
+                </span>
+            ) : discountPercent > 0 && (
                 <span className="absolute top-3 right-3 z-20 bg-emerald-500 text-white text-[10px] font-bold px-2 py-1 rounded-full shadow">
                     {discountPercent}% OFF
                 </span>
@@ -285,12 +304,22 @@ export default function ProductCard({ product, className, hideAddToCart, height,
 
                 <div className="p-4 sm:p-5 pt-0 mt-auto">
 
-                    {!product?.online_purchase_enabled ? (
+                    {isOutOfStock ? (
+
+                        <button
+                            type="button"
+                            disabled
+                            className="w-full h-11 flex items-center justify-center gap-2 rounded-full bg-zinc-200 text-zinc-500 font-semibold text-sm cursor-not-allowed"
+                        >
+                            Out of Stock
+                        </button>
+
+                    ) : !product?.online_purchase_enabled ? (
 
                         <motion.a
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
-                            href={`https://wa.me/917994801127?text=${encodeURIComponent(`Hi, I would like to enquire about ${product.name}`)}`}
+                            href={enquiryUrl}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="group relative w-full h-11 flex items-center justify-center gap-2 rounded-full bg-[#25D366] text-white font-semibold text-sm shadow-[0_4px_14px_0_rgba(37,211,102,0.39)] hover:shadow-[0_6px_20px_rgba(37,211,102,0.23)] hover:bg-[#20bd5a] transition-all duration-300 overflow-hidden"
@@ -308,7 +337,7 @@ export default function ProductCard({ product, className, hideAddToCart, height,
 
                         <motion.button
                             onClick={handleAddToCart}
-                            disabled={addToCartMutation?.isPending}
+                            disabled={addToCartMutation?.isPending || isOutOfStock}
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
                             className="group relative w-full h-11 flex items-center justify-center gap-2 rounded-full bg-black text-white dark:bg-white dark:text-black font-semibold text-sm shadow-[0_4px_14px_0_rgba(0,0,0,0.39)] hover:shadow-[0_6px_20px_rgba(0,0,0,0.23)] dark:shadow-[0_4px_14px_0_rgba(255,255,255,0.39)] transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed overflow-hidden"

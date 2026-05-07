@@ -65,3 +65,9 @@ export const VerifyOrderPaymentApi = async (data: FormData) => {
     return await CommonApi("POST", `/order/verify-order/`, data);
 
 }
+
+
+// Get Order Details
+export const GetOrderDetailsApi = async () => {
+    return await CommonApi("GET", `/order/user-orders/`);
+}

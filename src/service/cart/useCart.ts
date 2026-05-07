@@ -1,7 +1,16 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { AddToCartApi, DeleteAllCartItemsApi, DeleteCartItemApi, GetCartListApi, UpdateCartItemApi, CartCheckoutApi, VerifyOrderPaymentApi } from "./CartApi";
-import { CartResponse } from "./types";
+import { AddToCartApi, DeleteAllCartItemsApi, DeleteCartItemApi, GetCartListApi, UpdateCartItemApi, CartCheckoutApi, VerifyOrderPaymentApi, GetOrderDetailsApi } from "./CartApi";
+import { CartResponse, UserOrder } from "./types";
+
+const getErrorMessage = (error: unknown, fallback: string) => {
+    if (typeof error === "object" && error !== null && "message" in error) {
+        const message = (error as { message?: unknown }).message;
+        if (typeof message === "string") return message;
+    }
+
+    return fallback;
+};
 
 
 
@@ -26,6 +35,27 @@ export const useGetCartList = () => {
 
 
 
+// Get User Orders
+export const useGetOrderDetails = () => {
+
+    return useQuery<UserOrder[]>({
+
+        queryKey: ["user-orders"],
+
+        queryFn: async () => {
+
+            return await GetOrderDetailsApi() as UserOrder[];
+
+        },
+
+        staleTime: 0,
+
+    });
+
+};
+
+
+
 // Add to Cart
 export const useAddToCart = () => {
 
@@ -47,9 +77,9 @@ export const useAddToCart = () => {
 
         },
 
-        onError: (error: any) => {
+        onError: (error: unknown) => {
 
-            toast.error(error?.message || "Failed to add to cart");
+            toast.error(getErrorMessage(error, "Failed to add to cart"));
 
         }
 
@@ -80,9 +110,9 @@ export const useDeleteCartItem = () => {
 
         },
 
-        onError: (error: any) => {
+        onError: (error: unknown) => {
 
-            toast.error(error?.message || "Failed to remove item");
+            toast.error(getErrorMessage(error, "Failed to remove item"));
 
         }
 
@@ -112,9 +142,9 @@ export const useUpdateCartItem = () => {
 
         },
 
-        onError: (error: any) => {
+        onError: (error: unknown) => {
 
-            toast.error(error?.message || "Failed to update cart");
+            toast.error(getErrorMessage(error, "Failed to update cart"));
 
         }
 
@@ -144,9 +174,9 @@ export const useDeleteAllCartItems = () => {
 
         },
 
-        onError: (error: any) => {
+        onError: (error: unknown) => {
 
-            toast.error(error?.message || "Failed to clear cart");
+            toast.error(getErrorMessage(error, "Failed to clear cart"));
 
         }
 
@@ -170,9 +200,9 @@ export const useCartCheckout = () => {
 
         },
 
-        onError: (error: any) => {
+        onError: (error: unknown) => {
 
-            toast.error(error?.message || "Failed to checkout");
+            toast.error(getErrorMessage(error, "Failed to checkout"));
 
         }
 
@@ -198,13 +228,14 @@ export const useVerifyOrderPayment = () => {
         onSuccess: () => {
 
             queryClient.invalidateQueries({ queryKey: ["cart-list"] });
+            queryClient.invalidateQueries({ queryKey: ["user-orders"] });
             toast.success("Order placed successfully!");
 
         },
 
-        onError: (error: any) => {
+        onError: (error: unknown) => {
 
-            toast.error(error?.message || "Failed to verify payment");
+            toast.error(getErrorMessage(error, "Failed to verify payment"));
 
         }
 
