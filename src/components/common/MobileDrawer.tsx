@@ -15,7 +15,7 @@ interface MobileDrawerProps {
 
 
 
-export default function MobileDrawer({ isOpen, onClose, onSearchOpen }: MobileDrawerProps) {
+export default function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
 
 
     // Get Navbar Data from API
@@ -128,12 +128,15 @@ export default function MobileDrawer({ isOpen, onClose, onSearchOpen }: MobileDr
                         </div>
 
                         <div className="p-6 border-t border-gray-100 bg-gray-50">
+                           
                             <div className="flex items-center justify-around">
+                                
                                 <Link href="/account" className="flex flex-col items-center gap-1 text-gray-600">
                                     <User className="w-6 h-6" />
                                     <span className="text-xs">Account</span>
                                 </Link>
-                                <button
+
+                                {/* <button
                                     onClick={() => {
                                         onSearchOpen();
                                         onClose();
@@ -142,7 +145,7 @@ export default function MobileDrawer({ isOpen, onClose, onSearchOpen }: MobileDr
                                 >
                                     <Search className="w-6 h-6" />
                                     <span className="text-xs">Search</span>
-                                </button>
+                                </button> */}
 
                                 <Link href="/cart" className="flex flex-col items-center gap-1 text-gray-600">
                                     <ShoppingBag className="w-6 h-6" />

@@ -201,12 +201,12 @@ export default function Header() {
             {/* Actions */}
             <div className="hidden lg:flex items-center space-x-3">
 
-              <button
+              {/* <button
                 onClick={() => setIsSearchOpen(true)}
                 className={`p-2 rounded-full transition-colors hover:cursor-pointer ${textColor} ${hoverBg}`}
               >
                 <Search className="w-5 h-5" />
-              </button>
+              </button> */}
 
               <Link href="/account">
                 <button className={`p-2 rounded-full transition-colors hover:cursor-pointer ${textColor} ${hoverBg}`}>
