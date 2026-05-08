@@ -36,6 +36,7 @@ import {
     getOrderStatusLabel,
     getPaymentStatusColor,
     getPaymentStatusLabel,
+    getShippedVia,
     getTrackingLabel,
     normalizeOrderStatus,
 } from '@/lib/orderUtils';
@@ -314,6 +315,9 @@ export default function OrdersSection() {
                                                         <div>
                                                             <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Tracking ID</p>
                                                             <p className="font-semibold text-gray-900">{getTrackingLabel(order)}</p>
+                                                            {getShippedVia(order) && (
+                                                                <p className="text-xs text-gray-500 mt-0.5">via {getShippedVia(order)}</p>
+                                                            )}
                                                         </div>
                                                     </div>
 

@@ -1,10 +1,39 @@
 "use client";
 
 import { motion, Variants } from "framer-motion";
-import { MapPin, Phone, Mail, Clock, Send, MoveRight } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, Send, Loader2, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { useContactEnquiry } from "@/service/contact/useContact";
 
 
+
+// =============== ZOD SCHEMA ===============
+const contactSchema = z.object({
+    name: z
+        .string()
+        .min(2, "Name must be at least 2 characters")
+        .max(100, "Name must be under 100 characters"),
+    email: z
+        .string()
+        .email("Please enter a valid email address"),
+    phone: z
+        .string()
+        .min(7, "Phone number must be at least 7 digits")
+        .max(15, "Phone number must be under 15 digits")
+        .regex(/^[+\d\s\-()]+$/, "Please enter a valid phone number"),
+    subject: z
+        .string()
+        .min(1, "Please select a subject"),
+    message: z
+        .string()
+        .min(10, "Message must be at least 10 characters")
+        .max(1000, "Message must be under 1000 characters"),
+});
+
+type ContactFormData = z.infer<typeof contactSchema>;
 
 
 
@@ -17,11 +46,44 @@ export default function ContactPage() {
         visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
     };
 
-
-
     const stagger = {
         visible: { transition: { staggerChildren: 0.1 } },
     };
+
+
+    // =============== REACT HOOK FORM + ZOD ===============
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors },
+    } = useForm<ContactFormData>({
+        resolver: zodResolver(contactSchema),
+        defaultValues: { name: "", email: "", phone: "", subject: "", message: "" },
+    });
+
+
+    // =============== MUTATION ===============
+    const { mutate, isPending } = useContactEnquiry();
+
+    const onSubmit = (values: ContactFormData) => {
+        const data = new FormData();
+        data.append("name",    values.name);
+        data.append("email",   values.email);
+        data.append("phone",   values.phone);
+        data.append("subject", values.subject);
+        data.append("message", values.message);
+        mutate(data, {
+            onSuccess: () => reset(),
+        });
+    };
+
+
+    // =============== FIELD CLASS HELPERS ===============
+    const inputBase =
+        "w-full px-4 py-3 rounded-lg bg-gray-50 border focus:bg-white focus:ring-2 outline-none transition-all duration-300 disabled:opacity-60";
+    const inputNormal = `${inputBase} border-gray-200 focus:border-red-500 focus:ring-red-100`;
+    const inputError  = `${inputBase} border-red-400 focus:border-red-500 focus:ring-red-100 bg-red-50`;
 
 
 
@@ -115,73 +177,134 @@ export default function ContactPage() {
                         </div>
 
 
-                        <form className="space-y-6">
+                        <form className="space-y-6" onSubmit={handleSubmit(onSubmit)} noValidate>
 
+                            {/* Full Name */}
+                            <div className="space-y-1.5">
+                                <label htmlFor="name" className="text-sm font-medium text-gray-700">Full Name</label>
+                                <input
+                                    id="name"
+                                    type="text"
+                                    placeholder="John Doe"
+                                    disabled={isPending}
+                                    className={errors.name ? inputError : inputNormal}
+                                    {...register("name")}
+                                />
+                                {errors.name && (
+                                    <p className="flex items-center gap-1 text-xs text-red-600 mt-1">
+                                        <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                                        {errors.name.message}
+                                    </p>
+                                )}
+                            </div>
+
+
+                            {/* Email & Phone */}
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                                <div className="space-y-2">
-                                    <label htmlFor="firstName" className="text-sm font-medium text-gray-700">First Name</label>
+                                <div className="space-y-1.5">
+                                    <label htmlFor="email" className="text-sm font-medium text-gray-700">Email Address</label>
                                     <input
-                                        type="text"
-                                        id="firstName"
-                                        className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-red-500 focus:bg-white focus:ring-2 focus:ring-red-100 outline-none transition-all duration-300"
-                                        placeholder="John"
+                                        id="email"
+                                        type="email"
+                                        placeholder="john@example.com"
+                                        disabled={isPending}
+                                        className={errors.email ? inputError : inputNormal}
+                                        {...register("email")}
                                     />
+                                    {errors.email && (
+                                        <p className="flex items-center gap-1 text-xs text-red-600 mt-1">
+                                            <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                                            {errors.email.message}
+                                        </p>
+                                    )}
                                 </div>
 
-                                <div className="space-y-2">
-                                    <label htmlFor="lastName" className="text-sm font-medium text-gray-700">Last Name</label>
+                                <div className="space-y-1.5">
+                                    <label htmlFor="phone" className="text-sm font-medium text-gray-700">Phone Number</label>
                                     <input
-                                        type="text"
-                                        id="lastName"
-                                        className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-red-500 focus:bg-white focus:ring-2 focus:ring-red-100 outline-none transition-all duration-300"
-                                        placeholder="Doe"
+                                        id="phone"
+                                        type="tel"
+                                        placeholder="+91 98765 43210"
+                                        disabled={isPending}
+                                        className={errors.phone ? inputError : inputNormal}
+                                        {...register("phone")}
                                     />
+                                    {errors.phone && (
+                                        <p className="flex items-center gap-1 text-xs text-red-600 mt-1">
+                                            <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                                            {errors.phone.message}
+                                        </p>
+                                    )}
                                 </div>
 
                             </div>
 
 
-                            <div className="space-y-2">
-                                <label htmlFor="email" className="text-sm font-medium text-gray-700">Email Address</label>
-                                <input
-                                    type="email"
-                                    id="email"
-                                    className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-red-500 focus:bg-white focus:ring-2 focus:ring-red-100 outline-none transition-all duration-300"
-                                    placeholder="john@example.com"
-                                />
-                            </div>
-
-
-                            <div className="space-y-2">
+                            {/* Subject */}
+                            <div className="space-y-1.5">
                                 <label htmlFor="subject" className="text-sm font-medium text-gray-700">Subject</label>
                                 <select
                                     id="subject"
-                                    className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-red-500 focus:bg-white focus:ring-2 focus:ring-red-100 outline-none transition-all duration-300"
+                                    disabled={isPending}
+                                    className={errors.subject ? inputError : inputNormal}
+                                    {...register("subject")}
                                 >
-                                    <option value="" disabled  >Select a topic</option>
-                                    <option value="sales">Sales Inquiry</option>
-                                    <option value="support">Customer Support</option>
-                                    <option value="service">Service & Repair</option>
-                                    <option value="other">Other</option>
+                                    <option value="">Select a topic</option>
+                                    <option value="Sales Inquiry">Sales Inquiry</option>
+                                    <option value="Customer Support">Customer Support</option>
+                                    <option value="Service & Repair">Service &amp; Repair</option>
+                                    <option value="Other">Other</option>
                                 </select>
+                                {errors.subject && (
+                                    <p className="flex items-center gap-1 text-xs text-red-600 mt-1">
+                                        <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                                        {errors.subject.message}
+                                    </p>
+                                )}
                             </div>
 
 
-                            <div className="space-y-2">
-                                <label htmlFor="message" className="text-sm font-medium text-gray-700">Message</label>
+                            {/* Message */}
+                            <div className="space-y-1.5">
+                                <label htmlFor="message" className="text-sm font-medium text-gray-700">
+                                    Message
+                                </label>
                                 <textarea
                                     id="message"
                                     rows={5}
-                                    className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-red-500 focus:bg-white focus:ring-2 focus:ring-red-100 outline-none transition-all duration-300 resize-none"
                                     placeholder="How can we help you today?"
+                                    disabled={isPending}
+                                    className={`${errors.message ? inputError : inputNormal} resize-none`}
+                                    {...register("message")}
                                 />
+                                {errors.message && (
+                                    <p className="flex items-center gap-1 text-xs text-red-600 mt-1">
+                                        <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                                        {errors.message.message}
+                                    </p>
+                                )}
                             </div>
 
 
-                            <Button size="lg" className="w-full py-6 text-lg bg-black hover:bg-gray-800 text-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group">
-                                Send Message
-                                <Send className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                            {/* Submit */}
+                            <Button
+                                type="submit"
+                                size="lg"
+                                disabled={isPending}
+                                className="w-full py-6 text-lg bg-black hover:bg-gray-800 text-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group disabled:opacity-70 disabled:cursor-not-allowed"
+                            >
+                                {isPending ? (
+                                    <>
+                                        <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                                        Sending...
+                                    </>
+                                ) : (
+                                    <>
+                                        Send Message
+                                        <Send className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                                    </>
+                                )}
                             </Button>
 
                         </form>

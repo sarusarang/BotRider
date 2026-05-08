@@ -190,7 +190,7 @@ export const getDeliveryMessage = (order: UserOrder) => {
 };
 
 export const getTrackingId = (order: UserOrder) => {
-    return order.tracking_id || order.tracking_number || null;
+    return order.tracking_id ?? null;
 };
 
 export const getTrackingLabel = (order: UserOrder) => {
@@ -202,6 +202,15 @@ export const getTrackingLabel = (order: UserOrder) => {
     if (status === "cancelled" || status === "failed") return "Not available";
 
     return "Will be shared after shipment";
+};
+
+export const getShippedVia = (order: UserOrder) => {
+    return order.shipped_via ?? null;
+};
+
+export const getDeliveredAt = (order: UserOrder) => {
+    // Field is intentionally named `deliverd_at` on the backend
+    return order.deliverd_at ? formatOrderDate(order.deliverd_at) : null;
 };
 
 export const getOrderItemDisplay = (item: OrderProduct) => {

@@ -185,6 +185,7 @@ export interface OrderProduct {
     order: number;
 }
 
+
 export interface UserOrder {
     id: number;
     user_address: OrderAddress;
@@ -196,7 +197,8 @@ export interface UserOrder {
     payment_status: boolean;
     invoice: string | null;
     tracking_id?: string | null;
-    tracking_number?: string | null;
+    shipped_via?: string | null;
+    deliverd_at?: string | null;
     estimated_delivery?: string | null;
     created_at: string;
     updated_at: string;

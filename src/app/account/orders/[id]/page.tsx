@@ -28,6 +28,7 @@ import { useGetOrderDetails } from '@/service/cart/useCart';
 import {
     formatCurrency,
     formatOrderDate,
+    getDeliveredAt,
     getDeliveryMessage,
     getDeliveryWindow,
     getOrderDiscount,
@@ -39,6 +40,7 @@ import {
     getOrderStatusLabel,
     getPaymentStatusColor,
     getPaymentStatusLabel,
+    getShippedVia,
     getTrackingId,
     getTrackingLabel,
     normalizeOrderStatus,
@@ -212,7 +214,7 @@ function OrderDetailsContent() {
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 p-4 sm:p-6">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 p-4 sm:p-6">
                         <div className="rounded-xl border border-gray-100 bg-white px-4 py-3">
                             <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-1">Order Date</p>
                             <p className="font-semibold text-gray-900">{formatOrderDate(order.created_at)}</p>
@@ -223,7 +225,15 @@ function OrderDetailsContent() {
                         </div>
                         <div className={`rounded-xl border px-4 py-3 ${accent.panel}`}>
                             <p className={`text-xs font-semibold uppercase tracking-wide mb-1 ${accent.text}`}>Tracking ID</p>
-                            <p className="font-semibold text-gray-900">{getTrackingLabel(order)}</p>
+                            <p className="font-semibold text-gray-900 break-all">{getTrackingLabel(order)}</p>
+                        </div>
+                        <div className="rounded-xl border border-zinc-200 bg-zinc-50 px-4 py-3">
+                            <p className="text-xs font-semibold uppercase tracking-wide text-zinc-700 mb-1">Shipped Via</p>
+                            <p className="font-semibold text-gray-900">{getShippedVia(order) ?? '—'}</p>
+                        </div>
+                        <div className="rounded-xl border border-zinc-200 bg-zinc-50 px-4 py-3">
+                            <p className="text-xs font-semibold uppercase tracking-wide text-zinc-700 mb-1">Delivered On</p>
+                            <p className="font-semibold text-gray-900">{getDeliveredAt(order) ?? '—'}</p>
                         </div>
                         <div className="rounded-xl border border-zinc-200 bg-zinc-50 px-4 py-3">
                             <p className="text-xs font-semibold uppercase tracking-wide text-zinc-700 mb-1">Total Items</p>
