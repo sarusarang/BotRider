@@ -144,15 +144,9 @@ export default function ImmersiveFeatures() {
 
                         <div className="absolute inset-0 bg-linear-to-t from-black via-transparent to-transparent z-10" />
 
-                        {/* <Image
-                            src="https://images.unsplash.com/photo-1541625602330-2277a4c46182?q=80&w=1000&auto=format&fit=crop"
-                            alt="Engineering Excellence"
-                            fill
-                            className="object-cover"
-                        /> */}
 
                         <img
-                            src="https://images.unsplash.com/photo-1541625602330-2277a4c46182?q=80&w=1000&auto=format&fit=crop"
+                            src="/1000x667px home page why us.jpg.jpeg"
                             alt="Engineering Excellence"
                             className="absolute inset-0 h-full w-full object-cover"
                             loading="lazy"

@@ -375,7 +375,7 @@ function LoginContent() {
 
 export default function LoginPage() {
     return (
-        <GoogleOAuthProvider clientId="1047296995285-i87mirgt767nlre0lejb01sfgtg05o9n.apps.googleusercontent.com">
+        <GoogleOAuthProvider clientId="768569011649-56clmsu38kekioqk07fd533un5djk3ef.apps.googleusercontent.com">
             <div className="min-h-screen bg-linear-to-br from-gray-50 via-white to-gray-50 flex items-center justify-center p-4 pt-20">
                 <Suspense fallback={<div className="flex items-center justify-center w-full h-64"><Loader2 className="w-8 h-8 animate-spin text-gray-400" /></div>}>
                     <LoginContent />

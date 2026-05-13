@@ -63,7 +63,8 @@ export default function AboutClient() {
                 {/* Background Image */}
                 <div className="absolute inset-0 z-0">
                     <img
-                        src="https://images.unsplash.com/photo-1541625602330-2277a4c46182?q=80&w=2670&auto=format&fit=crop"
+                        src="/BANNER IMAGE 1920X1080 PX.jpg.jpeg"
+                        loading="lazy"
                         alt="Cyclist sunset"
                         className="object-cover object-center w-full h-full"
                     />
@@ -126,15 +127,9 @@ export default function AboutClient() {
 
                         <div className="relative aspect-4/5 overflow-hidden rounded-2xl shadow-2xl">
 
-                            {/* <Image
-                src="https://images.unsplash.com/photo-1534152250269-f831343729c1?q=80&w=2670&auto=format&fit=crop"
-                alt="Mechanic working on bike"
-                fill
-                className="object-cover"
-              /> */}
-
                             <img
-                                src="https://www.outsideonline.com/wp-content/uploads/2020/11/19/cyclist-lens-flare_s.jpg"
+                                src="/1500X1500px  Boatrider About us images.jpg.jpeg"
+                                loading="lazy"
                                 alt="Mechanic working on bike"
                                 className="absolute inset-0 h-full w-full object-cover"
                             />
@@ -247,7 +242,8 @@ export default function AboutClient() {
                             <div className="relative rounded-[3rem] overflow-hidden aspect-4/5 shadow-2xl">
 
                                 <img
-                                    src="https://images.unsplash.com/photo-1552581234-26160f608093?q=80&w=2670&auto=format&fit=crop"
+                                    src="/2670x1780.jpg.jpeg"
+                                    loading="lazy"
                                     alt="Chairman Vision"
                                     className="w-full h-full object-cover"
                                 />
@@ -525,7 +521,8 @@ export default function AboutClient() {
 
                     {/* Background image */}
                     <img
-                        src="https://plus.unsplash.com/premium_photo-1671100502325-8870ff9ba5c9?fm=jpg&q=60&w=3000"
+                        src="/3000 × 2000 px.jpg.jpeg"
+                        loading="lazy"
                         alt="CTA Background"
                         className="w-full h-[420px] md:h-[520px] object-cover"
                     />

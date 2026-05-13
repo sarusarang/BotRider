@@ -104,8 +104,9 @@ export default function ContactPage() {
                 {/* Parallax/Static Image Background */}
                 <div className="absolute inset-0 z-0">
                     <img
-                        src="https://plus.unsplash.com/premium_photo-1671100502325-8870ff9ba5c9?fm=jpg&q=60&w=3000"
+                        src="/contact banner 1920x1080px.jpg.jpeg"
                         alt="contact banner"
+                        loading="lazy"
                         className="w-full h-full object-cover object-center"
                     />
                 </div>
