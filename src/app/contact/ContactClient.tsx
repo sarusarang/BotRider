@@ -368,7 +368,7 @@ export default function ContactPage() {
                                         <div>
                                             <h4 className="font-semibold text-gray-900 mb-1">Call Us</h4>
                                             <p className="text-gray-500 mb-1">Mon-Fri from 8am to 6pm:</p>
-                                            <a href="tel:+04954850666" className="text-black font-medium hover:text-red-600 transition-colors">0495 4850666</a>
+                                            <a href="tel:+919526511511" className="text-black font-medium hover:text-red-600 transition-colors">+91 9526511511</a>
                                         </div>
 
                                     </div>

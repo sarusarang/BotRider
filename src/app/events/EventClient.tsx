@@ -3,8 +3,8 @@
 
 import { motion } from 'framer-motion';
 import { Calendar, Users, Route, Award, CalendarX } from 'lucide-react';
-import HeroSlider from '@/components/events/HeroSlider';
-import CountUp from '@/components/events/CountUp';
+import HeroSlider from '@/components/common/events/HeroSlider';
+import CountUp from '@/components/common/events/CountUp';
 
 
 
